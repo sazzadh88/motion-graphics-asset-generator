@@ -13,6 +13,21 @@
       "runtimeArgs": ["--import", "tsx", "apps/api/src/index.ts"],
       "port": 3001,
       "autoPort": false
+    },
+    {
+      "name": "api-mock",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--import", "tsx", "apps/api/src/index.ts"],
+      "env": { "MG_GENERATOR": "mock", "STORAGE_DIR": "storage/mock", "PORT": "3002" },
+      "port": 3002,
+      "autoPort": false
+    },
+    {
+      "name": "studio-mock",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["node_modules/vite/bin/vite.js", "apps/web", "--port", "5174", "--strictPort"],
+      "env": { "MG_API_TARGET": "http://127.0.0.1:3002" },
+      "port": 5174
     }
   ]
 }

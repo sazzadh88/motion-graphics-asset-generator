@@ -14,6 +14,8 @@ export type Action =
   /** Replace the payload (reset / JSON apply); playhead is kept but clamped. */
   | { type: 'applyPayload'; payload: RenderJobPayload }
   | { type: 'setAsset'; key: string; value: ParamValue }
+  /** Patch several params in one update (e.g. a reference palette). */
+  | { type: 'setAssets'; patch: Record<string, ParamValue> }
   | { type: 'setSettings'; patch: Partial<RenderSettings> }
   | { type: 'setFrame'; frame: number }
   | { type: 'play' }
@@ -49,6 +51,14 @@ export function reducer(state: StudioState, action: Action): StudioState {
         ...state.payload,
         assets: { ...state.payload.assets, [action.key]: action.value },
       });
+    case 'setAssets': {
+      const keys = Object.keys(action.patch);
+      if (keys.every((k) => state.payload.assets[k] === action.patch[k])) return state;
+      return withPayload(state, {
+        ...state.payload,
+        assets: { ...state.payload.assets, ...action.patch },
+      });
+    }
     case 'setSettings':
       return withPayload(state, {
         ...state.payload,

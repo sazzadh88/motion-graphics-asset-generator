@@ -4,8 +4,4 @@ import '@fontsource-variable/inter'; // "Inter Variable"      - body/UI (wght 10
 import '@fontsource-variable/montserrat'; // "Montserrat Variable" - geometric bold headlines
 import '@fontsource/anton'; // "Anton"               - condensed display (weight 400 only)
 
-export const FONT_FAMILIES = {
-  body: 'Inter Variable',
-  geometric: 'Montserrat Variable',
-  display: 'Anton',
-} as const;
+export { FONT_FAMILIES } from './fontFamilies';

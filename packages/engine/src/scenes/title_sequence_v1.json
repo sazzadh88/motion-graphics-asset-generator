@@ -1,0 +1,343 @@
+{
+  "format": "mg-scene@1",
+  "id": "title_sequence_v1",
+  "name": "Cinematic Title",
+  "description": "Film-style title card: letter-spaced mask reveal between hairline rules, slow push-in and a fade to black.",
+  "category": "typography",
+  "defaultSettings": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "durationFrames": 144,
+    "transparent": false
+  },
+  "fonts": [
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "presenter",
+      "label": "Presenter line",
+      "type": "text",
+      "default": "Northlight Pictures presents",
+      "maxLength": 44,
+      "group": "Text"
+    },
+    {
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "The Quiet Hour",
+      "maxLength": 28,
+      "group": "Text"
+    },
+    {
+      "key": "subtitle",
+      "label": "Subtitle",
+      "type": "text",
+      "default": "In cinemas spring 2027",
+      "maxLength": 48,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#07070A",
+      "group": "Colors"
+    },
+    {
+      "key": "textColor",
+      "label": "Title",
+      "type": "color",
+      "default": "#EFE7D6",
+      "group": "Colors"
+    },
+    {
+      "key": "accentColor",
+      "label": "Accent",
+      "type": "color",
+      "default": "#C9A35F",
+      "group": "Colors"
+    },
+    {
+      "key": "showRules",
+      "label": "Hairline rules",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "param": "bgColor"
+  },
+  "layers": [
+    {
+      "id": "bloom",
+      "type": "rect",
+      "x": "50%w",
+      "y": "50%h",
+      "width": "100%w",
+      "height": "100%h",
+      "fill": {
+        "radial": {
+          "cx": "50%w",
+          "cy": "50%h",
+          "r": 78,
+          "stops": [
+            [
+              0,
+              {
+                "param": "accentColor",
+                "alpha": 0.17
+              }
+            ],
+            [
+              0.4,
+              {
+                "param": "accentColor",
+                "alpha": 0.06
+              }
+            ],
+            [
+              1,
+              {
+                "param": "accentColor",
+                "alpha": 0
+              }
+            ]
+          ]
+        }
+      },
+      "enter": {
+        "preset": "fade",
+        "duration": 2,
+        "ease": "inOutQuad"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 1.1,
+        "ease": "inOutQuad"
+      },
+      "ambient": [
+        {
+          "prop": "opacity",
+          "amplitude": 0.12,
+          "period": 3.2
+        }
+      ]
+    },
+    {
+      "id": "card",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "exit": {
+        "preset": "fade",
+        "duration": 1.0,
+        "delay": 0.05,
+        "ease": "inOutQuad"
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.07,
+          "period": 24
+        }
+      ],
+      "layers": [
+        {
+          "id": "presenter",
+          "type": "text",
+          "text": "{{presenter|upper}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 500,
+            "size": 2.4,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.42
+          },
+          "color": {
+            "param": "accentColor"
+          },
+          "align": "center",
+          "maxWidth": "84%w",
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 1.6
+          },
+          "y": -16,
+          "enter": {
+            "preset": "fade",
+            "duration": 1.2,
+            "delay": 0.2,
+            "ease": "inOutQuad"
+          }
+        },
+        {
+          "id": "ruleTop",
+          "type": "rect",
+          "visibleIf": {
+            "param": "showRules"
+          },
+          "y": -9.5,
+          "width": "64%w",
+          "height": "1.5px",
+          "fill": {
+            "linear": {
+              "angle": 90,
+              "stops": [
+                [
+                  0,
+                  {
+                    "param": "accentColor",
+                    "alpha": 0
+                  }
+                ],
+                [
+                  0.5,
+                  {
+                    "param": "accentColor"
+                  }
+                ],
+                [
+                  1,
+                  {
+                    "param": "accentColor",
+                    "alpha": 0
+                  }
+                ]
+              ]
+            }
+          },
+          "keyframes": {
+            "scaleX": [
+              {
+                "t": 0.5,
+                "v": 0
+              },
+              {
+                "t": 1.9,
+                "v": 1,
+                "ease": "inOutCubic"
+              }
+            ]
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "text": "{{title|upper}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 300,
+            "size": 11.5,
+            "lineHeight": 1.05,
+            "letterSpacing": 0.36
+          },
+          "color": {
+            "param": "textColor"
+          },
+          "align": "center",
+          "maxWidth": "86%w",
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 4
+          },
+          "y": 0,
+          "start": 0.7,
+          "enter": {
+            "preset": "mask-up",
+            "duration": 1.2,
+            "ease": "outQuart",
+            "stagger": {
+              "by": "char",
+              "each": 0.04
+            }
+          }
+        },
+        {
+          "id": "ruleBottom",
+          "type": "rect",
+          "visibleIf": {
+            "param": "showRules"
+          },
+          "y": 9.5,
+          "width": "64%w",
+          "height": "1.5px",
+          "fill": {
+            "linear": {
+              "angle": 90,
+              "stops": [
+                [
+                  0,
+                  {
+                    "param": "accentColor",
+                    "alpha": 0
+                  }
+                ],
+                [
+                  0.5,
+                  {
+                    "param": "accentColor"
+                  }
+                ],
+                [
+                  1,
+                  {
+                    "param": "accentColor",
+                    "alpha": 0
+                  }
+                ]
+              ]
+            }
+          },
+          "keyframes": {
+            "scaleX": [
+              {
+                "t": 0.6,
+                "v": 0
+              },
+              {
+                "t": 2.0,
+                "v": 1,
+                "ease": "inOutCubic"
+              }
+            ]
+          }
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "text": "{{subtitle}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 400,
+            "size": 2.9,
+            "lineHeight": 1.25,
+            "letterSpacing": 0.14
+          },
+          "color": {
+            "param": "textColor",
+            "alpha": 0.72
+          },
+          "align": "center",
+          "maxWidth": "84%w",
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "y": 15.5,
+          "start": 1.9,
+          "enter": {
+            "preset": "rise",
+            "duration": 1.1,
+            "distance": 1.2,
+            "ease": "outCubic"
+          }
+        }
+      ]
+    }
+  ]
+}

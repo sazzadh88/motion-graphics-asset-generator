@@ -18,6 +18,8 @@ Stack: npm workspaces, TypeScript 7, Node 26, React 19 + Vite 8 (apps/web), Expr
 - The HTTP/socket contract lives in `packages/contract`. Change it there first, then API and web.
 - No Redis: the queue is SQLite behind the `JobQueue` interface (`apps/api/src/queue/types.ts`); a BullMQ adapter would plug in there.
 - Runtime data (sqlite db, uploads, renders) lives in `storage/` (gitignored).
+- Scene templates (`mg-scene@1` JSON, spec `docs/SCENE_FORMAT.md`) live in `packages/engine/src/scenes/` (list new ones in its `index.ts`); invalid ones throw at startup; check them visually with `npx tsx scripts/contact-sheet.ts <id>` from `packages/engine`.
+- The AI generator's prompt (`apps/api/src/generate/prompt.ts`) embeds `docs/SCENE_FORMAT.md` verbatim plus the testimonial/sale_burst/stat_counter scenes as examples: editing those changes what Claude generates. Tests use a fake client; `MG_GENERATOR=mock` runs the API without a key.
 
 ## More
 - `filemap.md` - where everything lives

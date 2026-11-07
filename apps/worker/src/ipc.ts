@@ -3,7 +3,16 @@ import type { VideoFormat } from './encoder';
 
 /** Parent (API) -> child (render process). */
 export type ParentToChild =
-  | { type: 'run'; jobId: string; payload: unknown; format: VideoFormat; outPath: string; assetsDir: string }
+  | {
+      type: 'run';
+      jobId: string;
+      payload: unknown;
+      format: VideoFormat;
+      outPath: string;
+      assetsDir: string;
+      /** mg-scene@1 document when payload.templateId is a generated (`gen_…`) template. */
+      scene?: unknown;
+    }
   | { type: 'cancel'; jobId: string }
   /** Close the browser and exit. */
   | { type: 'shutdown' };

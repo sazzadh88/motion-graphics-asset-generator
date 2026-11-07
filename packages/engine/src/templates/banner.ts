@@ -69,6 +69,7 @@ export const banner: TemplateDefinition = {
   id: 'banner_v1',
   name: 'Banner',
   description: 'Wide banner with sliding colour panels, a masked headline reveal, tagline, logo and button.',
+  category: 'promo',
   defaultSettings: { width: 1500, height: 500, fps: 30, durationFrames: 120, transparent: false },
   fonts: [HEAD, BODY],
   params: [

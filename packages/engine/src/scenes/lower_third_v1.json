@@ -1,0 +1,149 @@
+{
+  "format": "mg-scene@1",
+  "id": "lower_third_v1",
+  "name": "Lower Third",
+  "description": "Broadcast name and title bars that wipe in over footage, with an accent stripe and optional logo.",
+  "category": "broadcast",
+  "defaultSettings": { "width": 1920, "height": 1080, "fps": 30, "durationFrames": 180, "transparent": true },
+  "fonts": ["Montserrat Variable", "Inter Variable"],
+  "params": [
+    { "key": "name", "label": "Name", "type": "text", "default": "Alex Morgan", "maxLength": 40, "group": "Text" },
+    { "key": "title", "label": "Title", "type": "text", "default": "Senior Correspondent", "maxLength": 48, "group": "Text" },
+    { "key": "accentColor", "label": "Accent", "type": "color", "default": "#FF4D2E", "group": "Colors" },
+    { "key": "barColor", "label": "Name bar", "type": "color", "default": "#0F1A2E", "group": "Colors" },
+    { "key": "lightColor", "label": "Name text / title bar", "type": "color", "default": "#FFFFFF", "group": "Colors" },
+    { "key": "logoUrl", "label": "Logo", "type": "image", "default": null, "group": "Media" },
+    { "key": "showAccent", "label": "Accent stripe", "type": "boolean", "default": true, "group": "Style" }
+  ],
+  "background": {
+    "radial": {
+      "cx": "72%w",
+      "cy": "28%h",
+      "r": 150,
+      "stops": [
+        [0, "#7D8DAE"],
+        [0.5, "#4A5877"],
+        [1, "#232B3D"]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "plate",
+      "type": "group",
+      "x": "6%w",
+      "y": "82%h",
+      "layers": [
+        {
+          "id": "logo",
+          "type": "image",
+          "src": { "param": "logoUrl" },
+          "x": 0,
+          "y": -10.1,
+          "anchor": [0, 1],
+          "width": 24,
+          "height": 7,
+          "fit": "contain",
+          "start": 0.7,
+          "enter": { "preset": "rise", "duration": 0.6, "distance": 1.5, "ease": "outCubic" },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.45 }
+        },
+        {
+          "id": "stripe",
+          "type": "rect",
+          "visibleIf": { "param": "showAccent" },
+          "x": 0,
+          "y": 0,
+          "anchor": [1, 0.6313],
+          "width": 0.9,
+          "height": 13.4,
+          "fill": { "param": "accentColor" },
+          "keyframes": {
+            "scaleY": [
+              { "t": 0, "v": 0 },
+              { "t": 0.5, "v": 1, "ease": "outExpo" }
+            ]
+          },
+          "exit": { "preset": "fade", "duration": 0.3 }
+        },
+        {
+          "id": "nameBar",
+          "type": "text",
+          "text": "{{name}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 4.6, "lineHeight": 1.1, "letterSpacing": -0.01 },
+          "color": "#00000000",
+          "maxWidth": "76%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.6 },
+          "background": {
+            "fill": {
+              "linear": {
+                "angle": 90,
+                "stops": [
+                  [0, { "param": "barColor" }],
+                  [1, { "mix": [{ "param": "barColor" }, "#FFFFFF"], "t": 0.1 }]
+                ]
+              }
+            },
+            "padding": [2.4, 1.7]
+          },
+          "x": 0,
+          "y": 0,
+          "anchor": [0, 1],
+          "start": 0.12,
+          "enter": { "preset": "wipe-right", "duration": 0.7, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.5, "delay": 0.2, "ease": "outQuart" }
+        },
+        {
+          "id": "nameText",
+          "type": "text",
+          "text": "{{name}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 4.6, "lineHeight": 1.1, "letterSpacing": -0.01 },
+          "color": { "param": "lightColor" },
+          "maxWidth": "76%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.6 },
+          "x": 2.4,
+          "y": -1.7,
+          "anchor": [0, 1],
+          "start": 0.3,
+          "enter": { "preset": "mask-up", "duration": 0.65, "ease": "outCubic", "stagger": { "by": "word", "each": 0.09 } },
+          "exit": { "preset": "fade", "duration": 0.25, "delay": 0.6 }
+        },
+        {
+          "id": "titleBar",
+          "type": "text",
+          "text": "{{title|upper}}",
+          "font": { "family": "Inter Variable", "weight": 700, "size": 2.2, "lineHeight": 1.2, "letterSpacing": 0.12 },
+          "color": "#00000000",
+          "maxWidth": "76%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 1.6 },
+          "background": { "fill": { "param": "lightColor" }, "padding": [2.4, 1.15] },
+          "x": 0,
+          "y": 0,
+          "anchor": [0, 0],
+          "start": 0.32,
+          "enter": { "preset": "wipe-right", "duration": 0.6, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.45, "delay": 0.1, "ease": "outQuart" }
+        },
+        {
+          "id": "titleText",
+          "type": "text",
+          "text": "{{title|upper}}",
+          "font": { "family": "Inter Variable", "weight": 700, "size": 2.2, "lineHeight": 1.2, "letterSpacing": 0.12 },
+          "color": { "param": "barColor" },
+          "maxWidth": "76%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 1.6 },
+          "x": 2.4,
+          "y": 1.15,
+          "anchor": [0, 0],
+          "start": 0.5,
+          "enter": { "preset": "slide-right", "duration": 0.45, "distance": 1.2, "stagger": { "by": "char", "each": 0.015 } },
+          "exit": { "preset": "fade", "duration": 0.25, "delay": 0.5 }
+        }
+      ]
+    }
+  ]
+}

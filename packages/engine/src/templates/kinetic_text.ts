@@ -26,6 +26,7 @@ export const kineticText: TemplateDefinition = {
   id: 'kinetic_text_v1',
   name: 'Kinetic Text',
   description: 'Bold headline that builds word by word with staggered, eased motion, then a subheading and a clean exit.',
+  category: 'typography',
   defaultSettings: { width: 1080, height: 1920, fps: 60, durationFrames: 180, transparent: false },
   fonts: ['Anton', 'Montserrat Variable', 'Inter Variable'],
   params: [

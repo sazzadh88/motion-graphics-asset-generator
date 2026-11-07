@@ -1,8 +1,12 @@
+import './env';
 import { createApp } from './app';
 import { loadConfig } from './config';
+import { createGenerator } from './generate';
 
 const config = loadConfig();
-const ctx = createApp(config);
+const generation = createGenerator(process.env);
+console.log(generation.generator ? `[api] generation enabled (${generation.generator.model})` : `[api] generation disabled: ${generation.reason ?? 'not configured'}`);
+const ctx = createApp(config, { generation });
 const port = await ctx.listen(config.port, config.host);
 console.log(
   `[api] listening on http://${config.host}:${port} (storage ${config.storageDir}, ${config.renderConcurrency} render worker(s))`,

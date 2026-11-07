@@ -1,0 +1,1133 @@
+{
+  "format": "mg-scene@1",
+  "id": "bar_chart_v1",
+  "name": "Bar Chart",
+  "description": "Four-bar column chart whose bars grow to their values in a stagger, with counting value labels, a highlighted latest bar and a source line.",
+  "category": "data",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1080,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "fonts": [
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "title",
+      "label": "Title",
+      "type": "text",
+      "default": "Subscriptions now drive most of our revenue",
+      "maxLength": 56,
+      "group": "Text"
+    },
+    {
+      "key": "subtitle",
+      "label": "Subtitle",
+      "type": "text",
+      "default": "Share of total revenue by fiscal year",
+      "maxLength": 64,
+      "group": "Text"
+    },
+    {
+      "key": "label1",
+      "label": "Bar 1 label",
+      "type": "text",
+      "default": "2023",
+      "maxLength": 16,
+      "group": "Data"
+    },
+    {
+      "key": "value1",
+      "label": "Bar 1 value",
+      "type": "number",
+      "default": 38,
+      "min": 0,
+      "max": 1000000,
+      "step": 1,
+      "group": "Data"
+    },
+    {
+      "key": "label2",
+      "label": "Bar 2 label",
+      "type": "text",
+      "default": "2024",
+      "maxLength": 16,
+      "group": "Data"
+    },
+    {
+      "key": "value2",
+      "label": "Bar 2 value",
+      "type": "number",
+      "default": 51,
+      "min": 0,
+      "max": 1000000,
+      "step": 1,
+      "group": "Data"
+    },
+    {
+      "key": "label3",
+      "label": "Bar 3 label",
+      "type": "text",
+      "default": "2025",
+      "maxLength": 16,
+      "group": "Data"
+    },
+    {
+      "key": "value3",
+      "label": "Bar 3 value",
+      "type": "number",
+      "default": 67,
+      "min": 0,
+      "max": 1000000,
+      "step": 1,
+      "group": "Data"
+    },
+    {
+      "key": "label4",
+      "label": "Bar 4 label",
+      "type": "text",
+      "default": "2026",
+      "maxLength": 16,
+      "group": "Data"
+    },
+    {
+      "key": "value4",
+      "label": "Bar 4 value",
+      "type": "number",
+      "default": 84,
+      "min": 0,
+      "max": 1000000,
+      "step": 1,
+      "group": "Data"
+    },
+    {
+      "key": "unit",
+      "label": "Value suffix",
+      "type": "text",
+      "default": "%",
+      "maxLength": 3,
+      "group": "Data"
+    },
+    {
+      "key": "source",
+      "label": "Source line",
+      "type": "text",
+      "default": "Source: annual reports 2023-2026",
+      "maxLength": 60,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#F2EFE7",
+      "group": "Colors"
+    },
+    {
+      "key": "inkColor",
+      "label": "Text",
+      "type": "color",
+      "default": "#1C1F1E",
+      "group": "Colors"
+    },
+    {
+      "key": "barColor",
+      "label": "Bars",
+      "type": "color",
+      "default": "#2F5D50",
+      "group": "Colors"
+    },
+    {
+      "key": "highlightColor",
+      "label": "Highlight bar",
+      "type": "color",
+      "default": "#EE9A3A",
+      "group": "Colors"
+    },
+    {
+      "key": "highlightLast",
+      "label": "Highlight last bar",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    },
+    {
+      "key": "showGrid",
+      "label": "Grid lines",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "param": "bgColor"
+  },
+  "layers": [
+    {
+      "id": "panel",
+      "type": "rect",
+      "x": "50%w",
+      "y": "50%h",
+      "width": 96,
+      "height": 96,
+      "radius": 2.4,
+      "fill": {
+        "mix": [
+          {
+            "param": "bgColor"
+          },
+          "#FFFFFF"
+        ],
+        "t": 0.55
+      },
+      "stroke": {
+        "color": {
+          "param": "inkColor",
+          "alpha": 0.06
+        },
+        "width": 0.2
+      },
+      "enter": {
+        "preset": "scale-in",
+        "duration": 0.8,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.45
+      }
+    },
+    {
+      "id": "chart",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "accentTick",
+          "type": "rect",
+          "x": -42,
+          "y": -44.6,
+          "anchor": [
+            0,
+            0.5
+          ],
+          "width": 5,
+          "height": 0.7,
+          "radius": 0.35,
+          "fill": {
+            "param": "highlightColor"
+          },
+          "start": 0.15,
+          "enter": {
+            "preset": "wipe-right",
+            "duration": 0.5,
+            "ease": "outExpo"
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.4
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "text": "{{title}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 800,
+            "size": 4.8,
+            "lineHeight": 1.1,
+            "letterSpacing": -0.02
+          },
+          "color": {
+            "param": "inkColor"
+          },
+          "align": "left",
+          "maxWidth": 84,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 3.4
+          },
+          "x": -42,
+          "y": -42,
+          "anchor": [
+            0,
+            0
+          ],
+          "start": 0.2,
+          "enter": {
+            "preset": "mask-up",
+            "duration": 0.6,
+            "stagger": {
+              "by": "word",
+              "each": 0.04
+            }
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.35,
+            "delay": 0.45
+          }
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "text": "{{subtitle}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 500,
+            "size": 2.6,
+            "lineHeight": 1.2
+          },
+          "color": {
+            "mix": [
+              {
+                "param": "inkColor"
+              },
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.4
+          },
+          "align": "left",
+          "maxWidth": 84,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 2
+          },
+          "x": -42,
+          "y": -30.4,
+          "anchor": [
+            0,
+            0
+          ],
+          "start": 0.5,
+          "enter": {
+            "preset": "fade",
+            "duration": 0.6
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.4
+          }
+        },
+        {
+          "id": "grid",
+          "type": "group",
+          "visibleIf": {
+            "param": "showGrid"
+          },
+          "start": 0.5,
+          "enter": {
+            "preset": "fade",
+            "duration": 0.8
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.4,
+            "delay": 0.2
+          },
+          "layers": [
+            {
+              "id": "grid25",
+              "type": "rect",
+              "y": 17.5,
+              "width": 84,
+              "height": 0.16,
+              "fill": {
+                "param": "inkColor",
+                "alpha": 0.09
+              }
+            },
+            {
+              "id": "grid50",
+              "type": "rect",
+              "y": 5,
+              "width": 84,
+              "height": 0.16,
+              "fill": {
+                "param": "inkColor",
+                "alpha": 0.09
+              }
+            },
+            {
+              "id": "grid75",
+              "type": "rect",
+              "y": -7.5,
+              "width": 84,
+              "height": 0.16,
+              "fill": {
+                "param": "inkColor",
+                "alpha": 0.09
+              }
+            },
+            {
+              "id": "grid100",
+              "type": "rect",
+              "y": -20,
+              "width": 84,
+              "height": 0.16,
+              "fill": {
+                "param": "inkColor",
+                "alpha": 0.09
+              }
+            }
+          ]
+        },
+        {
+          "id": "bar1",
+          "type": "group",
+          "x": -30,
+          "layers": [
+            {
+              "id": "bar1Rect",
+              "type": "rect",
+              "y": 30,
+              "anchor": [
+                0.5,
+                1
+              ],
+              "width": 14,
+              "height": 0,
+              "radius": 0.6,
+              "fill": {
+                "param": "barColor"
+              },
+              "keyframes": {
+                "height": [
+                  {
+                    "t": 0.75,
+                    "v": 0
+                  },
+                  {
+                    "t": 2.05,
+                    "v": {
+                      "param": "value1",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        0,
+                        50
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "bar1Value",
+              "type": "counter",
+              "from": 0,
+              "to": {
+                "param": "value1"
+              },
+              "decimals": 0,
+              "suffix": "{{unit}}",
+              "count": {
+                "duration": 1.3,
+                "delay": 0.75,
+                "ease": "outCubic"
+              },
+              "font": {
+                "family": "Montserrat Variable",
+                "weight": 800,
+                "size": 4.2,
+                "lineHeight": 1,
+                "letterSpacing": -0.02
+              },
+              "color": {
+                "param": "inkColor"
+              },
+              "align": "center",
+              "anchor": [
+                0.5,
+                1
+              ],
+              "keyframes": {
+                "y": [
+                  {
+                    "t": 0.75,
+                    "v": 28.4
+                  },
+                  {
+                    "t": 2.05,
+                    "v": {
+                      "param": "value1",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        28.4,
+                        -21.6
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              },
+              "enter": {
+                "preset": "fade",
+                "duration": 0.35,
+                "delay": 0.75
+              }
+            }
+          ],
+          "exit": {
+            "preset": "rise",
+            "duration": 0.45,
+            "delay": 0.34,
+            "distance": 3,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "bar2",
+          "type": "group",
+          "x": -10,
+          "layers": [
+            {
+              "id": "bar2Rect",
+              "type": "rect",
+              "y": 30,
+              "anchor": [
+                0.5,
+                1
+              ],
+              "width": 14,
+              "height": 0,
+              "radius": 0.6,
+              "fill": {
+                "param": "barColor"
+              },
+              "keyframes": {
+                "height": [
+                  {
+                    "t": 0.89,
+                    "v": 0
+                  },
+                  {
+                    "t": 2.19,
+                    "v": {
+                      "param": "value2",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        0,
+                        50
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "bar2Value",
+              "type": "counter",
+              "from": 0,
+              "to": {
+                "param": "value2"
+              },
+              "decimals": 0,
+              "suffix": "{{unit}}",
+              "count": {
+                "duration": 1.3,
+                "delay": 0.89,
+                "ease": "outCubic"
+              },
+              "font": {
+                "family": "Montserrat Variable",
+                "weight": 800,
+                "size": 4.2,
+                "lineHeight": 1,
+                "letterSpacing": -0.02
+              },
+              "color": {
+                "param": "inkColor"
+              },
+              "align": "center",
+              "anchor": [
+                0.5,
+                1
+              ],
+              "keyframes": {
+                "y": [
+                  {
+                    "t": 0.89,
+                    "v": 28.4
+                  },
+                  {
+                    "t": 2.19,
+                    "v": {
+                      "param": "value2",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        28.4,
+                        -21.6
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              },
+              "enter": {
+                "preset": "fade",
+                "duration": 0.35,
+                "delay": 0.89
+              }
+            }
+          ],
+          "exit": {
+            "preset": "rise",
+            "duration": 0.45,
+            "delay": 0.3,
+            "distance": 3,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "bar3",
+          "type": "group",
+          "x": 10,
+          "layers": [
+            {
+              "id": "bar3Rect",
+              "type": "rect",
+              "y": 30,
+              "anchor": [
+                0.5,
+                1
+              ],
+              "width": 14,
+              "height": 0,
+              "radius": 0.6,
+              "fill": {
+                "param": "barColor"
+              },
+              "keyframes": {
+                "height": [
+                  {
+                    "t": 1.03,
+                    "v": 0
+                  },
+                  {
+                    "t": 2.33,
+                    "v": {
+                      "param": "value3",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        0,
+                        50
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "bar3Value",
+              "type": "counter",
+              "from": 0,
+              "to": {
+                "param": "value3"
+              },
+              "decimals": 0,
+              "suffix": "{{unit}}",
+              "count": {
+                "duration": 1.3,
+                "delay": 1.03,
+                "ease": "outCubic"
+              },
+              "font": {
+                "family": "Montserrat Variable",
+                "weight": 800,
+                "size": 4.2,
+                "lineHeight": 1,
+                "letterSpacing": -0.02
+              },
+              "color": {
+                "param": "inkColor"
+              },
+              "align": "center",
+              "anchor": [
+                0.5,
+                1
+              ],
+              "keyframes": {
+                "y": [
+                  {
+                    "t": 1.03,
+                    "v": 28.4
+                  },
+                  {
+                    "t": 2.33,
+                    "v": {
+                      "param": "value3",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        28.4,
+                        -21.6
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              },
+              "enter": {
+                "preset": "fade",
+                "duration": 0.35,
+                "delay": 1.03
+              }
+            }
+          ],
+          "exit": {
+            "preset": "rise",
+            "duration": 0.45,
+            "delay": 0.26,
+            "distance": 3,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "bar4",
+          "type": "group",
+          "x": 30,
+          "layers": [
+            {
+              "id": "bar4Rect",
+              "type": "rect",
+              "visibleIf": {
+                "param": "highlightLast",
+                "not": true
+              },
+              "y": 30,
+              "anchor": [
+                0.5,
+                1
+              ],
+              "width": 14,
+              "height": 0,
+              "radius": 0.6,
+              "fill": {
+                "param": "barColor"
+              },
+              "keyframes": {
+                "height": [
+                  {
+                    "t": 1.17,
+                    "v": 0
+                  },
+                  {
+                    "t": 2.47,
+                    "v": {
+                      "param": "value4",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        0,
+                        50
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "bar4Hi",
+              "type": "rect",
+              "visibleIf": {
+                "param": "highlightLast"
+              },
+              "y": 30,
+              "anchor": [
+                0.5,
+                1
+              ],
+              "width": 14,
+              "height": 0,
+              "radius": 0.6,
+              "fill": {
+                "param": "highlightColor"
+              },
+              "keyframes": {
+                "height": [
+                  {
+                    "t": 1.17,
+                    "v": 0
+                  },
+                  {
+                    "t": 2.47,
+                    "v": {
+                      "param": "value4",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        0,
+                        50
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "bar4Value",
+              "type": "counter",
+              "from": 0,
+              "to": {
+                "param": "value4"
+              },
+              "decimals": 0,
+              "suffix": "{{unit}}",
+              "count": {
+                "duration": 1.3,
+                "delay": 1.17,
+                "ease": "outCubic"
+              },
+              "font": {
+                "family": "Montserrat Variable",
+                "weight": 800,
+                "size": 4.2,
+                "lineHeight": 1,
+                "letterSpacing": -0.02
+              },
+              "color": {
+                "param": "inkColor"
+              },
+              "align": "center",
+              "anchor": [
+                0.5,
+                1
+              ],
+              "keyframes": {
+                "y": [
+                  {
+                    "t": 1.17,
+                    "v": 28.4
+                  },
+                  {
+                    "t": 2.47,
+                    "v": {
+                      "param": "value4",
+                      "ofMax": [
+                        "value1",
+                        "value2",
+                        "value3",
+                        "value4"
+                      ],
+                      "out": [
+                        28.4,
+                        -21.6
+                      ]
+                    },
+                    "ease": "outCubic"
+                  }
+                ]
+              },
+              "enter": {
+                "preset": "fade",
+                "duration": 0.35,
+                "delay": 1.17
+              }
+            }
+          ],
+          "exit": {
+            "preset": "rise",
+            "duration": 0.45,
+            "delay": 0.22,
+            "distance": 3,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "baseline",
+          "type": "rect",
+          "y": 30,
+          "width": 84,
+          "height": 0.35,
+          "fill": {
+            "param": "inkColor"
+          },
+          "start": 0.4,
+          "enter": {
+            "preset": "wipe-right",
+            "duration": 0.7,
+            "ease": "outExpo"
+          },
+          "exit": {
+            "preset": "wipe-left",
+            "duration": 0.4,
+            "delay": 0.05
+          }
+        },
+        {
+          "id": "label1",
+          "type": "text",
+          "text": "{{label1}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 600,
+            "size": 2.6,
+            "lineHeight": 1.15,
+            "letterSpacing": 0.01
+          },
+          "color": {
+            "mix": [
+              {
+                "param": "inkColor"
+              },
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.25
+          },
+          "align": "center",
+          "maxWidth": 18,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "x": -30,
+          "y": 32.4,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 0.6,
+          "enter": {
+            "preset": "rise",
+            "duration": 0.5,
+            "distance": 1.5
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "label2",
+          "type": "text",
+          "text": "{{label2}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 600,
+            "size": 2.6,
+            "lineHeight": 1.15,
+            "letterSpacing": 0.01
+          },
+          "color": {
+            "mix": [
+              {
+                "param": "inkColor"
+              },
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.25
+          },
+          "align": "center",
+          "maxWidth": 18,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "x": -10,
+          "y": 32.4,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 0.68,
+          "enter": {
+            "preset": "rise",
+            "duration": 0.5,
+            "distance": 1.5
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "label3",
+          "type": "text",
+          "text": "{{label3}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 600,
+            "size": 2.6,
+            "lineHeight": 1.15,
+            "letterSpacing": 0.01
+          },
+          "color": {
+            "mix": [
+              {
+                "param": "inkColor"
+              },
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.25
+          },
+          "align": "center",
+          "maxWidth": 18,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "x": 10,
+          "y": 32.4,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 0.76,
+          "enter": {
+            "preset": "rise",
+            "duration": 0.5,
+            "distance": 1.5
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "label4",
+          "type": "text",
+          "text": "{{label4}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 600,
+            "size": 2.6,
+            "lineHeight": 1.15,
+            "letterSpacing": 0.01
+          },
+          "color": {
+            "mix": [
+              {
+                "param": "inkColor"
+              },
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.25
+          },
+          "align": "center",
+          "maxWidth": 18,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "x": 30,
+          "y": 32.4,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 0.84,
+          "enter": {
+            "preset": "rise",
+            "duration": 0.5,
+            "distance": 1.5
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "source",
+          "type": "text",
+          "text": "{{source}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 500,
+            "size": 1.9,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.02
+          },
+          "color": {
+            "param": "inkColor",
+            "alpha": 0.5
+          },
+          "align": "left",
+          "maxWidth": 84,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 1.6
+          },
+          "x": -42,
+          "y": 44.5,
+          "anchor": [
+            0,
+            1
+          ],
+          "start": 1.6,
+          "enter": {
+            "preset": "fade",
+            "duration": 0.6
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3
+          }
+        }
+      ]
+    }
+  ]
+}

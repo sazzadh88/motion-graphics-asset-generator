@@ -3,6 +3,7 @@ import type { ChildProcess } from 'node:child_process';
 import { rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { GENERATED_ID_PATTERN } from '@mg/engine';
 import type { ChildToParent, ParentToChild } from '@mg/worker';
 import { repoRoot } from './config';
 import type { JobQueue, JobRecord } from './queue/types';
@@ -25,6 +26,8 @@ export interface PoolOptions {
   concurrency: number;
   queue: JobQueue;
   storage: Storage;
+  /** The mg-scene@1 document of a generated (`gen_…`) template, sent to the child with the job. */
+  resolveScene?: (templateId: string) => unknown;
   log?: (msg: string) => void;
 }
 
@@ -132,11 +135,29 @@ export class WorkerPool {
         this.opts.queue.fail(job.id, 'Storage backend has no local asset directory', false);
         continue;
       }
+      // Child processes and their render pages have their own engine instances: a generated
+      // template travels with the job. Deleting a scene in use is refused (409), so it exists.
+      let scene: unknown;
+      if (GENERATED_ID_PATTERN.test(job.payload.templateId)) {
+        scene = this.opts.resolveScene?.(job.payload.templateId);
+        if (scene === undefined) {
+          this.opts.queue.fail(job.id, 'This generated template no longer exists', false);
+          continue;
+        }
+      }
       const outPath = path.join(this.opts.storage.tmpDir(), `${job.id}.${job.format}`);
       slot.job = job;
       slot.outPath = outPath;
       slot.cancelRequested = false;
-      this.send(slot, { type: 'run', jobId: job.id, payload: job.payload, format: job.format, outPath, assetsDir });
+      this.send(slot, {
+        type: 'run',
+        jobId: job.id,
+        payload: job.payload,
+        format: job.format,
+        outPath,
+        assetsDir,
+        ...(scene !== undefined ? { scene } : {}),
+      });
     }
   }
 

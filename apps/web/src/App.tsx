@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { getTemplate, listTemplates } from '@mg/engine';
+import { GENERATED_ID_PATTERN, getTemplate, listTemplates } from '@mg/engine';
 import type { RenderJobPayload } from '@mg/engine';
 import type { JobStatus, RenderJob, VideoFormat } from '@mg/contract';
+import { DeleteTemplateDialog } from './components/DeleteTemplateDialog';
 import { ExportDialog } from './components/ExportDialog';
+import { GenerateDialog } from './components/GenerateDialog';
 import { Inspector } from './components/Inspector';
 import { JsonPanel } from './components/JsonPanel';
 import { RendersPanel } from './components/RendersPanel';
@@ -16,22 +18,31 @@ import { usePlayback } from './hooks/usePlayback';
 import { useShortcuts } from './hooks/useShortcuts';
 import { useStudioTestHook } from './hooks/useStudioTestHook';
 import { useRenders } from './state/renders';
+import { loadKeptTemplates, removeGenerated, useGeneratedVersion } from './state/generated';
+import { withReference } from './state/referencePalette';
 import { initState, reducer } from './state/store';
 import { loadLastTemplateId, loadPayload, savePayload } from './state/storage';
 
-function initialPayload(): RenderJobPayload | null {
+interface Start {
+  payload: RenderJobPayload;
+  /** Last-used generated template that is not registered yet (switch to it once /api/scenes loads). */
+  pendingId: string | null;
+}
+
+function initialPayload(): Start | null {
   const all = listTemplates();
   const first = all[0];
   if (!first) return null;
   const last = loadLastTemplateId();
   const id = last && getTemplate(last) ? last : first.id;
-  return loadPayload(id);
+  const pendingId = last && !getTemplate(last) && GENERATED_ID_PATTERN.test(last) ? last : null;
+  return { payload: loadPayload(id), pendingId };
 }
 
 export default function App() {
   const [start] = useState(initialPayload);
   if (!start) return <div className="empty">No templates are registered in the engine.</div>;
-  return <Studio start={start} />;
+  return <Studio start={start.payload} pendingId={start.pendingId} />;
 }
 
 type Tab = 'inspector' | 'json' | 'renders';
@@ -46,13 +57,16 @@ function jobName(job: RenderJob): string {
   return getTemplate(job.templateId)?.name ?? job.templateId;
 }
 
-function Studio({ start }: { start: RenderJobPayload }) {
+function Studio({ start, pendingId }: { start: RenderJobPayload; pendingId: string | null }) {
+  useGeneratedVersion(); // re-render when generated templates change
   const templates = listTemplates();
   const [state, dispatch] = useReducer(reducer, start, initState);
   const [tab, setTab] = useState<Tab>('inspector');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const exportRef = useRef<HTMLButtonElement | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [deleting, setDeleting] = useState<{ id: string; name: string } | null>(null);
   const [announcement, setAnnouncement] = useState('');
   const [toast, setToast] = useState<RenderJob | null>(null);
 
@@ -102,9 +116,37 @@ function Studio({ start }: { start: RenderJobPayload }) {
     return () => window.clearTimeout(t);
   }, [payload]);
 
+  const activeIdRef = useRef(payload.templateId);
+  activeIdRef.current = payload.templateId;
   const selectTemplate = useCallback((id: string) => {
-    dispatch({ type: 'selectTemplate', payload: loadPayload(id) });
+    // Apply the reference palette before dispatching so the old colors never flash.
+    // Re-selecting the active template is not a switch: keep manual color edits.
+    const next = loadPayload(id);
+    dispatch({ type: 'selectTemplate', payload: id === activeIdRef.current ? next : withReference(next) });
   }, []);
+
+  // Register kept generated templates; reopen the last-used one if the user hasn't moved on.
+  useEffect(() => {
+    void loadKeptTemplates().then(() => {
+      if (pendingId && getTemplate(pendingId) && activeIdRef.current === start.templateId) selectTemplate(pendingId);
+    });
+  }, [pendingId, start.templateId, selectTemplate]);
+
+  const askDelete = useCallback((id: string) => {
+    const t = getTemplate(id);
+    if (t?.origin === 'generated') setDeleting({ id, name: t.name });
+  }, []);
+
+  const onDeleted = useCallback(
+    (id: string) => {
+      if (activeIdRef.current === id) {
+        const firstBundled = listTemplates().find((t) => t.origin !== 'generated');
+        if (firstBundled) selectTemplate(firstBundled.id);
+      }
+      removeGenerated(id);
+    },
+    [selectTemplate],
+  );
 
   const selectPayload = useCallback((p: RenderJobPayload) => {
     dispatch({ type: 'selectTemplate', payload: p });
@@ -140,7 +182,13 @@ function Studio({ start }: { start: RenderJobPayload }) {
         onOpenRenders={() => setTab('renders')}
       />
       <aside className="rail">
-        <TemplateList templates={templates} activeId={payload.templateId} onSelect={selectTemplate} />
+        <TemplateList
+          templates={templates}
+          activeId={payload.templateId}
+          onSelect={selectTemplate}
+          onGenerate={() => setGenerating(true)}
+          onDelete={askDelete}
+        />
       </aside>
       <main className="center">
         <Stage payload={payload} frame={frame} assets={assets} canvasRef={canvasRef} />
@@ -196,6 +244,17 @@ function Studio({ start }: { start: RenderJobPayload }) {
             setToast(null);
           }}
           onDismiss={dismissToast}
+        />
+      ) : null}
+      {generating ? (
+        <GenerateDialog payload={payload} onSelect={selectTemplate} onClose={() => setGenerating(false)} />
+      ) : null}
+      {deleting ? (
+        <DeleteTemplateDialog
+          id={deleting.id}
+          name={deleting.name}
+          onDeleted={onDeleted}
+          onClose={() => setDeleting(null)}
         />
       ) : null}
       {exporting ? (

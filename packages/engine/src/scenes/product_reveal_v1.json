@@ -1,0 +1,732 @@
+{
+  "format": "mg-scene@1",
+  "id": "product_reveal_v1",
+  "name": "Product Reveal",
+  "description": "Two-tone wipe reveals a product on a stage, with a spinning price badge, product name and call to action.",
+  "category": "promo",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1080,
+    "fps": 30,
+    "durationFrames": 150,
+    "transparent": false
+  },
+  "fonts": [
+    "Montserrat Variable",
+    "Inter Variable",
+    "Anton"
+  ],
+  "params": [
+    {
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "text",
+      "default": "New arrival",
+      "maxLength": 24,
+      "group": "Text"
+    },
+    {
+      "key": "productName",
+      "label": "Product name",
+      "type": "text",
+      "default": "Terra Ceramic Kettle",
+      "maxLength": 32,
+      "group": "Text"
+    },
+    {
+      "key": "price",
+      "label": "Price",
+      "type": "text",
+      "default": "$89",
+      "maxLength": 6,
+      "group": "Text"
+    },
+    {
+      "key": "cta",
+      "label": "Call to action",
+      "type": "text",
+      "default": "Shop the drop",
+      "maxLength": 20,
+      "group": "Text"
+    },
+    {
+      "key": "productImage",
+      "label": "Product image",
+      "type": "image",
+      "default": null,
+      "group": "Media",
+      "description": "A cut-out PNG with a transparent background works best."
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#F2EBDF",
+      "group": "Colors"
+    },
+    {
+      "key": "stageColor",
+      "label": "Stage",
+      "type": "color",
+      "default": "#24493A",
+      "group": "Colors"
+    },
+    {
+      "key": "badgeColor",
+      "label": "Badge",
+      "type": "color",
+      "default": "#F2B33D",
+      "group": "Colors"
+    },
+    {
+      "key": "textColor",
+      "label": "Text",
+      "type": "color",
+      "default": "#1C1A17",
+      "group": "Colors"
+    },
+    {
+      "key": "showBadge",
+      "label": "Price badge",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "param": "bgColor"
+  },
+  "layers": [
+    {
+      "id": "logo",
+      "type": "image",
+      "src": {
+        "param": "logoUrl"
+      },
+      "x": "5%w",
+      "y": "5%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": 16,
+      "height": 5,
+      "fit": "contain",
+      "start": 0.9,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "hero",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "text": "{{eyebrow|upper}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 700,
+            "size": 2.5,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.3
+          },
+          "color": {
+            "param": "stageColor"
+          },
+          "align": "center",
+          "maxWidth": 60,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 1.9
+          },
+          "y": -43.5,
+          "start": 0.95,
+          "enter": {
+            "preset": "mask-up",
+            "duration": 0.5,
+            "stagger": {
+              "by": "char",
+              "each": 0.02
+            }
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.25
+          }
+        },
+        {
+          "id": "stage",
+          "type": "group",
+          "y": -8,
+          "exit": {
+            "preset": "scale-in",
+            "duration": 0.45,
+            "delay": 0.1,
+            "ease": "inCubic"
+          },
+          "layers": [
+            {
+              "id": "disc",
+              "type": "ellipse",
+              "width": 54,
+              "height": 54,
+              "fill": {
+                "radial": {
+                  "cx": "50%w",
+                  "cy": "38%h",
+                  "r": 60,
+                  "stops": [
+                    [
+                      0,
+                      {
+                        "mix": [
+                          {
+                            "param": "stageColor"
+                          },
+                          "#FFFFFF"
+                        ],
+                        "t": 0.16
+                      }
+                    ],
+                    [
+                      1,
+                      {
+                        "param": "stageColor"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "enter": {
+                "preset": "scale-in",
+                "duration": 0.8,
+                "ease": "outExpo"
+              },
+              "start": 0.55
+            },
+            {
+              "id": "discRing",
+              "type": "ellipse",
+              "width": 62,
+              "height": 62,
+              "stroke": {
+                "color": {
+                  "param": "stageColor",
+                  "alpha": 0.35
+                },
+                "width": 0.25,
+                "dash": [
+                  0.6,
+                  1.2
+                ]
+              },
+              "keyframes": {
+                "rotation": [
+                  {
+                    "t": 0,
+                    "v": 0
+                  },
+                  {
+                    "t": 4.6,
+                    "v": 60
+                  }
+                ]
+              },
+              "enter": {
+                "preset": "scale-in",
+                "duration": 1,
+                "delay": 0.2,
+                "ease": "outExpo"
+              },
+              "start": 0.6
+            },
+            {
+              "id": "shadow",
+              "type": "ellipse",
+              "y": 15.6,
+              "width": 24,
+              "height": 3,
+              "fill": {
+                "radial": {
+                  "cx": "50%w",
+                  "cy": "50%h",
+                  "r": "50%w",
+                  "stops": [
+                    [
+                      0,
+                      "#00000066"
+                    ],
+                    [
+                      1,
+                      "#00000000"
+                    ]
+                  ]
+                }
+              },
+              "enter": {
+                "preset": "fade",
+                "duration": 0.6,
+                "delay": 0
+              },
+              "ambient": [
+                {
+                  "prop": "scaleX",
+                  "amplitude": 0.06,
+                  "period": 3,
+                  "phase": 0.5
+                }
+              ],
+              "start": 0.75
+            },
+            {
+              "id": "fallback",
+              "type": "group",
+              "visibleIf": {
+                "param": "productImage",
+                "not": true
+              },
+              "enter": {
+                "preset": "rise",
+                "duration": 0.8,
+                "delay": 0,
+                "distance": 6,
+                "ease": "outBack"
+              },
+              "ambient": [
+                {
+                  "prop": "y",
+                  "amplitude": 0.8,
+                  "period": 3
+                }
+              ],
+              "layers": [
+                {
+                  "id": "fbBody",
+                  "type": "rect",
+                  "y": 3,
+                  "width": 18,
+                  "height": 24,
+                  "radius": 4,
+                  "fill": {
+                    "linear": {
+                      "angle": 90,
+                      "stops": [
+                        [
+                          0,
+                          {
+                            "mix": [
+                              {
+                                "param": "bgColor"
+                              },
+                              "#FFFFFF"
+                            ],
+                            "t": 0.5
+                          }
+                        ],
+                        [
+                          1,
+                          {
+                            "mix": [
+                              {
+                                "param": "bgColor"
+                              },
+                              {
+                                "param": "stageColor"
+                              }
+                            ],
+                            "t": 0.18
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                },
+                {
+                  "id": "fbBand",
+                  "type": "rect",
+                  "y": 5,
+                  "width": 18,
+                  "height": 7,
+                  "fill": {
+                    "param": "badgeColor"
+                  }
+                },
+                {
+                  "id": "fbNeck",
+                  "type": "rect",
+                  "y": -10.5,
+                  "width": 8,
+                  "height": 4,
+                  "radius": 1,
+                  "fill": {
+                    "mix": [
+                      {
+                        "param": "bgColor"
+                      },
+                      {
+                        "param": "stageColor"
+                      }
+                    ],
+                    "t": 0.3
+                  }
+                },
+                {
+                  "id": "fbCap",
+                  "type": "rect",
+                  "y": -13.5,
+                  "width": 10,
+                  "height": 3.6,
+                  "radius": 1.2,
+                  "fill": {
+                    "param": "textColor"
+                  }
+                },
+                {
+                  "id": "fbShine",
+                  "type": "rect",
+                  "x": -5.5,
+                  "y": 1,
+                  "width": 1.6,
+                  "height": 14,
+                  "radius": 0.8,
+                  "fill": "#FFFFFF66"
+                }
+              ],
+              "start": 0.7
+            },
+            {
+              "id": "product",
+              "type": "image",
+              "src": {
+                "param": "productImage"
+              },
+              "width": 42,
+              "height": 42,
+              "fit": "contain",
+              "enter": {
+                "preset": "rise",
+                "duration": 0.8,
+                "delay": 0,
+                "distance": 6,
+                "ease": "outBack"
+              },
+              "ambient": [
+                {
+                  "prop": "y",
+                  "amplitude": 0.8,
+                  "period": 3
+                }
+              ],
+              "start": 0.7
+            }
+          ]
+        },
+        {
+          "id": "badge",
+          "type": "group",
+          "visibleIf": {
+            "param": "showBadge"
+          },
+          "x": 21,
+          "y": -28,
+          "start": 1.0,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.6
+          },
+          "exit": {
+            "preset": "pop",
+            "duration": 0.4,
+            "delay": 0.05
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 4,
+              "period": 2.4
+            }
+          ],
+          "layers": [
+            {
+              "id": "badgeStar",
+              "type": "polygon",
+              "sides": 12,
+              "radius": 10.5,
+              "innerRadius": 9,
+              "fill": {
+                "param": "badgeColor"
+              },
+              "keyframes": {
+                "rotation": [
+                  {
+                    "t": 1,
+                    "v": 0
+                  },
+                  {
+                    "t": 5,
+                    "v": 90
+                  }
+                ]
+              }
+            },
+            {
+              "id": "badgeRing",
+              "type": "ellipse",
+              "width": 15,
+              "height": 15,
+              "stroke": {
+                "color": {
+                  "param": "textColor",
+                  "alpha": 0.5
+                },
+                "width": 0.2,
+                "dash": [
+                  0.4,
+                  0.5
+                ]
+              }
+            },
+            {
+              "id": "priceText",
+              "type": "text",
+              "text": "{{price}}",
+              "font": {
+                "family": "Anton",
+                "weight": 400,
+                "size": 6,
+                "lineHeight": 1
+              },
+              "color": {
+                "param": "textColor"
+              },
+              "align": "center",
+              "maxWidth": 13,
+              "maxLines": 1,
+              "autoFit": {
+                "minSize": 3.5
+              },
+              "y": 0.3,
+              "rotation": -8
+            }
+          ]
+        },
+        {
+          "id": "productName",
+          "type": "text",
+          "text": "{{productName}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 800,
+            "size": 5.6,
+            "lineHeight": 1.1,
+            "letterSpacing": -0.02
+          },
+          "color": {
+            "param": "textColor"
+          },
+          "align": "center",
+          "maxWidth": "90%w",
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 3.6
+          },
+          "y": 28,
+          "start": 0.85,
+          "enter": {
+            "preset": "mask-up",
+            "duration": 0.6,
+            "stagger": {
+              "by": "word",
+              "each": 0.07
+            }
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.2
+          }
+        },
+        {
+          "id": "cta",
+          "type": "text",
+          "text": "{{cta}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 700,
+            "size": 2.8,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.02
+          },
+          "color": {
+            "param": "bgColor"
+          },
+          "align": "center",
+          "maxWidth": 60,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 2.2
+          },
+          "background": {
+            "fill": {
+              "param": "stageColor"
+            },
+            "padding": [
+              3.4,
+              1.7
+            ],
+            "radius": 10
+          },
+          "y": 39.5,
+          "start": 1.25,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.6
+          },
+          "exit": {
+            "preset": "scale-in",
+            "duration": 0.35,
+            "delay": 0.15,
+            "ease": "inCubic"
+          }
+        }
+      ]
+    },
+    {
+      "id": "panelA",
+      "type": "rect",
+      "x": 0,
+      "y": 0,
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "100%w",
+      "height": "100%h",
+      "fill": {
+        "param": "badgeColor"
+      },
+      "end": 0.62,
+      "keyframes": {
+        "scaleX": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 0.42,
+            "v": 1,
+            "ease": "inOutCubic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "panelAOut",
+      "type": "rect",
+      "x": "100%w",
+      "y": 0,
+      "anchor": [
+        1,
+        0
+      ],
+      "width": "100%w",
+      "height": "100%h",
+      "fill": {
+        "param": "badgeColor"
+      },
+      "start": 0.62,
+      "end": 1.1,
+      "keyframes": {
+        "scaleX": [
+          {
+            "t": 0,
+            "v": 1
+          },
+          {
+            "t": 0.45,
+            "v": 0,
+            "ease": "inOutCubic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "panelB",
+      "type": "rect",
+      "x": 0,
+      "y": 0,
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "100%w",
+      "height": "100%h",
+      "fill": {
+        "param": "stageColor"
+      },
+      "start": 0.1,
+      "end": 0.52,
+      "keyframes": {
+        "scaleX": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 0.42,
+            "v": 1,
+            "ease": "inOutCubic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "panelBOut",
+      "type": "rect",
+      "x": "100%w",
+      "y": 0,
+      "anchor": [
+        1,
+        0
+      ],
+      "width": "100%w",
+      "height": "100%h",
+      "fill": {
+        "param": "stageColor"
+      },
+      "start": 0.52,
+      "end": 0.99,
+      "keyframes": {
+        "scaleX": [
+          {
+            "t": 0,
+            "v": 1
+          },
+          {
+            "t": 0.45,
+            "v": 0,
+            "ease": "inOutCubic"
+          }
+        ]
+      }
+    }
+  ]
+}

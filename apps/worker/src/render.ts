@@ -1,6 +1,6 @@
 import { stat, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { validatePayload } from '@mg/engine';
+import { registerScene, validatePayload } from '@mg/engine';
 import type { Page } from 'puppeteer';
 import { acquirePage } from './browser';
 import { createEncoder } from './encoder';
@@ -10,7 +10,7 @@ import { startStaticServer } from './server';
 
 /** The page API exposed by render-page/main.ts (typed locally so consumers need not compile the page). */
 interface MgWindow {
-  __mg: { init(input: Record<string, unknown>): Promise<void>; captureBatch(start: number, count: number): Promise<string[]> };
+  __mg: { init(input: Record<string, unknown>, scene?: unknown): Promise<void>; captureBatch(start: number, count: number): Promise<string[]> };
 }
 
 export type RenderPhase = 'preparing' | 'rendering' | 'encoding' | 'done';
@@ -33,6 +33,12 @@ export interface RenderOptions {
   /** Optional frame range [start, end) of the payload timeline (default: all frames). */
   frames?: { start: number; end: number };
   onWarning?: (message: string) => void;
+  /**
+   * The mg-scene@1 document of a generated template (`gen_…` id). It is registered in this
+   * process's engine and in the render page before the payload is validated, so payloads for
+   * templates that only exist at runtime render like bundled ones. Its id must equal templateId.
+   */
+  scene?: unknown;
 }
 
 export interface RenderResult {
@@ -74,6 +80,13 @@ export async function renderVideo(payload: unknown, opts: RenderOptions): Promis
   const started = performance.now();
   const { signal } = opts;
   if (signal?.aborted) throw abortError();
+
+  const scene = opts.scene ?? null;
+  if (scene !== null) {
+    const templateId = typeof payload === 'object' && payload !== null ? (payload as { templateId?: unknown }).templateId : undefined;
+    const id = registerScene(scene).id; // throws "Invalid scene: ..." (never retried)
+    if (id !== templateId) throw new Error(`Invalid scene: its id '${id}' does not match the payload templateId '${String(templateId)}'`);
+  }
 
   const v = validatePayload(payload);
   if (!v.ok) throw new Error(`Invalid payload:\n  - ${v.errors.join('\n  - ')}`);
@@ -137,7 +150,11 @@ export async function renderVideo(payload: unknown, opts: RenderOptions): Promis
     await lockdown(page, origin, allowedUrls, blocked);
     await page.goto(`${origin}/index.html`, { waitUntil: 'load' });
     await page.waitForFunction(() => typeof (window as unknown as { __mg?: unknown }).__mg !== 'undefined');
-    await page.evaluate((input) => (window as unknown as MgWindow).__mg.init(input), p as unknown as Record<string, unknown>);
+    await page.evaluate(
+      (input, sc) => (window as unknown as MgWindow).__mg.init(input, sc ?? undefined),
+      p as unknown as Record<string, unknown>,
+      scene as Record<string, unknown> | null,
+    );
     if (blocked.length) opts.onWarning?.(`blocked ${blocked.length} disallowed request(s): ${blocked.join(', ')}`);
     if (signal?.aborted) throw abortError();
 

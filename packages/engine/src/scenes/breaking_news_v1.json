@@ -1,0 +1,213 @@
+{
+  "format": "mg-scene@1",
+  "id": "breaking_news_v1",
+  "name": "Breaking News",
+  "description": "Broadcast breaking-news lower band for overlaying footage: tag block, two-tone headline wipe, secondary line, live badge and clock.",
+  "category": "broadcast",
+  "defaultSettings": { "width": 1920, "height": 1080, "fps": 30, "durationFrames": 240, "transparent": true },
+  "fonts": ["Anton", "Montserrat Variable", "Inter Variable"],
+  "params": [
+    { "key": "tag", "label": "Tag", "type": "text", "default": "Breaking news", "maxLength": 16, "group": "Text" },
+    { "key": "headline", "label": "Headline", "type": "text", "default": "Severe storms force closure of major airports across the region", "maxLength": 80, "group": "Text" },
+    { "key": "secondary", "label": "Secondary line", "type": "text", "default": "Officials urge travellers to check flight status before leaving home", "maxLength": 90, "group": "Text" },
+    { "key": "clock", "label": "Time", "type": "text", "default": "14:32 GMT", "maxLength": 12, "group": "Text" },
+    { "key": "liveLabel", "label": "Live badge", "type": "text", "default": "Live", "maxLength": 8, "group": "Text" },
+    { "key": "tagColor", "label": "Tag / clock", "type": "color", "default": "#E10A14", "group": "Colors" },
+    { "key": "bandColor", "label": "Headline band", "type": "color", "default": "#FFFFFF", "group": "Colors" },
+    { "key": "darkColor", "label": "Dark band / headline text", "type": "color", "default": "#0E0F12", "group": "Colors" },
+    { "key": "accentColor", "label": "Accent stripe", "type": "color", "default": "#FFC20E", "group": "Colors" },
+    { "key": "showLive", "label": "Live badge", "type": "boolean", "default": true, "group": "Style" },
+    { "key": "showClock", "label": "Clock", "type": "boolean", "default": true, "group": "Style" }
+  ],
+  "background": {
+    "linear": {
+      "angle": 180,
+      "stops": [
+        [0, "#3B4A5C"],
+        [0.6, "#2A3340"],
+        [1, "#151A21"]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "lower",
+      "type": "group",
+      "x": "4%w",
+      "y": "73%h",
+      "layers": [
+        {
+          "id": "stripe",
+          "type": "rect",
+          "x": -0.4,
+          "y": 0,
+          "anchor": [1, 0],
+          "width": 1.1,
+          "height": 17.1,
+          "fill": { "param": "accentColor" },
+          "keyframes": { "scaleY": [{ "t": 0.05, "v": 0 }, { "t": 0.5, "v": 1, "ease": "outExpo" }] },
+          "exit": { "preset": "fade", "duration": 0.25 }
+        },
+        {
+          "id": "bandLead",
+          "type": "rect",
+          "anchor": [0, 0],
+          "width": "92%w",
+          "height": 10,
+          "fill": { "param": "tagColor" },
+          "start": 0.1,
+          "enter": { "preset": "wipe-right", "duration": 0.5, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.45, "delay": 0.1, "ease": "outQuart" }
+        },
+        {
+          "id": "band",
+          "type": "rect",
+          "anchor": [0, 0],
+          "width": "92%w",
+          "height": 10,
+          "fill": {
+            "linear": {
+              "angle": 180,
+              "stops": [
+                [0, { "param": "bandColor" }],
+                [1, { "mix": [{ "param": "bandColor" }, { "param": "darkColor" }], "t": 0.08 }]
+              ]
+            }
+          },
+          "start": 0.24,
+          "enter": { "preset": "wipe-right", "duration": 0.6, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.45, "delay": 0.22, "ease": "outQuart" }
+        },
+        {
+          "id": "headline",
+          "type": "text",
+          "text": "{{headline}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 4.6, "lineHeight": 1.08, "letterSpacing": -0.015 },
+          "color": { "param": "darkColor" },
+          "align": "left",
+          "maxWidth": "86%w",
+          "maxLines": 2,
+          "autoFit": { "minSize": 3.2 },
+          "x": 2.6,
+          "y": 5,
+          "anchor": [0, 0.5],
+          "start": 0.5,
+          "enter": { "preset": "mask-up", "duration": 0.55, "stagger": { "by": "word", "each": 0.035 } },
+          "exit": { "preset": "fade", "duration": 0.25, "delay": 0.55 }
+        },
+        {
+          "id": "subBand",
+          "type": "rect",
+          "anchor": [0, 0],
+          "y": 10.6,
+          "width": "92%w",
+          "height": 6.5,
+          "fill": { "param": "darkColor", "alpha": 0.94 },
+          "start": 0.4,
+          "enter": { "preset": "wipe-right", "duration": 0.6, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.45, "delay": 0.05, "ease": "outQuart" }
+        },
+        {
+          "id": "secondary",
+          "type": "text",
+          "text": "{{secondary}}",
+          "font": { "family": "Inter Variable", "weight": 500, "size": 2.7, "lineHeight": 1.2, "letterSpacing": 0.005 },
+          "color": "#FFFFFF",
+          "align": "left",
+          "maxWidth": "66%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 1.8 },
+          "x": 2.6,
+          "y": 13.85,
+          "anchor": [0, 0.5],
+          "start": 0.8,
+          "enter": { "preset": "slide-right", "duration": 0.5, "distance": 2, "stagger": { "by": "word", "each": 0.025 } },
+          "exit": { "preset": "fade", "duration": 0.25, "delay": 0.4 }
+        },
+        {
+          "id": "tagBlock",
+          "type": "text",
+          "text": "{{tag|upper}}",
+          "font": { "family": "Anton", "weight": 400, "size": 4, "lineHeight": 1.1, "letterSpacing": 0.04 },
+          "color": "#FFFFFF",
+          "background": { "fill": { "param": "tagColor" }, "padding": [2.2, 0.9] },
+          "maxWidth": "50%w",
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.8 },
+          "x": 0,
+          "y": 0,
+          "anchor": [0, 1],
+          "start": 0,
+          "enter": { "preset": "wipe-right", "duration": 0.45, "ease": "outExpo" },
+          "exit": { "preset": "wipe-right", "duration": 0.4, "delay": 0.3, "ease": "outQuart" }
+        },
+        {
+          "id": "tagFlash",
+          "type": "rect",
+          "x": 0,
+          "y": 0,
+          "anchor": [0, 1],
+          "width": 1.1,
+          "height": 6.2,
+          "fill": { "param": "accentColor" },
+          "start": 0.35,
+          "enter": { "preset": "fade", "duration": 0.2 },
+          "exit": { "preset": "fade", "duration": 0.2, "delay": 0.3 }
+        },
+        {
+          "id": "right",
+          "type": "group",
+          "x": "92%w",
+          "layers": [
+            {
+              "id": "live",
+              "type": "group",
+              "visibleIf": { "param": "showLive" },
+              "start": 0.6,
+              "enter": { "preset": "drop", "duration": 0.5, "distance": 2 },
+              "exit": { "preset": "fade", "duration": 0.3, "delay": 0.35 },
+              "layers": [
+                {
+                  "id": "liveText",
+                  "type": "text",
+                  "text": "{{liveLabel|upper}}",
+                  "font": { "family": "Inter Variable", "weight": 800, "size": 2.3, "lineHeight": 1.2, "letterSpacing": 0.14 },
+                  "color": "#FFFFFF",
+                  "background": { "fill": { "param": "darkColor" }, "padding": [1.2, 1.1] },
+                  "x": -4.4,
+                  "anchor": [1, 1]
+                },
+                { "id": "liveBox", "type": "rect", "anchor": [1, 1], "width": 4.5, "height": 4.96, "fill": { "param": "darkColor" } },
+                {
+                  "id": "liveDot",
+                  "type": "ellipse",
+                  "x": -2.25,
+                  "y": -2.48,
+                  "width": 1.6,
+                  "height": 1.6,
+                  "fill": { "param": "tagColor" },
+                  "opacity": 0.65,
+                  "ambient": [{ "prop": "opacity", "amplitude": 0.4, "period": 1.1 }]
+                }
+              ]
+            },
+            {
+              "id": "clock",
+              "type": "text",
+              "visibleIf": { "param": "showClock" },
+              "text": "{{clock|upper}}",
+              "font": { "family": "Inter Variable", "weight": 700, "size": 2.7, "lineHeight": 1.2, "letterSpacing": 0.06 },
+              "color": "#FFFFFF",
+              "background": { "fill": { "param": "tagColor" }, "padding": [2.2, 1.63] },
+              "y": 13.85,
+              "anchor": [1, 0.5],
+              "start": 0.95,
+              "enter": { "preset": "fade", "duration": 0.4 },
+              "exit": { "preset": "fade", "duration": 0.25, "delay": 0.3 }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

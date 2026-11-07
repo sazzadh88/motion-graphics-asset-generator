@@ -4,7 +4,8 @@ import path from 'node:path';
 import { renderVideo, shutdown } from './index';
 import type { RenderProgress } from './index';
 
-const USAGE = `Usage: npm run render -w @mg/worker -- <payload.json> [--format mp4|webm] [--out path] [--frames start:end] [--stats]`;
+const USAGE = `Usage: npm run render -w @mg/worker -- <payload.json> [--format mp4|webm] [--out path] [--frames start:end] [--stats]
+  The JSON is a render payload; for a generated (gen_…) template add its mg-scene@1 document as a top-level "scene" field.`;
 
 function fail(msg: string): never {
   process.stderr.write(`\nError: ${msg}\n`);
@@ -91,6 +92,13 @@ async function main() {
   } catch (e) {
     fail(`cannot read payload ${args.file}: ${e instanceof Error ? e.message : String(e)}`);
   }
+  // Optional top-level `scene`: the mg-scene@1 document of a generated template.
+  let scene: unknown;
+  if (typeof payload === 'object' && payload !== null && 'scene' in payload) {
+    const { scene: s, ...rest } = payload as Record<string, unknown>;
+    scene = s;
+    payload = rest;
+  }
   const out = path.resolve(args.out ?? path.join('output', `${path.basename(args.file, '.json')}.${args.format}`));
 
   const tty = process.stdout.isTTY;
@@ -112,6 +120,7 @@ async function main() {
   process.once('SIGINT', () => ac.abort());
   try {
     const r = await renderVideo(payload, {
+      scene,
       format: args.format,
       outPath: out,
       frames: args.frames,

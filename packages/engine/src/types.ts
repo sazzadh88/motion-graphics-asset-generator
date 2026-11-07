@@ -89,6 +89,10 @@ export interface TemplateDefinition {
   id: string;
   name: string;
   description: string;
+  /** Library grouping, e.g. 'typography', 'promo' (scenes use SCENE_CATEGORIES). */
+  category?: string;
+  /** 'generated' for scenes registered at runtime (registerScene); bundled templates leave it unset. */
+  origin?: 'bundled' | 'generated';
   defaultSettings: RenderSettings;
   params: ParamDef[];
   /** Font families (CSS family names) this template draws with; preloaded before rendering. */

@@ -1,0 +1,427 @@
+{
+  "format": "mg-scene@1",
+  "id": "quote_card_v1",
+  "name": "Quote Card",
+  "description": "Editorial pull quote with a sculpted quote mark, word-by-word reveal and an author credit.",
+  "category": "typography",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1350,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "fonts": [
+    "Inter Variable",
+    "Montserrat Variable"
+  ],
+  "params": [
+    {
+      "key": "quote",
+      "label": "Quote",
+      "type": "text",
+      "default": "Design is not just what it looks like and feels like. Design is how it works.",
+      "maxLength": 160,
+      "multiline": true,
+      "group": "Text"
+    },
+    {
+      "key": "author",
+      "label": "Author",
+      "type": "text",
+      "default": "Steve Jobs",
+      "maxLength": 36,
+      "group": "Text"
+    },
+    {
+      "key": "role",
+      "label": "Role / source",
+      "type": "text",
+      "default": "Co-founder, Apple",
+      "maxLength": 48,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#F3ECE1",
+      "group": "Colors"
+    },
+    {
+      "key": "textColor",
+      "label": "Text",
+      "type": "color",
+      "default": "#1F1A17",
+      "group": "Colors"
+    },
+    {
+      "key": "accentColor",
+      "label": "Accent",
+      "type": "color",
+      "default": "#C8502F",
+      "group": "Colors"
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    },
+    {
+      "key": "showMark",
+      "label": "Quote mark",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "linear": {
+      "angle": 160,
+      "stops": [
+        [
+          0,
+          {
+            "mix": [
+              {
+                "param": "bgColor"
+              },
+              "#FFFFFF"
+            ],
+            "t": 0.35
+          }
+        ],
+        [
+          1,
+          {
+            "param": "bgColor"
+          }
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "halo",
+      "type": "ellipse",
+      "x": "92%w",
+      "y": "6%h",
+      "width": 78,
+      "height": 78,
+      "fill": {
+        "param": "accentColor",
+        "alpha": 0.09
+      },
+      "enter": {
+        "preset": "scale-in",
+        "duration": 1.4,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.6
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.03,
+          "period": 6
+        }
+      ]
+    },
+    {
+      "id": "haloRing",
+      "type": "ellipse",
+      "x": "92%w",
+      "y": "6%h",
+      "width": 104,
+      "height": 104,
+      "stroke": {
+        "color": {
+          "param": "accentColor",
+          "alpha": 0.22
+        },
+        "width": 0.2
+      },
+      "enter": {
+        "preset": "scale-in",
+        "duration": 1.6,
+        "delay": 0.15,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.6
+      }
+    },
+    {
+      "id": "mark",
+      "type": "group",
+      "visibleIf": {
+        "param": "showMark"
+      },
+      "x": "9%w",
+      "y": "13%h",
+      "enter": {
+        "preset": "pop",
+        "duration": 0.75,
+        "delay": 0.05
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.45,
+        "delay": 0.2
+      },
+      "ambient": [
+        {
+          "prop": "rotation",
+          "amplitude": 2.5,
+          "period": 5
+        }
+      ],
+      "layers": [
+        {
+          "id": "dotA",
+          "type": "ellipse",
+          "x": 3,
+          "y": 3,
+          "width": 6,
+          "height": 6,
+          "fill": {
+            "param": "accentColor"
+          }
+        },
+        {
+          "id": "tailA",
+          "type": "polygon",
+          "sides": 3,
+          "radius": 3.5,
+          "x": 4.5,
+          "y": 0.9,
+          "rotation": 30,
+          "fill": {
+            "param": "accentColor"
+          }
+        },
+        {
+          "id": "dotB",
+          "type": "ellipse",
+          "x": 10.6,
+          "y": 3,
+          "width": 6,
+          "height": 6,
+          "fill": {
+            "param": "accentColor"
+          }
+        },
+        {
+          "id": "tailB",
+          "type": "polygon",
+          "sides": 3,
+          "radius": 3.5,
+          "x": 12.1,
+          "y": 0.9,
+          "rotation": 30,
+          "fill": {
+            "param": "accentColor"
+          }
+        }
+      ],
+      "scale": 1.3
+    },
+    {
+      "id": "quote",
+      "type": "text",
+      "text": "{{quote}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 600,
+        "size": 7.4,
+        "lineHeight": 1.14,
+        "letterSpacing": -0.025
+      },
+      "color": {
+        "param": "textColor"
+      },
+      "align": "left",
+      "maxWidth": "82%w",
+      "maxLines": 4,
+      "autoFit": {
+        "minSize": 4.4
+      },
+      "x": "9%w",
+      "y": "30%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 0.3,
+      "enter": {
+        "preset": "mask-up",
+        "duration": 0.7,
+        "ease": "outCubic",
+        "stagger": {
+          "by": "word",
+          "each": 0.04
+        }
+      },
+      "exit": {
+        "preset": "mask-up",
+        "duration": 0.45,
+        "delay": 0.05,
+        "ease": "inCubic",
+        "stagger": {
+          "by": "word",
+          "each": 0.012
+        }
+      }
+    },
+    {
+      "id": "rule",
+      "type": "rect",
+      "x": "9%w",
+      "y": "70.5%h",
+      "anchor": [
+        0,
+        0.5
+      ],
+      "width": 9,
+      "height": 0.55,
+      "fill": {
+        "param": "accentColor"
+      },
+      "start": 1.05,
+      "keyframes": {
+        "scaleX": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 0.6,
+            "v": 1,
+            "ease": "outExpo"
+          }
+        ]
+      },
+      "exit": {
+        "preset": "wipe-left",
+        "duration": 0.4,
+        "delay": 0.3
+      }
+    },
+    {
+      "id": "author",
+      "type": "text",
+      "text": "{{author|upper}}",
+      "font": {
+        "family": "Montserrat Variable",
+        "weight": 800,
+        "size": 3.9,
+        "lineHeight": 1.15,
+        "letterSpacing": 0.08
+      },
+      "color": {
+        "param": "textColor"
+      },
+      "maxWidth": "62%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "x": "9%w",
+      "y": "74%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.15,
+      "enter": {
+        "preset": "slide-right",
+        "duration": 0.6,
+        "distance": 2.5,
+        "stagger": {
+          "by": "char",
+          "each": 0.012
+        }
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.35,
+        "delay": 0.25
+      }
+    },
+    {
+      "id": "role",
+      "type": "text",
+      "text": "{{role}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 500,
+        "size": 3.2,
+        "lineHeight": 1.2
+      },
+      "color": {
+        "mix": [
+          {
+            "param": "textColor"
+          },
+          {
+            "param": "bgColor"
+          }
+        ],
+        "t": 0.4
+      },
+      "maxWidth": "62%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.2
+      },
+      "x": "9%w",
+      "y": "79.2%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.35,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.6,
+        "distance": 1.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.35,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "logo",
+      "type": "image",
+      "src": {
+        "param": "logoUrl"
+      },
+      "x": "91%w",
+      "y": "88%h",
+      "anchor": [
+        1,
+        1
+      ],
+      "width": 18,
+      "height": 5.5,
+      "fit": "contain",
+      "start": 1.5,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.6
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.35,
+        "delay": 0.2
+      }
+    }
+  ]
+}

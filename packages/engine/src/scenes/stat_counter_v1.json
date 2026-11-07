@@ -1,0 +1,226 @@
+{
+  "format": "mg-scene@1",
+  "id": "stat_counter_v1",
+  "name": "Stat Counter",
+  "description": "A big animated number with prefix and suffix, a label and a progress bar that fills in sync.",
+  "category": "data",
+  "defaultSettings": { "width": 1080, "height": 1350, "fps": 30, "durationFrames": 180, "transparent": false },
+  "fonts": ["Montserrat Variable", "Inter Variable"],
+  "params": [
+    { "key": "eyebrow", "label": "Eyebrow", "type": "text", "default": "Customer retention", "maxLength": 32, "group": "Text" },
+    { "key": "value", "label": "Value", "type": "number", "default": 87, "min": 0, "max": 999999999, "step": 1, "group": "Number" },
+    { "key": "startValue", "label": "Count from", "type": "number", "default": 0, "min": 0, "max": 999999999, "step": 1, "group": "Number" },
+    { "key": "prefix", "label": "Prefix", "type": "text", "default": "", "maxLength": 4, "group": "Number" },
+    { "key": "suffix", "label": "Suffix", "type": "text", "default": "%", "maxLength": 6, "group": "Number" },
+    { "key": "label", "label": "Label", "type": "text", "default": "of customers renew after their first year", "maxLength": 90, "multiline": false, "group": "Text" },
+    { "key": "source", "label": "Source line", "type": "text", "default": "Source: 2026 customer survey, n = 4,812", "maxLength": 60, "group": "Text" },
+    { "key": "barFill", "label": "Bar fill (0-1)", "type": "number", "default": 0.87, "min": 0, "max": 1, "step": 0.01, "group": "Number" },
+    { "key": "showBar", "label": "Progress bar", "type": "boolean", "default": true, "group": "Style" },
+    { "key": "accentColor", "label": "Accent", "type": "color", "default": "#2EE6A6", "group": "Colors" },
+    { "key": "accent2", "label": "Accent 2", "type": "color", "default": "#5B8CFF", "group": "Colors" },
+    { "key": "textColor", "label": "Text", "type": "color", "default": "#F4F6FB", "group": "Colors" },
+    { "key": "bgColor", "label": "Background", "type": "color", "default": "#0B1020", "group": "Colors" }
+  ],
+  "background": {
+    "linear": {
+      "angle": 180,
+      "stops": [
+        [0, { "mix": [{ "param": "bgColor" }, { "param": "accent2" }], "t": 0.16 }],
+        [0.6, { "param": "bgColor" }],
+        [1, { "param": "bgColor" }]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "glow",
+      "type": "ellipse",
+      "x": "50%w",
+      "y": "50%h",
+      "width": 120,
+      "height": 120,
+      "fill": {
+        "radial": {
+          "cx": "50%w",
+          "cy": "50%h",
+          "r": 50,
+          "stops": [
+            [0, { "param": "accentColor", "alpha": 0.2 }],
+            [0.55, { "param": "accentColor", "alpha": 0.05 }],
+            [1, { "param": "accentColor", "alpha": 0 }]
+          ]
+        }
+      },
+      "enter": { "preset": "fade", "duration": 1.4, "ease": "outQuad" },
+      "exit": { "preset": "fade", "duration": 0.5 },
+      "ambient": [{ "prop": "scale", "amplitude": 0.05, "period": 5 }]
+    },
+    {
+      "id": "orbit",
+      "type": "ellipse",
+      "x": "102%w",
+      "y": "-3%h",
+      "width": 80,
+      "height": 80,
+      "stroke": { "color": { "param": "accentColor", "alpha": 0.22 }, "width": 0.3, "dash": [0.9, 1.5] },
+      "enter": { "preset": "scale-in", "duration": 1.2, "delay": 0.1, "ease": "outExpo" },
+      "exit": { "preset": "fade", "duration": 0.4 },
+      "ambient": [{ "prop": "rotation", "amplitude": 10, "period": 14 }]
+    },
+    {
+      "id": "orbit2",
+      "type": "ellipse",
+      "x": "0%w",
+      "y": "100%h",
+      "width": 70,
+      "height": 70,
+      "stroke": { "color": { "param": "textColor", "alpha": 0.07 }, "width": 0.25 },
+      "enter": { "preset": "scale-in", "duration": 1.2, "delay": 0.25, "ease": "outExpo" },
+      "exit": { "preset": "fade", "duration": 0.4 }
+    },
+    {
+      "id": "stack",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "text": "{{eyebrow|upper}}",
+          "font": { "family": "Inter Variable", "weight": 700, "size": 2.3, "lineHeight": 1.2, "letterSpacing": 0.16 },
+          "color": { "param": "accentColor" },
+          "align": "center",
+          "maxWidth": 80,
+          "maxLines": 1,
+          "autoFit": { "minSize": 1.6 },
+          "background": { "fill": { "param": "accentColor", "alpha": 0.12 }, "padding": [2.4, 1.2], "radius": 10 },
+          "y": -27,
+          "enter": { "preset": "drop", "duration": 0.7, "delay": 0.1, "distance": 3 },
+          "exit": { "preset": "fade", "duration": 0.35, "delay": 0.2 }
+        },
+        {
+          "id": "number",
+          "type": "counter",
+          "from": { "param": "startValue" },
+          "to": { "param": "value" },
+          "decimals": 0,
+          "separator": ",",
+          "prefix": "{{prefix}}",
+          "suffix": "{{suffix}}",
+          "count": { "duration": 2.2, "delay": 0.35, "ease": "outExpo" },
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 25, "lineHeight": 1, "letterSpacing": -0.02 },
+          "color": { "param": "textColor" },
+          "align": "center",
+          "y": -7,
+          "enter": { "preset": "pop", "duration": 0.8, "delay": 0.15 },
+          "exit": { "preset": "scale-in", "duration": 0.45, "delay": 0.1, "ease": "outCubic" }
+        },
+        {
+          "id": "sparkle",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2,
+          "innerRadius": 0.5,
+          "fill": { "param": "accentColor" },
+          "x": 31,
+          "y": -19,
+          "start": 1.4,
+          "enter": { "preset": "pop", "duration": 0.6 },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.2 },
+          "ambient": [
+            { "prop": "rotation", "amplitude": 20, "period": 3 },
+            { "prop": "scale", "amplitude": 0.15, "period": 1.6, "phase": 0.25 }
+          ]
+        },
+        {
+          "id": "sparkleSmall",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 1.1,
+          "innerRadius": 0.3,
+          "fill": { "param": "accent2" },
+          "x": 35.5,
+          "y": -13.5,
+          "start": 1.6,
+          "enter": { "preset": "pop", "duration": 0.6 },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.2 },
+          "ambient": [{ "prop": "rotation", "amplitude": -25, "period": 3.5, "phase": 0.5 }]
+        },
+        {
+          "id": "label",
+          "type": "text",
+          "text": "{{label}}",
+          "font": { "family": "Inter Variable", "weight": 500, "size": 3.6, "lineHeight": 1.3 },
+          "color": { "mix": [{ "param": "textColor" }, { "param": "bgColor" }], "t": 0.22 },
+          "align": "center",
+          "maxWidth": 74,
+          "maxLines": 2,
+          "autoFit": { "minSize": 2.6 },
+          "anchor": [0.5, 0],
+          "y": 8,
+          "enter": { "preset": "rise", "duration": 0.7, "delay": 0.8, "distance": 2.5, "stagger": { "by": "word", "each": 0.045 } },
+          "exit": { "preset": "fade", "duration": 0.35, "delay": 0.15 }
+        },
+        {
+          "id": "bar",
+          "type": "group",
+          "visibleIf": { "param": "showBar" },
+          "y": 23,
+          "enter": { "preset": "fade", "duration": 0.5, "delay": 0.25 },
+          "exit": { "preset": "fade", "duration": 0.35 },
+          "layers": [
+            {
+              "id": "barTrack",
+              "type": "rect",
+              "width": 56,
+              "height": 1.4,
+              "radius": 0.7,
+              "fill": { "param": "textColor", "alpha": 0.1 }
+            },
+            {
+              "id": "barFill",
+              "type": "rect",
+              "x": -28,
+              "anchor": [0, 0.5],
+              "width": 56,
+              "height": 1.4,
+              "radius": 0.7,
+              "fill": {
+                "linear": {
+                  "angle": 90,
+                  "stops": [
+                    [0, { "param": "accent2" }],
+                    [1, { "param": "accentColor" }]
+                  ]
+                }
+              },
+              "keyframes": {
+                "scaleX": [
+                  { "t": 0.35, "v": 0 },
+                  { "t": 2.55, "v": { "param": "barFill" }, "ease": "outExpo" }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "source",
+      "type": "text",
+      "text": "{{source}}",
+      "font": { "family": "Inter Variable", "weight": 500, "size": 1.9, "lineHeight": 1.2, "letterSpacing": 0.02 },
+      "color": { "param": "textColor", "alpha": 0.45 },
+      "align": "center",
+      "maxWidth": "90%w",
+      "maxLines": 1,
+      "x": "50%w",
+      "y": "95%h",
+      "anchor": [0.5, 1],
+      "start": 1.3,
+      "enter": { "preset": "typewriter", "duration": 1 },
+      "exit": { "preset": "fade", "duration": 0.3, "delay": 0.1 }
+    }
+  ]
+}

@@ -3,6 +3,10 @@ import type {
   ApiError,
   AssetUploadResponse,
   CreateRenderRequest,
+  GenerateEvent,
+  GenerateRequest,
+  GenerateStatus,
+  GeneratedTemplate,
   RenderJob,
   TemplateSummary,
   VideoFormat,
@@ -92,6 +96,96 @@ export function getRender(id: string): Promise<RenderJob> {
 
 export function cancelRender(id: string): Promise<RenderJob> {
   return request(`/api/renders/${encodeURIComponent(id)}`, { method: 'DELETE' });
+}
+
+// ------------------------------------------------------------ generated templates
+
+export function getGenerateStatus(): Promise<GenerateStatus> {
+  return request('/api/generate/status');
+}
+
+/** Kept generated templates, newest first. */
+export function listScenes(): Promise<GeneratedTemplate[]> {
+  return request('/api/scenes');
+}
+
+export function keepScene(id: string): Promise<GeneratedTemplate> {
+  return request(`/api/scenes/${encodeURIComponent(id)}/keep`, { method: 'POST' });
+}
+
+export function deleteScene(id: string): Promise<void> {
+  return request(`/api/scenes/${encodeURIComponent(id)}`, { method: 'DELETE' });
+}
+
+export type GenerateEnd = Extract<GenerateEvent, { type: 'done' | 'error' }>;
+
+/**
+ * POST /api/generate and read the NDJSON event stream. Every event is passed to `onEvent`;
+ * resolves with the terminal 'done' / 'error' event. HTTP failures throw ApiRequestError
+ * (status 0 / offline when unreachable); aborting `signal` rejects with an AbortError.
+ */
+export async function streamGenerate(
+  body: GenerateRequest,
+  signal: AbortSignal,
+  onEvent: (e: GenerateEvent) => void,
+): Promise<GenerateEnd> {
+  let res: Response;
+  try {
+    res = await fetch('/api/generate', { ...json('POST', body), signal });
+  } catch (e) {
+    if (signal.aborted) throw e;
+    throw new ApiRequestError(0, OFFLINE_MESSAGE, [], true);
+  }
+  if (!res.ok || !res.body) {
+    const text = await res.text().catch(() => '');
+    let parsed: unknown = null;
+    try {
+      parsed = text ? JSON.parse(text) : null;
+    } catch {
+      parsed = null;
+    }
+    if (isApiError(parsed)) {
+      const details = Array.isArray(parsed.details) ? parsed.details.filter((d) => typeof d === 'string') : [];
+      throw new ApiRequestError(res.status, parsed.error, details);
+    }
+    if (res.status >= 500) throw new ApiRequestError(res.status, OFFLINE_MESSAGE, [], true);
+    throw new ApiRequestError(res.status, `Request failed (${res.status}).`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+  let end: GenerateEnd | null = null;
+  const handle = (line: string) => {
+    if (!line.trim()) return;
+    let e: GenerateEvent;
+    try {
+      e = JSON.parse(line) as GenerateEvent;
+    } catch {
+      return; // ignore a malformed line
+    }
+    onEvent(e);
+    if (e.type === 'done' || e.type === 'error') end = e;
+  };
+  try {
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      let nl: number;
+      while ((nl = buf.indexOf('\n')) >= 0) {
+        handle(buf.slice(0, nl));
+        buf = buf.slice(nl + 1);
+      }
+    }
+    buf += decoder.decode();
+    handle(buf);
+  } catch (e) {
+    if (signal.aborted) throw e;
+    throw new ApiRequestError(0, OFFLINE_MESSAGE, [], true);
+  }
+  if (!end) throw new ApiRequestError(0, 'The generation stopped before it finished. Please try again.');
+  return end;
 }
 
 /** Turn any thrown value into a message that is safe to show. */

@@ -9,14 +9,10 @@ import type {
   SizePreset,
   TemplateDefinition,
 } from './types';
-import { templates } from './templates';
+import { getTemplate, listTemplates } from './registry';
+import { LIMITS } from './limits';
 
-export const LIMITS = {
-  minSize: 64,
-  maxSize: 3840,
-  fps: [24, 25, 30, 50, 60] as const,
-  maxDurationSeconds: 60,
-} as const;
+export { LIMITS, getTemplate, listTemplates };
 
 export const SIZE_PRESETS: SizePreset[] = [
   { label: 'Story 9:16 (1080×1920)', width: 1080, height: 1920 },
@@ -25,14 +21,6 @@ export const SIZE_PRESETS: SizePreset[] = [
   { label: 'Landscape 16:9 (1920×1080)', width: 1920, height: 1080 },
   { label: 'Banner 3:1 (1500×500)', width: 1500, height: 500 },
 ];
-
-export function listTemplates(): TemplateDefinition[] {
-  return templates;
-}
-
-export function getTemplate(id: string): TemplateDefinition | undefined {
-  return templates.find((t) => t.id === id);
-}
 
 export function defaultValues(t: TemplateDefinition): AssetValues {
   const out: AssetValues = {};

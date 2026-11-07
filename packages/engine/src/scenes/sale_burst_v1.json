@@ -1,0 +1,654 @@
+{
+  "format": "mg-scene@1",
+  "id": "sale_burst_v1",
+  "name": "Sale Burst",
+  "description": "Loud sale promo: a spinning starburst badge pops in with a huge discount, headline and shop button.",
+  "category": "promo",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationFrames": 150,
+    "transparent": false
+  },
+  "fonts": [
+    "Anton",
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "headline",
+      "label": "Headline",
+      "type": "text",
+      "default": "Summer sale",
+      "maxLength": 24,
+      "group": "Text"
+    },
+    {
+      "key": "discount",
+      "label": "Discount",
+      "type": "text",
+      "default": "50%",
+      "maxLength": 4,
+      "group": "Text"
+    },
+    {
+      "key": "offWord",
+      "label": "Under discount",
+      "type": "text",
+      "default": "Off",
+      "maxLength": 8,
+      "group": "Text"
+    },
+    {
+      "key": "subline",
+      "label": "Subline",
+      "type": "text",
+      "default": "On everything. This weekend only.",
+      "maxLength": 44,
+      "group": "Text"
+    },
+    {
+      "key": "cta",
+      "label": "Button",
+      "type": "text",
+      "default": "Shop now",
+      "maxLength": 16,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#FFDD3C",
+      "group": "Colors"
+    },
+    {
+      "key": "burstColor",
+      "label": "Burst",
+      "type": "color",
+      "default": "#FF2E55",
+      "group": "Colors"
+    },
+    {
+      "key": "inkColor",
+      "label": "Ink",
+      "type": "color",
+      "default": "#14110F",
+      "group": "Colors"
+    },
+    {
+      "key": "burstTextColor",
+      "label": "Burst text",
+      "type": "color",
+      "default": "#FFFFFF",
+      "group": "Colors"
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    },
+    {
+      "key": "showConfetti",
+      "label": "Confetti shapes",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "radial": {
+      "cx": "50%w",
+      "cy": "46%h",
+      "r": 110,
+      "stops": [
+        [
+          0,
+          {
+            "mix": [
+              {
+                "param": "bgColor"
+              },
+              "#FFFFFF"
+            ],
+            "t": 0.3
+          }
+        ],
+        [
+          1,
+          {
+            "param": "bgColor"
+          }
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "band1",
+      "type": "rect",
+      "x": "18%w",
+      "y": "50%h",
+      "width": 16,
+      "height": 400,
+      "rotation": 24,
+      "fill": {
+        "param": "inkColor",
+        "alpha": 0.05
+      },
+      "enter": {
+        "preset": "slide-right",
+        "duration": 0.8,
+        "distance": 30,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.4
+      }
+    },
+    {
+      "id": "band2",
+      "type": "rect",
+      "x": "82%w",
+      "y": "50%h",
+      "width": 9,
+      "height": 400,
+      "rotation": 24,
+      "fill": {
+        "param": "burstColor",
+        "alpha": 0.12
+      },
+      "enter": {
+        "preset": "slide-left",
+        "duration": 0.8,
+        "delay": 0.05,
+        "distance": 30,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.4
+      }
+    },
+    {
+      "id": "logo",
+      "type": "image",
+      "src": {
+        "param": "logoUrl"
+      },
+      "x": "50%w",
+      "y": "3.5%h",
+      "anchor": [
+        0.5,
+        0
+      ],
+      "width": 18,
+      "height": 4.5,
+      "fit": "contain",
+      "start": 0.6,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "headline",
+      "type": "text",
+      "text": "{{headline|upper}}",
+      "font": {
+        "family": "Montserrat Variable",
+        "weight": 900,
+        "size": 8,
+        "lineHeight": 1,
+        "letterSpacing": -0.01
+      },
+      "color": {
+        "param": "inkColor"
+      },
+      "align": "center",
+      "maxWidth": "90%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 5
+      },
+      "x": "50%w",
+      "y": "10%h",
+      "start": 0.15,
+      "enter": {
+        "preset": "drop",
+        "duration": 0.55,
+        "distance": 4,
+        "ease": "outBack",
+        "stagger": {
+          "by": "char",
+          "each": 0.03
+        }
+      },
+      "exit": {
+        "preset": "rise",
+        "duration": 0.35,
+        "delay": 0.15,
+        "distance": 3,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "burst",
+      "type": "group",
+      "x": "50%w",
+      "y": "48%h",
+      "enter": {
+        "preset": "pop",
+        "duration": 0.7,
+        "delay": 0.05
+      },
+      "exit": {
+        "preset": "pop",
+        "duration": 0.45,
+        "delay": 0.05
+      },
+      "layers": [
+        {
+          "id": "burstShadow",
+          "type": "polygon",
+          "sides": 12,
+          "radius": 27,
+          "innerRadius": 22.2,
+          "x": 1.4,
+          "y": 1.4,
+          "fill": {
+            "param": "inkColor"
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 30,
+              "period": 20
+            }
+          ]
+        },
+        {
+          "id": "burstStar",
+          "type": "polygon",
+          "sides": 12,
+          "radius": 27,
+          "innerRadius": 22.2,
+          "fill": {
+            "param": "burstColor"
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 30,
+              "period": 20
+            }
+          ]
+        },
+        {
+          "id": "burstOutline",
+          "type": "polygon",
+          "sides": 12,
+          "radius": 31,
+          "innerRadius": 26.2,
+          "rotation": 15,
+          "stroke": {
+            "color": {
+              "param": "inkColor"
+            },
+            "width": 0.35,
+            "dash": [
+              1,
+              0.9
+            ]
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": -20,
+              "period": 20
+            }
+          ]
+        },
+        {
+          "id": "discount",
+          "type": "text",
+          "text": "{{discount}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 900,
+            "size": 17,
+            "lineHeight": 1,
+            "letterSpacing": -0.05
+          },
+          "color": {
+            "param": "burstTextColor"
+          },
+          "align": "center",
+          "maxWidth": 40,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 10
+          },
+          "y": -3.5,
+          "rotation": -6,
+          "start": 0.3,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.6,
+            "stagger": {
+              "by": "char",
+              "each": 0.08
+            }
+          },
+          "ambient": [
+            {
+              "prop": "scale",
+              "amplitude": 0.025,
+              "period": 0.9
+            }
+          ]
+        },
+        {
+          "id": "offWord",
+          "type": "text",
+          "text": "{{offWord|upper}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 900,
+            "size": 6,
+            "lineHeight": 1,
+            "letterSpacing": 0.18
+          },
+          "color": {
+            "param": "inkColor"
+          },
+          "align": "center",
+          "maxWidth": 40,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 4
+          },
+          "background": {
+            "fill": {
+              "param": "bgColor"
+            },
+            "padding": [
+              2.2,
+              1
+            ],
+            "radius": 0.6
+          },
+          "y": 11.5,
+          "rotation": -6,
+          "start": 0.65,
+          "enter": {
+            "preset": "slide-left",
+            "duration": 0.5,
+            "distance": 8,
+            "ease": "outBack"
+          }
+        }
+      ]
+    },
+    {
+      "id": "confetti",
+      "type": "group",
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "x": "50%w",
+      "y": "48%h",
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.1
+      },
+      "layers": [
+        {
+          "id": "c1",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 3.2,
+          "innerRadius": 1,
+          "x": -36,
+          "y": -21,
+          "fill": {
+            "param": "inkColor"
+          },
+          "start": 0.55,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 25,
+              "period": 2.6
+            }
+          ]
+        },
+        {
+          "id": "c2",
+          "type": "ellipse",
+          "x": 35,
+          "y": -26,
+          "width": 4.4,
+          "height": 4.4,
+          "fill": {
+            "param": "burstColor"
+          },
+          "start": 0.62,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "y",
+              "amplitude": 1,
+              "period": 2.2
+            }
+          ]
+        },
+        {
+          "id": "c3",
+          "type": "polygon",
+          "sides": 3,
+          "radius": 3,
+          "x": 37,
+          "y": 17,
+          "fill": {
+            "param": "inkColor"
+          },
+          "start": 0.7,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 40,
+              "period": 3
+            }
+          ]
+        },
+        {
+          "id": "c4",
+          "type": "ellipse",
+          "x": -37,
+          "y": 21,
+          "width": 5.5,
+          "height": 5.5,
+          "stroke": {
+            "color": {
+              "param": "inkColor"
+            },
+            "width": 0.9
+          },
+          "start": 0.78,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "scale",
+              "amplitude": 0.15,
+              "period": 1.4
+            }
+          ]
+        },
+        {
+          "id": "c5",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2.2,
+          "innerRadius": 0.7,
+          "x": 29,
+          "y": 26,
+          "fill": {
+            "param": "burstColor"
+          },
+          "start": 0.85,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": -30,
+              "period": 2
+            }
+          ]
+        },
+        {
+          "id": "c6",
+          "type": "rect",
+          "x": -29,
+          "y": -29,
+          "width": 1.4,
+          "height": 6,
+          "radius": 0.7,
+          "rotation": 30,
+          "fill": {
+            "param": "burstColor"
+          },
+          "start": 0.9,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.5
+          },
+          "ambient": [
+            {
+              "prop": "rotation",
+              "amplitude": 20,
+              "period": 2.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subline",
+      "type": "text",
+      "text": "{{subline}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 3.3,
+        "lineHeight": 1.2,
+        "letterSpacing": -0.01
+      },
+      "color": {
+        "param": "inkColor"
+      },
+      "align": "center",
+      "maxWidth": "86%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "x": "50%w",
+      "y": "82.5%h",
+      "start": 1.0,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.5,
+        "distance": 1.5,
+        "stagger": {
+          "by": "word",
+          "each": 0.05
+        }
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.15
+      }
+    },
+    {
+      "id": "cta",
+      "type": "text",
+      "text": "{{cta|upper}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 800,
+        "size": 3.2,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.14
+      },
+      "color": {
+        "param": "bgColor"
+      },
+      "align": "center",
+      "maxWidth": 60,
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "background": {
+        "fill": {
+          "param": "inkColor"
+        },
+        "padding": [
+          4,
+          1.7
+        ],
+        "radius": 10
+      },
+      "x": "50%w",
+      "y": "91.5%h",
+      "start": 1.2,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.6
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.1,
+        "ease": "inCubic"
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.03,
+          "period": 0.9
+        }
+      ]
+    }
+  ]
+}

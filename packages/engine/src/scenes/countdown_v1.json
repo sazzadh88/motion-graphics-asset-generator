@@ -1,0 +1,674 @@
+{
+  "format": "mg-scene@1",
+  "id": "countdown_v1",
+  "name": "Launch Countdown",
+  "description": "Launch countdown from 3-10 down to zero with digit pops, pulse rings and a draining timer bar.",
+  "category": "event",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "fonts": [
+    "Anton",
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Launching in",
+      "maxLength": 24,
+      "group": "Text"
+    },
+    {
+      "key": "eventName",
+      "label": "Event / product",
+      "type": "text",
+      "default": "Aurora One",
+      "maxLength": 32,
+      "group": "Text"
+    },
+    {
+      "key": "dateLine",
+      "label": "Date line",
+      "type": "text",
+      "default": "Nov 21 · 10:00 AM PT · Live online",
+      "maxLength": 48,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#1A0B2E",
+      "group": "Colors"
+    },
+    {
+      "key": "accentColor",
+      "label": "Accent",
+      "type": "color",
+      "default": "#FF3D6E",
+      "group": "Colors"
+    },
+    {
+      "key": "accent2",
+      "label": "Accent 2",
+      "type": "color",
+      "default": "#FFC93C",
+      "group": "Colors"
+    },
+    {
+      "key": "textColor",
+      "label": "Text",
+      "type": "color",
+      "default": "#FFFFFF",
+      "group": "Colors"
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    },
+    {
+      "key": "startAt",
+      "label": "Count from",
+      "type": "number",
+      "default": 5,
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "group": "Text"
+    },
+    {
+      "key": "showBar",
+      "label": "Timer bar",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "linear": {
+      "angle": 180,
+      "stops": [
+        [
+          0,
+          {
+            "param": "bgColor"
+          }
+        ],
+        [
+          0.55,
+          {
+            "mix": [
+              {
+                "param": "bgColor"
+              },
+              {
+                "param": "accentColor"
+              }
+            ],
+            "t": 0.14
+          }
+        ],
+        [
+          1,
+          {
+            "param": "bgColor"
+          }
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "glow",
+      "type": "ellipse",
+      "x": "50%w",
+      "y": "44%h",
+      "width": 130,
+      "height": 130,
+      "fill": {
+        "radial": {
+          "cx": "50%w",
+          "cy": "50%h",
+          "r": 50,
+          "stops": [
+            [
+              0,
+              {
+                "param": "accentColor",
+                "alpha": 0.32
+              }
+            ],
+            [
+              0.5,
+              {
+                "param": "accentColor",
+                "alpha": 0.08
+              }
+            ],
+            [
+              1,
+              {
+                "param": "accentColor",
+                "alpha": 0
+              }
+            ]
+          ]
+        }
+      },
+      "enter": {
+        "preset": "fade",
+        "duration": 1,
+        "ease": "outQuad"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.06,
+          "period": 0.8
+        }
+      ]
+    },
+    {
+      "id": "dial",
+      "type": "group",
+      "x": "50%w",
+      "y": "44%h",
+      "enter": {
+        "preset": "scale-in",
+        "duration": 0.8,
+        "delay": 0.1,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.4,
+        "delay": 0.15,
+        "ease": "inCubic"
+      },
+      "layers": [
+        {
+          "id": "outerDash",
+          "type": "ellipse",
+          "width": 56,
+          "height": 56,
+          "stroke": {
+            "color": {
+              "param": "textColor",
+              "alpha": 0.28
+            },
+            "width": 0.35,
+            "dash": [
+              0.5,
+              1.6
+            ]
+          },
+          "keyframes": {
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 6,
+                "v": 90
+              }
+            ]
+          }
+        },
+        {
+          "id": "ring",
+          "type": "ellipse",
+          "width": 48,
+          "height": 48,
+          "stroke": {
+            "color": {
+              "param": "accentColor"
+            },
+            "width": 0.9
+          }
+        },
+        {
+          "id": "tickTop",
+          "type": "rect",
+          "y": -24,
+          "width": 1.1,
+          "height": 3.4,
+          "radius": 0.55,
+          "fill": {
+            "param": "accent2"
+          }
+        },
+        {
+          "id": "pulse",
+          "type": "ellipse",
+          "width": 48,
+          "height": 48,
+          "stroke": {
+            "color": {
+              "param": "accent2"
+            },
+            "width": 0.6
+          },
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0.5,
+                "v": 1
+              },
+              {
+                "t": 1.1,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 1.29,
+                "v": 1.45
+              },
+              {
+                "t": 1.3,
+                "v": 1
+              },
+              {
+                "t": 1.9,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 2.09,
+                "v": 1.45
+              },
+              {
+                "t": 2.1,
+                "v": 1
+              },
+              {
+                "t": 2.7,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 2.89,
+                "v": 1.45
+              },
+              {
+                "t": 2.9,
+                "v": 1
+              },
+              {
+                "t": 3.5,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 3.69,
+                "v": 1.45
+              },
+              {
+                "t": 3.7,
+                "v": 1
+              },
+              {
+                "t": 4.3,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 4.49,
+                "v": 1.45
+              },
+              {
+                "t": 4.5,
+                "v": 1
+              },
+              {
+                "t": 5.1,
+                "v": 1.45,
+                "ease": "outCubic"
+              },
+              {
+                "t": 5.29,
+                "v": 1.45
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.5,
+                "v": 0.9
+              },
+              {
+                "t": 1.1,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 1.29,
+                "v": 0
+              },
+              {
+                "t": 1.3,
+                "v": 0.9
+              },
+              {
+                "t": 1.9,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 2.09,
+                "v": 0
+              },
+              {
+                "t": 2.1,
+                "v": 0.9
+              },
+              {
+                "t": 2.7,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 2.89,
+                "v": 0
+              },
+              {
+                "t": 2.9,
+                "v": 0.9
+              },
+              {
+                "t": 3.5,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 3.69,
+                "v": 0
+              },
+              {
+                "t": 3.7,
+                "v": 0.9
+              },
+              {
+                "t": 4.3,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 4.49,
+                "v": 0
+              },
+              {
+                "t": 4.5,
+                "v": 0.9
+              },
+              {
+                "t": 5.1,
+                "v": 0,
+                "ease": "outQuad"
+              },
+              {
+                "t": 5.29,
+                "v": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "digits",
+          "type": "counter",
+          "from": { "param": "startAt" },
+          "to": 0,
+          "step": 1,
+          "count": { "duration": 4, "delay": 0.5, "ease": "linear" },
+          "decimals": 0,
+          "font": {
+            "family": "Anton",
+            "weight": 400,
+            "size": 37,
+            "lineHeight": 1
+          },
+          "color": {
+            "param": "textColor"
+          },
+          "align": "center",
+          "y": 0.5,
+          "keyframes": {
+            "scale": [
+              { "t": 0.5, "v": 1.14 },
+              { "t": 0.9, "v": 1, "ease": "outBack" },
+              { "t": 4.49, "v": 1 },
+              { "t": 4.5, "v": 1.14 },
+              { "t": 4.9, "v": 1, "ease": "outBack" }
+            ]
+          },
+          "enter": {
+            "preset": "pop",
+            "duration": 0.6,
+            "delay": 0.3
+          }
+        }
+      ]
+    },
+    {
+      "id": "logo",
+      "type": "image",
+      "src": {
+        "param": "logoUrl"
+      },
+      "x": "50%w",
+      "y": "6%h",
+      "width": 22,
+      "height": 5,
+      "fit": "contain",
+      "enter": {
+        "preset": "drop",
+        "duration": 0.6,
+        "distance": 2
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.25
+      }
+    },
+    {
+      "id": "label",
+      "type": "text",
+      "text": "{{label|upper}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 800,
+        "size": 4,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.32
+      },
+      "color": {
+        "param": "accent2"
+      },
+      "align": "center",
+      "maxWidth": "84%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "x": "50%w",
+      "y": "12%h",
+      "enter": {
+        "preset": "mask-up",
+        "duration": 0.55,
+        "stagger": {
+          "by": "char",
+          "each": 0.025
+        }
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.3
+      }
+    },
+    {
+      "id": "bar",
+      "type": "group",
+      "visibleIf": {
+        "param": "showBar"
+      },
+      "x": "50%w",
+      "y": "74.5%h",
+      "enter": {
+        "preset": "fade",
+        "duration": 0.4,
+        "delay": 0.35
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      },
+      "layers": [
+        {
+          "id": "barTrack",
+          "type": "rect",
+          "width": 56,
+          "height": 1.3,
+          "radius": 0.65,
+          "fill": {
+            "param": "textColor",
+            "alpha": 0.14
+          }
+        },
+        {
+          "id": "barFill",
+          "type": "rect",
+          "x": -28,
+          "anchor": [
+            0,
+            0.5
+          ],
+          "width": 56,
+          "height": 1.3,
+          "radius": 0.65,
+          "fill": {
+            "linear": {
+              "angle": 90,
+              "stops": [
+                [
+                  0,
+                  {
+                    "param": "accentColor"
+                  }
+                ],
+                [
+                  1,
+                  {
+                    "param": "accent2"
+                  }
+                ]
+              ]
+            }
+          },
+          "keyframes": {
+            "scaleX": [
+              {
+                "t": 0.5,
+                "v": 1
+              },
+              {
+                "t": 4.5,
+                "v": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "eventName",
+      "type": "text",
+      "text": "{{eventName|upper}}",
+      "font": {
+        "family": "Montserrat Variable",
+        "weight": 900,
+        "size": 8.5,
+        "lineHeight": 1.02,
+        "letterSpacing": -0.01
+      },
+      "color": {
+        "param": "textColor"
+      },
+      "align": "center",
+      "maxWidth": "86%w",
+      "maxLines": 2,
+      "autoFit": {
+        "minSize": 5
+      },
+      "x": "50%w",
+      "y": "84%h",
+      "start": 0.45,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.6,
+        "distance": 3,
+        "ease": "outBack",
+        "stagger": {
+          "by": "char",
+          "each": 0.03
+        }
+      },
+      "exit": {
+        "preset": "drop",
+        "duration": 0.35,
+        "delay": 0.1,
+        "distance": 2,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "dateLine",
+      "type": "text",
+      "text": "{{dateLine|upper}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 600,
+        "size": 2.9,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.12
+      },
+      "color": {
+        "param": "textColor",
+        "alpha": 0.72
+      },
+      "align": "center",
+      "maxWidth": "88%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.1
+      },
+      "x": "50%w",
+      "y": "93%h",
+      "start": 0.8,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.6
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.1
+      }
+    }
+  ]
+}

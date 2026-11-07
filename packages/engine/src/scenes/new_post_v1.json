@@ -1,0 +1,220 @@
+{
+  "format": "mg-scene@1",
+  "id": "new_post_v1",
+  "name": "New Post Alert",
+  "description": "Bold sticker-style announcement for a new video or post: thumbnail card with play button, title, handle and a Watch now call to action.",
+  "category": "social",
+  "defaultSettings": { "width": 1080, "height": 1920, "fps": 30, "durationFrames": 150, "transparent": false },
+  "fonts": ["Anton", "Montserrat Variable", "Inter Variable"],
+  "params": [
+    { "key": "kicker", "label": "Tag", "type": "text", "default": "New video", "maxLength": 14, "group": "Text" },
+    { "key": "title", "label": "Title", "type": "text", "default": "I tried every productivity app so you don't have to", "maxLength": 70, "group": "Text" },
+    { "key": "handle", "label": "Handle", "type": "text", "default": "@studio.maya", "maxLength": 28, "group": "Text" },
+    { "key": "cta", "label": "Button", "type": "text", "default": "Watch now", "maxLength": 14, "group": "Text" },
+    { "key": "duration", "label": "Video length", "type": "text", "default": "12:48", "maxLength": 8, "group": "Text" },
+    { "key": "thumbUrl", "label": "Thumbnail", "type": "image", "default": null, "group": "Media" },
+    { "key": "bgColor", "label": "Background", "type": "color", "default": "#FFE45C", "group": "Colors" },
+    { "key": "inkColor", "label": "Ink", "type": "color", "default": "#141414", "group": "Colors" },
+    { "key": "accentColor", "label": "Accent", "type": "color", "default": "#FF3D6E", "group": "Colors" },
+    { "key": "accent2", "label": "Accent 2", "type": "color", "default": "#FF8A2B", "group": "Colors" },
+    { "key": "showTicker", "label": "Scrolling ticker", "type": "boolean", "default": true, "group": "Style" },
+    { "key": "showDuration", "label": "Length badge", "type": "boolean", "default": true, "group": "Style" }
+  ],
+  "background": { "param": "bgColor" },
+  "layers": [
+    {
+      "id": "tickerTop",
+      "type": "text",
+      "visibleIf": { "param": "showTicker" },
+      "text": "{{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}}",
+      "font": { "family": "Anton", "weight": 400, "size": "4.6%h", "lineHeight": 1, "letterSpacing": 0.02 },
+      "color": { "param": "inkColor", "alpha": 0.09 },
+      "align": "left",
+      "anchor": [0, 0.5],
+      "y": "5.5%h",
+      "keyframes": { "x": [{ "t": 0, "v": "-6%w" }, { "t": 5, "v": "-46%w" }] },
+      "enter": { "preset": "fade", "duration": 0.6 },
+      "exit": { "preset": "fade", "duration": 0.4 }
+    },
+    {
+      "id": "tickerBottom",
+      "type": "text",
+      "visibleIf": { "param": "showTicker" },
+      "text": "{{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}} • {{kicker|upper}}",
+      "font": { "family": "Anton", "weight": 400, "size": "4.6%h", "lineHeight": 1, "letterSpacing": 0.02 },
+      "color": { "param": "inkColor", "alpha": 0.09 },
+      "align": "left",
+      "anchor": [0, 0.5],
+      "y": "94.5%h",
+      "keyframes": { "x": [{ "t": 0, "v": "-60%w" }, { "t": 5, "v": "-20%w" }] },
+      "enter": { "preset": "fade", "duration": 0.6 },
+      "exit": { "preset": "fade", "duration": 0.4 }
+    },
+    {
+      "id": "stack",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "card",
+          "type": "group",
+          "y": -10,
+          "start": 0.15,
+          "enter": { "preset": "rise", "duration": 0.8, "distance": 10, "ease": "outBack" },
+          "exit": { "preset": "drop", "duration": 0.45, "delay": 0.25, "distance": 6, "ease": "inCubic" },
+          "layers": [
+            { "id": "cardShadow", "type": "rect", "x": 1.6, "y": 1.6, "width": 76, "height": 42.75, "radius": 3.2, "fill": { "param": "inkColor" } },
+            {
+              "id": "placeholder",
+              "type": "rect",
+              "visibleIf": { "param": "thumbUrl", "not": true },
+              "width": 76,
+              "height": 42.75,
+              "radius": 3.2,
+              "fill": {
+                "linear": {
+                  "angle": 120,
+                  "stops": [
+                    [0, { "param": "accentColor" }],
+                    [1, { "param": "accent2" }]
+                  ]
+                }
+              }
+            },
+            { "id": "phCircle", "type": "ellipse", "visibleIf": { "param": "thumbUrl", "not": true }, "x": 24, "y": -10, "width": 34, "height": 34, "fill": { "param": "bgColor", "alpha": 0.22 }, "ambient": [{ "prop": "scale", "amplitude": 0.05, "period": 3 }] },
+            { "id": "phCircle2", "type": "ellipse", "visibleIf": { "param": "thumbUrl", "not": true }, "x": -27, "y": 14, "width": 20, "height": 20, "stroke": { "color": { "param": "bgColor", "alpha": 0.35 }, "width": 0.5 } },
+            { "id": "thumb", "type": "image", "src": { "param": "thumbUrl" }, "width": 76, "height": 42.75, "fit": "cover", "radius": 3.2 },
+            { "id": "cardBorder", "type": "rect", "width": 76, "height": 42.75, "radius": 3.2, "stroke": { "color": { "param": "inkColor" }, "width": 0.55 } },
+            {
+              "id": "durationChip",
+              "type": "text",
+              "visibleIf": { "param": "showDuration" },
+              "text": "{{duration}}",
+              "font": { "family": "Inter Variable", "weight": 700, "size": 2.3, "lineHeight": 1.1, "letterSpacing": 0.02 },
+              "color": "#FFFFFF",
+              "background": { "fill": { "param": "inkColor", "alpha": 0.85 }, "padding": [1.3, 0.7], "radius": 0.9 },
+              "x": 35.5,
+              "y": 18.8,
+              "anchor": [1, 1],
+              "start": 0.9,
+              "enter": { "preset": "fade", "duration": 0.4 }
+            },
+            {
+              "id": "play",
+              "type": "group",
+              "start": 0.75,
+              "enter": { "preset": "pop", "duration": 0.6 },
+              "ambient": [{ "prop": "scale", "amplitude": 0.05, "period": 1.4 }],
+              "layers": [
+                { "id": "playDisc", "type": "ellipse", "width": 14, "height": 14, "fill": "#FFFFFF", "stroke": { "color": { "param": "inkColor" }, "width": 0.55 } },
+                { "id": "playIcon", "type": "polygon", "sides": 3, "radius": 3.4, "rotation": 90, "x": 0.7, "fill": { "param": "inkColor" } }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tag",
+          "type": "text",
+          "text": "{{kicker|upper}}",
+          "font": { "family": "Anton", "weight": 400, "size": 6, "lineHeight": 1.05, "letterSpacing": 0.03 },
+          "color": "#FFFFFF",
+          "background": { "fill": { "param": "inkColor" }, "padding": [2.6, 1.1], "radius": 1 },
+          "maxWidth": 60,
+          "maxLines": 1,
+          "autoFit": { "minSize": 4 },
+          "x": -35,
+          "y": -33.5,
+          "anchor": [0, 0.5],
+          "rotation": -4,
+          "start": 0.45,
+          "enter": { "preset": "pop", "duration": 0.6 },
+          "exit": { "preset": "scale-in", "duration": 0.35, "delay": 0.35 }
+        },
+        {
+          "id": "tagDot",
+          "type": "ellipse",
+          "x": -36.5,
+          "y": -39,
+          "width": 3.2,
+          "height": 3.2,
+          "fill": { "param": "accentColor" },
+          "stroke": { "color": { "param": "inkColor" }, "width": 0.45 },
+          "start": 0.7,
+          "enter": { "preset": "pop", "duration": 0.5 },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.35 },
+          "ambient": [{ "prop": "scale", "amplitude": 0.18, "period": 0.9 }]
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "text": "{{title}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 5, "lineHeight": 1.1, "letterSpacing": -0.02 },
+          "color": { "param": "inkColor" },
+          "align": "left",
+          "maxWidth": 77,
+          "maxLines": 2,
+          "autoFit": { "minSize": 3.6 },
+          "x": -38,
+          "y": 15.5,
+          "anchor": [0, 0],
+          "start": 0.7,
+          "enter": { "preset": "mask-up", "duration": 0.6, "stagger": { "by": "word", "each": 0.05 } },
+          "exit": { "preset": "fade", "duration": 0.35, "delay": 0.15 }
+        },
+        {
+          "id": "handle",
+          "type": "text",
+          "text": "{{handle}}",
+          "font": { "family": "Inter Variable", "weight": 600, "size": 3, "lineHeight": 1.2 },
+          "color": { "param": "inkColor", "alpha": 0.72 },
+          "align": "left",
+          "maxWidth": 40,
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.2 },
+          "x": -38,
+          "y": 33,
+          "anchor": [0, 0.5],
+          "start": 1.15,
+          "enter": { "preset": "slide-right", "duration": 0.5, "distance": 3 },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.05 }
+        },
+        {
+          "id": "ctaShadow",
+          "type": "text",
+          "text": "{{cta|upper}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 3, "lineHeight": 1.2, "letterSpacing": 0.06 },
+          "color": "#00000000",
+          "background": { "fill": { "param": "inkColor" }, "padding": [3.2, 1.8], "radius": 10 },
+          "maxWidth": 30,
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.2 },
+          "x": 39,
+          "y": 34,
+          "anchor": [1, 0.5],
+          "start": 1.3,
+          "enter": { "preset": "pop", "duration": 0.6 },
+          "exit": { "preset": "scale-in", "duration": 0.3 }
+        },
+        {
+          "id": "cta",
+          "type": "text",
+          "text": "{{cta|upper}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 3, "lineHeight": 1.2, "letterSpacing": 0.06 },
+          "color": "#FFFFFF",
+          "background": { "fill": { "param": "accentColor" }, "padding": [3.2, 1.8], "radius": 10 },
+          "maxWidth": 30,
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.2 },
+          "x": 38,
+          "y": 33,
+          "anchor": [1, 0.5],
+          "start": 1.3,
+          "enter": { "preset": "pop", "duration": 0.6 },
+          "exit": { "preset": "scale-in", "duration": 0.3 },
+          "ambient": [{ "prop": "y", "amplitude": 0.35, "period": 1.2 }]
+        }
+      ]
+    }
+  ]
+}

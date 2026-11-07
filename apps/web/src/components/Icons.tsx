@@ -69,3 +69,30 @@ export const TrashIcon = () => (
     <path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.5 8.5h6l.5-8.5" />
   </Svg>
 );
+export const ShuffleIcon = () => (
+  <Svg>
+    <path d="M2 4.5h2.5c3 0 4 7 7 7H14M12 9.5l2 2-2 2M2 11.5h2.5c1.2 0 2-1 2.6-2.2M9 6.7c.6-1.2 1.4-2.2 2.5-2.2H14M12 2.5l2 2-2 2" />
+  </Svg>
+);
+export const ImageIcon = () => (
+  <Svg>
+    <rect x="2" y="3" width="12" height="10" rx="1.5" />
+    <circle cx="5.75" cy="6.25" r="1.25" />
+    <path d="M2.5 12l3.5-3.5 2.5 2.5 2-2 3 3" />
+  </Svg>
+);
+export const SparklesIcon = () => (
+  <Svg>
+    <path d="M6.5 2.5l1.1 3.4 3.4 1.1-3.4 1.1-1.1 3.4-1.1-3.4L2 7l3.4-1.1zM12 9.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6zM12 2l.4 1.1 1.1.4-1.1.4-.4 1.1-.4-1.1-1.1-.4 1.1-.4z" />
+  </Svg>
+);
+export const CheckIcon = () => (
+  <Svg>
+    <path d="M3 8.5l3 3 7-7" />
+  </Svg>
+);
+export const CloseIcon = () => (
+  <Svg>
+    <path d="M4 4l8 8M12 4l-8 8" />
+  </Svg>
+);

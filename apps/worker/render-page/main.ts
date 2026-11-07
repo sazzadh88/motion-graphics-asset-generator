@@ -1,6 +1,6 @@
 // Headless render page: driven from Node via window.__mg (see src/render.ts).
 import '@mg/engine/fonts';
-import { preloadAssets, renderFrame, validatePayload } from '@mg/engine';
+import { preloadAssets, registerScene, renderFrame, validatePayload } from '@mg/engine';
 import type { LoadedAssets, RenderJobPayload } from '@mg/engine';
 
 let payload: RenderJobPayload | null = null;
@@ -42,7 +42,9 @@ async function captureBatch(start: number, count: number): Promise<string[]> {
   return Promise.all(blobs.map(async (b) => toBase64(await (await b).arrayBuffer())));
 }
 
-async function init(input: unknown): Promise<void> {
+/** `scene`: the mg-scene@1 document of a generated template, registered before validating. */
+async function init(input: unknown, scene?: unknown): Promise<void> {
+  if (scene !== undefined && scene !== null) registerScene(scene);
   const v = validatePayload(input);
   if (!v.ok) throw new Error(`Invalid payload: ${v.errors.join('; ')}`);
   payload = v.payload;

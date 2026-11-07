@@ -1,0 +1,706 @@
+{
+  "format": "mg-scene@1",
+  "id": "event_announcement_v1",
+  "name": "Event Announcement",
+  "description": "Swiss-grid event announcement: geometric tiles slide in above a bold title, date, venue and a register button.",
+  "category": "event",
+  "defaultSettings": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "fonts": [
+    "Anton",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "text",
+      "default": "Annual design summit",
+      "maxLength": 36,
+      "group": "Text"
+    },
+    {
+      "key": "title",
+      "label": "Event title",
+      "type": "text",
+      "default": "Form & Function 2027",
+      "maxLength": 40,
+      "group": "Text"
+    },
+    {
+      "key": "date",
+      "label": "Date",
+      "type": "text",
+      "default": "March 14–16, 2027",
+      "maxLength": 28,
+      "group": "Text"
+    },
+    {
+      "key": "venue",
+      "label": "Venue",
+      "type": "text",
+      "default": "Kunsthalle, Berlin",
+      "maxLength": 32,
+      "group": "Text"
+    },
+    {
+      "key": "cta",
+      "label": "Button",
+      "type": "text",
+      "default": "Register now",
+      "maxLength": 18,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Paper",
+      "type": "color",
+      "default": "#F3F0E8",
+      "group": "Colors"
+    },
+    {
+      "key": "inkColor",
+      "label": "Ink",
+      "type": "color",
+      "default": "#141414",
+      "group": "Colors"
+    },
+    {
+      "key": "accentColor",
+      "label": "Accent",
+      "type": "color",
+      "default": "#E5432D",
+      "group": "Colors"
+    },
+    {
+      "key": "accent2",
+      "label": "Accent 2",
+      "type": "color",
+      "default": "#2546D1",
+      "group": "Colors"
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    }
+  ],
+  "background": {
+    "param": "bgColor"
+  },
+  "layers": [
+    {
+      "id": "tile1",
+      "type": "rect",
+      "x": "0%w",
+      "y": "0%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "25.1%w",
+      "height": "34%h",
+      "fill": {
+        "param": "accentColor"
+      },
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.55,
+        "delay": 0.0,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "wipe-right",
+        "duration": 0.4,
+        "delay": 0.0,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "tile2",
+      "type": "rect",
+      "x": "25%w",
+      "y": "0%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "25.1%w",
+      "height": "34%h",
+      "fill": {
+        "param": "inkColor"
+      },
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.55,
+        "delay": 0.08,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "wipe-right",
+        "duration": 0.4,
+        "delay": 0.06,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "tile3",
+      "type": "rect",
+      "x": "50%w",
+      "y": "0%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "25.1%w",
+      "height": "34%h",
+      "fill": {
+        "param": "accent2"
+      },
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.55,
+        "delay": 0.16,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "wipe-right",
+        "duration": 0.4,
+        "delay": 0.12,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "tile4",
+      "type": "rect",
+      "x": "75%w",
+      "y": "0%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "25%w",
+      "height": "34%h",
+      "fill": {
+        "mix": [
+          {
+            "param": "bgColor"
+          },
+          {
+            "param": "inkColor"
+          }
+        ],
+        "t": 0.08
+      },
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.55,
+        "delay": 0.24,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "wipe-right",
+        "duration": 0.4,
+        "delay": 0.18,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "circle",
+      "type": "ellipse",
+      "x": "12.5%w",
+      "y": "17%h",
+      "width": 20,
+      "height": 20,
+      "fill": {
+        "param": "bgColor"
+      },
+      "start": 0.35,
+      "enter": {
+        "preset": "slide-left",
+        "duration": 0.7,
+        "distance": 12,
+        "ease": "outBack"
+      },
+      "exit": {
+        "preset": "pop",
+        "duration": 0.35,
+        "delay": 0.4
+      },
+      "ambient": [
+        {
+          "prop": "x",
+          "amplitude": 1.2,
+          "period": 4
+        }
+      ]
+    },
+    {
+      "id": "triangle",
+      "type": "polygon",
+      "sides": 3,
+      "radius": 11.5,
+      "x": "37.5%w",
+      "y": "18.5%h",
+      "fill": {
+        "param": "accentColor"
+      },
+      "start": 0.45,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.7,
+        "distance": 12,
+        "ease": "outBack"
+      },
+      "exit": {
+        "preset": "pop",
+        "duration": 0.35,
+        "delay": 0.36
+      },
+      "ambient": [
+        {
+          "prop": "rotation",
+          "amplitude": 6,
+          "period": 5
+        }
+      ]
+    },
+    {
+      "id": "ring",
+      "type": "ellipse",
+      "x": "62.5%w",
+      "y": "17%h",
+      "width": 18,
+      "height": 18,
+      "stroke": {
+        "color": {
+          "param": "bgColor"
+        },
+        "width": 2.6
+      },
+      "start": 0.55,
+      "enter": {
+        "preset": "scale-in",
+        "duration": 0.7,
+        "ease": "outBack"
+      },
+      "exit": {
+        "preset": "pop",
+        "duration": 0.35,
+        "delay": 0.32
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.06,
+          "period": 3
+        }
+      ]
+    },
+    {
+      "id": "diamond",
+      "type": "rect",
+      "x": "87.5%w",
+      "y": "17%h",
+      "width": 13,
+      "height": 13,
+      "rotation": 45,
+      "fill": {
+        "param": "inkColor"
+      },
+      "start": 0.65,
+      "enter": {
+        "preset": "slide-right",
+        "duration": 0.7,
+        "distance": 12,
+        "ease": "outBack"
+      },
+      "exit": {
+        "preset": "pop",
+        "duration": 0.35,
+        "delay": 0.28
+      },
+      "keyframes": {
+        "rotation": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 0.9,
+            "v": 45,
+            "ease": "outBack"
+          }
+        ]
+      }
+    },
+    {
+      "id": "baseRule",
+      "type": "rect",
+      "x": "0%w",
+      "y": "34%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": "100%w",
+      "height": 0.5,
+      "fill": {
+        "param": "inkColor"
+      },
+      "start": 0.3,
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.8,
+        "ease": "outQuart"
+      },
+      "exit": {
+        "preset": "wipe-right",
+        "duration": 0.4,
+        "delay": 0.25,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "eyebrow",
+      "type": "text",
+      "text": "{{eyebrow|upper}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 2.6,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.22
+      },
+      "color": {
+        "param": "accentColor"
+      },
+      "maxWidth": "88%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 1.9
+      },
+      "x": "6%w",
+      "y": "41.5%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 0.6,
+      "enter": {
+        "preset": "slide-right",
+        "duration": 0.5,
+        "distance": 2,
+        "stagger": {
+          "by": "char",
+          "each": 0.012
+        }
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.35
+      }
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "text": "{{title|upper}}",
+      "font": {
+        "family": "Anton",
+        "weight": 400,
+        "size": 11.4,
+        "lineHeight": 0.98,
+        "letterSpacing": 0.005
+      },
+      "color": {
+        "param": "inkColor"
+      },
+      "maxWidth": "88%w",
+      "maxLines": 2,
+      "autoFit": {
+        "minSize": 7.5
+      },
+      "x": "6%w",
+      "y": "46.5%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 0.7,
+      "enter": {
+        "preset": "mask-up",
+        "duration": 0.7,
+        "ease": "outCubic",
+        "stagger": {
+          "by": "word",
+          "each": 0.08
+        }
+      },
+      "exit": {
+        "preset": "mask-up",
+        "duration": 0.45,
+        "delay": 0.2,
+        "ease": "inCubic",
+        "stagger": {
+          "by": "word",
+          "each": 0.04
+        }
+      }
+    },
+    {
+      "id": "dateLabel",
+      "type": "text",
+      "text": "DATE",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 2.1,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.2
+      },
+      "color": {
+        "param": "inkColor",
+        "alpha": 0.55
+      },
+      "x": "6%w",
+      "y": "74%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.05,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "date",
+      "type": "text",
+      "text": "{{date}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 4.2,
+        "lineHeight": 1.15,
+        "letterSpacing": -0.01
+      },
+      "color": {
+        "param": "inkColor"
+      },
+      "maxWidth": "40%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "x": "6%w",
+      "y": "77.5%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.1,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.55,
+        "distance": 1.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "colRule",
+      "type": "rect",
+      "x": "48%w",
+      "y": "74%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "width": 0.3,
+      "height": 10,
+      "fill": {
+        "param": "inkColor",
+        "alpha": 0.3
+      },
+      "start": 1.0,
+      "keyframes": {
+        "scaleY": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 0.5,
+            "v": 1,
+            "ease": "outCubic"
+          }
+        ]
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "venueLabel",
+      "type": "text",
+      "text": "VENUE",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 2.1,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.2
+      },
+      "color": {
+        "param": "inkColor",
+        "alpha": 0.55
+      },
+      "x": "51%w",
+      "y": "74%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.2,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "venue",
+      "type": "text",
+      "text": "{{venue}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 700,
+        "size": 4.2,
+        "lineHeight": 1.15,
+        "letterSpacing": -0.01
+      },
+      "color": {
+        "param": "inkColor"
+      },
+      "maxWidth": "43%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2.4
+      },
+      "x": "51%w",
+      "y": "77.5%h",
+      "anchor": [
+        0,
+        0
+      ],
+      "start": 1.25,
+      "enter": {
+        "preset": "rise",
+        "duration": 0.55,
+        "distance": 1.5
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.2
+      }
+    },
+    {
+      "id": "cta",
+      "type": "text",
+      "text": "{{cta|upper}}",
+      "font": {
+        "family": "Inter Variable",
+        "weight": 800,
+        "size": 2.8,
+        "lineHeight": 1.2,
+        "letterSpacing": 0.12
+      },
+      "color": {
+        "param": "bgColor"
+      },
+      "maxWidth": "60%w",
+      "maxLines": 1,
+      "autoFit": {
+        "minSize": 2
+      },
+      "background": {
+        "fill": {
+          "param": "accentColor"
+        },
+        "padding": [
+          3,
+          1.6
+        ],
+        "radius": 0
+      },
+      "x": "6%w",
+      "y": "91%h",
+      "anchor": [
+        0,
+        0.5
+      ],
+      "start": 1.4,
+      "enter": {
+        "preset": "wipe-right",
+        "duration": 0.55,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "wipe-left",
+        "duration": 0.35,
+        "delay": 0.1,
+        "ease": "inCubic"
+      }
+    },
+    {
+      "id": "logo",
+      "type": "image",
+      "src": {
+        "param": "logoUrl"
+      },
+      "x": "94%w",
+      "y": "91%h",
+      "anchor": [
+        1,
+        0.5
+      ],
+      "width": 18,
+      "height": 5.5,
+      "fit": "contain",
+      "start": 1.5,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.6
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.3,
+        "delay": 0.1
+      }
+    }
+  ]
+}

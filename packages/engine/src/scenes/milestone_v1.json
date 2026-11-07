@@ -1,0 +1,1076 @@
+{
+  "format": "mg-scene@1",
+  "id": "milestone_v1",
+  "name": "Milestone Celebration",
+  "description": "Follower milestone celebration: a big counter rolls up to your number over a rotating burst, with confetti, a thank-you line and your handle.",
+  "category": "data",
+  "defaultSettings": {
+    "width": 1080,
+    "height": 1350,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "fonts": [
+    "Anton",
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "value",
+      "label": "Milestone",
+      "type": "number",
+      "default": 1000000,
+      "min": 0,
+      "max": 99999999,
+      "step": 1,
+      "group": "Number"
+    },
+    {
+      "key": "suffix",
+      "label": "Suffix",
+      "type": "text",
+      "default": "",
+      "maxLength": 3,
+      "group": "Number"
+    },
+    {
+      "key": "label",
+      "label": "Label",
+      "type": "text",
+      "default": "Followers",
+      "maxLength": 18,
+      "group": "Text"
+    },
+    {
+      "key": "thanks",
+      "label": "Thank-you line",
+      "type": "text",
+      "default": "Thank you for being part of this journey. Here is to the next million.",
+      "maxLength": 90,
+      "group": "Text"
+    },
+    {
+      "key": "handle",
+      "label": "Handle",
+      "type": "text",
+      "default": "@lumen.studio",
+      "maxLength": 28,
+      "group": "Text"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#3B1B8F",
+      "group": "Colors"
+    },
+    {
+      "key": "bgColor2",
+      "label": "Background 2",
+      "type": "color",
+      "default": "#B4166E",
+      "group": "Colors"
+    },
+    {
+      "key": "goldColor",
+      "label": "Highlight",
+      "type": "color",
+      "default": "#FFC83D",
+      "group": "Colors"
+    },
+    {
+      "key": "confetti2",
+      "label": "Confetti 2",
+      "type": "color",
+      "default": "#5FE3C0",
+      "group": "Colors"
+    },
+    {
+      "key": "confetti3",
+      "label": "Confetti 3",
+      "type": "color",
+      "default": "#FF8CC6",
+      "group": "Colors"
+    },
+    {
+      "key": "showConfetti",
+      "label": "Confetti",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    },
+    {
+      "key": "showBurst",
+      "label": "Rotating burst",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "linear": {
+      "angle": 150,
+      "stops": [
+        [
+          0,
+          {
+            "param": "bgColor"
+          }
+        ],
+        [
+          1,
+          {
+            "param": "bgColor2"
+          }
+        ]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "glow",
+      "type": "ellipse",
+      "x": "50%w",
+      "y": "50%h",
+      "width": 110,
+      "height": 110,
+      "fill": {
+        "radial": {
+          "cx": "50%w",
+          "cy": "50%h",
+          "r": 50,
+          "stops": [
+            [
+              0,
+              {
+                "param": "goldColor",
+                "alpha": 0.22
+              }
+            ],
+            [
+              0.5,
+              {
+                "param": "goldColor",
+                "alpha": 0.06
+              }
+            ],
+            [
+              1,
+              {
+                "param": "goldColor",
+                "alpha": 0
+              }
+            ]
+          ]
+        }
+      },
+      "enter": {
+        "preset": "scale-in",
+        "duration": 1.2,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.06,
+          "period": 3
+        }
+      ]
+    },
+    {
+      "id": "burst",
+      "type": "polygon",
+      "visibleIf": {
+        "param": "showBurst"
+      },
+      "x": "50%w",
+      "y": "50%h",
+      "sides": 12,
+      "radius": 46,
+      "innerRadius": 30,
+      "fill": {
+        "param": "goldColor",
+        "alpha": 0.07
+      },
+      "keyframes": {
+        "rotation": [
+          {
+            "t": 0,
+            "v": 0
+          },
+          {
+            "t": 6,
+            "v": 40
+          }
+        ]
+      },
+      "enter": {
+        "preset": "scale-in",
+        "duration": 1.1,
+        "delay": 0.1,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.5
+      }
+    },
+    {
+      "id": "ring",
+      "type": "ellipse",
+      "x": "50%w",
+      "y": "50%h",
+      "width": 70,
+      "height": 70,
+      "stroke": {
+        "color": {
+          "param": "goldColor",
+          "alpha": 0.35
+        },
+        "width": 0.25,
+        "dash": [
+          0.5,
+          1.4
+        ]
+      },
+      "ambient": [
+        {
+          "prop": "rotation",
+          "amplitude": 25,
+          "period": 10
+        }
+      ],
+      "enter": {
+        "preset": "scale-in",
+        "duration": 1.2,
+        "delay": 0.25,
+        "ease": "outExpo"
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.4
+      }
+    },
+    {
+      "id": "conf1",
+      "x": "8%w",
+      "y": "10%h",
+      "rotation": 0,
+      "start": 1,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 2.6,
+          "phase": 0
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 30,
+          "period": 2.2,
+          "phase": 0
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": {
+        "param": "goldColor"
+      }
+    },
+    {
+      "id": "conf2",
+      "x": "22%w",
+      "y": "5%h",
+      "rotation": 47,
+      "start": 1.245,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.06
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.2,
+          "period": 3.05,
+          "phase": 0.13
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 45,
+          "period": 3,
+          "phase": 0.29
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "ellipse",
+      "width": 2.4,
+      "height": 2.4,
+      "fill": "#FFFFFF"
+    },
+    {
+      "id": "conf3",
+      "x": "37%w",
+      "y": "13%h",
+      "rotation": 94,
+      "start": 1.49,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.12
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.6,
+          "period": 3.5,
+          "phase": 0.26
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 60,
+          "period": 3.8,
+          "phase": 0.58
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 3,
+      "radius": 1.9,
+      "fill": {
+        "param": "confetti3"
+      }
+    },
+    {
+      "id": "conf4",
+      "x": "63%w",
+      "y": "6%h",
+      "rotation": 141,
+      "start": 1.175,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.18
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 3.95,
+          "phase": 0.39
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 75,
+          "period": 2.2,
+          "phase": 0.87
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": {
+        "param": "confetti2"
+      }
+    },
+    {
+      "id": "conf5",
+      "x": "78%w",
+      "y": "12%h",
+      "rotation": 8,
+      "start": 1.42,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.048
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.2,
+          "period": 4.4,
+          "phase": 0.52
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 30,
+          "period": 3,
+          "phase": 0.16
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 5,
+      "radius": 2.2,
+      "innerRadius": 0.95,
+      "fill": {
+        "param": "goldColor"
+      }
+    },
+    {
+      "id": "conf6",
+      "x": "93%w",
+      "y": "7%h",
+      "rotation": 55,
+      "start": 1.105,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.108
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.6,
+          "period": 2.6,
+          "phase": 0.65
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 45,
+          "period": 3.8,
+          "phase": 0.45
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": "#FFFFFF"
+    },
+    {
+      "id": "conf7",
+      "x": "5%w",
+      "y": "31%h",
+      "rotation": 102,
+      "start": 1.35,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.168
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 3.05,
+          "phase": 0.78
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 60,
+          "period": 2.2,
+          "phase": 0.74
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 3,
+      "radius": 1.9,
+      "fill": {
+        "param": "confetti3"
+      }
+    },
+    {
+      "id": "conf8",
+      "x": "95%w",
+      "y": "35%h",
+      "rotation": 149,
+      "start": 1.035,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.036
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.2,
+          "period": 3.5,
+          "phase": 0.91
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 75,
+          "period": 3,
+          "phase": 0.03
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "ellipse",
+      "width": 2.4,
+      "height": 2.4,
+      "fill": {
+        "param": "confetti2"
+      }
+    },
+    {
+      "id": "conf9",
+      "x": "8%w",
+      "y": "56%h",
+      "rotation": 16,
+      "start": 1.28,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.096
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.6,
+          "period": 3.95,
+          "phase": 0.04
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 30,
+          "period": 3.8,
+          "phase": 0.32
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": {
+        "param": "goldColor"
+      }
+    },
+    {
+      "id": "conf10",
+      "x": "92%w",
+      "y": "60%h",
+      "rotation": 63,
+      "start": 1.525,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.156
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 4.4,
+          "phase": 0.17
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 45,
+          "period": 2.2,
+          "phase": 0.61
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "ellipse",
+      "width": 2.4,
+      "height": 2.4,
+      "fill": "#FFFFFF"
+    },
+    {
+      "id": "conf11",
+      "x": "6%w",
+      "y": "79%h",
+      "rotation": 110,
+      "start": 1.21,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.024
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.2,
+          "period": 2.6,
+          "phase": 0.3
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 60,
+          "period": 3,
+          "phase": 0.9
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 3,
+      "radius": 1.9,
+      "fill": {
+        "param": "confetti3"
+      }
+    },
+    {
+      "id": "conf12",
+      "x": "94%w",
+      "y": "83%h",
+      "rotation": 157,
+      "start": 1.455,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.084
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.6,
+          "period": 3.05,
+          "phase": 0.43
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 75,
+          "period": 3.8,
+          "phase": 0.19
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": {
+        "param": "confetti2"
+      }
+    },
+    {
+      "id": "conf13",
+      "x": "21%w",
+      "y": "93%h",
+      "rotation": 24,
+      "start": 1.14,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.144
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 3.5,
+          "phase": 0.56
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 30,
+          "period": 2.2,
+          "phase": 0.48
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 5,
+      "radius": 2.2,
+      "innerRadius": 0.95,
+      "fill": {
+        "param": "goldColor"
+      }
+    },
+    {
+      "id": "conf14",
+      "x": "39%w",
+      "y": "88%h",
+      "rotation": 71,
+      "start": 1.385,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.012
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.2,
+          "period": 3.95,
+          "phase": 0.69
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 45,
+          "period": 3,
+          "phase": 0.77
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "rect",
+      "width": 1.6,
+      "height": 3.8,
+      "radius": 0.4,
+      "fill": "#FFFFFF"
+    },
+    {
+      "id": "conf15",
+      "x": "61%w",
+      "y": "94%h",
+      "rotation": 118,
+      "start": 1.07,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.072
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 1.6,
+          "period": 4.4,
+          "phase": 0.82
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 60,
+          "period": 3.8,
+          "phase": 0.06
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "polygon",
+      "sides": 3,
+      "radius": 1.9,
+      "fill": {
+        "param": "confetti3"
+      }
+    },
+    {
+      "id": "conf16",
+      "x": "80%w",
+      "y": "90%h",
+      "rotation": 165,
+      "start": 1.315,
+      "enter": {
+        "preset": "pop",
+        "duration": 0.55
+      },
+      "exit": {
+        "preset": "scale-in",
+        "duration": 0.35,
+        "delay": 0.132
+      },
+      "ambient": [
+        {
+          "prop": "y",
+          "amplitude": 0.8,
+          "period": 2.6,
+          "phase": 0.95
+        },
+        {
+          "prop": "rotation",
+          "amplitude": 75,
+          "period": 2.2,
+          "phase": 0.35
+        }
+      ],
+      "visibleIf": {
+        "param": "showConfetti"
+      },
+      "type": "ellipse",
+      "width": 2.4,
+      "height": 2.4,
+      "fill": {
+        "param": "confetti2"
+      }
+    },
+    {
+      "id": "stack",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "handle",
+          "type": "text",
+          "text": "{{handle}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 700,
+            "size": 3.1,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.02
+          },
+          "color": "#FFFFFF",
+          "align": "center",
+          "maxWidth": 60,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 2
+          },
+          "background": {
+            "fill": {
+              "param": "goldColor",
+              "alpha": 0.16
+            },
+            "padding": [
+              2.4,
+              1.1
+            ],
+            "radius": 10
+          },
+          "y": -33,
+          "start": 0.15,
+          "enter": {
+            "preset": "drop",
+            "duration": 0.6,
+            "distance": 3
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.35,
+            "delay": 0.35
+          }
+        },
+        {
+          "id": "number",
+          "type": "counter",
+          "from": 0,
+          "to": {
+            "param": "value"
+          },
+          "decimals": 0,
+          "separator": ",",
+          "suffix": "{{suffix}}",
+          "count": {
+            "duration": 2.1,
+            "delay": 0.35,
+            "ease": "outExpo"
+          },
+          "font": {
+            "family": "Anton",
+            "weight": 400,
+            "size": 22,
+            "lineHeight": 1,
+            "letterSpacing": 0.01
+          },
+          "color": "#FFFFFF",
+          "align": "center",
+          "y": -9,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.8,
+            "delay": 0.2
+          },
+          "exit": {
+            "preset": "scale-in",
+            "duration": 0.4,
+            "delay": 0.2,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "label",
+          "type": "text",
+          "text": "{{label|upper}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 800,
+            "size": 4.6,
+            "lineHeight": 1.1,
+            "letterSpacing": 0.32
+          },
+          "color": {
+            "param": "goldColor"
+          },
+          "align": "center",
+          "maxWidth": 80,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 3
+          },
+          "y": 7.5,
+          "start": 0.7,
+          "enter": {
+            "preset": "mask-up",
+            "duration": 0.6,
+            "stagger": {
+              "by": "char",
+              "each": 0.03
+            }
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.15
+          }
+        },
+        {
+          "id": "rule",
+          "type": "rect",
+          "y": 13.5,
+          "width": 10,
+          "height": 0.4,
+          "radius": 0.2,
+          "fill": {
+            "param": "goldColor",
+            "alpha": 0.6
+          },
+          "start": 1.1,
+          "enter": {
+            "preset": "scale-in",
+            "duration": 0.5
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "thanks",
+          "type": "text",
+          "text": "{{thanks}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 500,
+            "size": 3.3,
+            "lineHeight": 1.35
+          },
+          "color": {
+            "mix": [
+              "#FFFFFF",
+              {
+                "param": "bgColor"
+              }
+            ],
+            "t": 0.12
+          },
+          "align": "center",
+          "maxWidth": 70,
+          "maxLines": 2,
+          "autoFit": {
+            "minSize": 2.4
+          },
+          "y": 17.5,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 1.25,
+          "enter": {
+            "preset": "rise",
+            "duration": 0.6,
+            "distance": 2,
+            "stagger": {
+              "by": "word",
+              "each": 0.03
+            }
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.05
+          }
+        }
+      ]
+    }
+  ]
+}

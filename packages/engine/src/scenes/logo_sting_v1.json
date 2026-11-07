@@ -1,0 +1,1365 @@
+{
+  "format": "mg-scene@1",
+  "id": "logo_sting_v1",
+  "name": "Logo Sting",
+  "description": "Four-second logo reveal: rings and shards converge, the logo pops with a shockwave and sparks, then the tagline types on. Shows a wordmark when no logo is set.",
+  "category": "promo",
+  "defaultSettings": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "fonts": [
+    "Montserrat Variable",
+    "Inter Variable"
+  ],
+  "params": [
+    {
+      "key": "brand",
+      "label": "Brand name (no logo)",
+      "type": "text",
+      "default": "Northwind",
+      "maxLength": 18,
+      "group": "Text"
+    },
+    {
+      "key": "tagline",
+      "label": "Tagline",
+      "type": "text",
+      "default": "Built for what comes next",
+      "maxLength": 40,
+      "group": "Text"
+    },
+    {
+      "key": "logoUrl",
+      "label": "Logo",
+      "type": "image",
+      "default": null,
+      "group": "Media"
+    },
+    {
+      "key": "bgColor",
+      "label": "Background",
+      "type": "color",
+      "default": "#0D0D10",
+      "group": "Colors"
+    },
+    {
+      "key": "accentColor",
+      "label": "Accent",
+      "type": "color",
+      "default": "#FF5B1F",
+      "group": "Colors"
+    },
+    {
+      "key": "accent2",
+      "label": "Accent 2",
+      "type": "color",
+      "default": "#FFB547",
+      "group": "Colors"
+    },
+    {
+      "key": "lightColor",
+      "label": "Text",
+      "type": "color",
+      "default": "#F3ECE2",
+      "group": "Colors"
+    },
+    {
+      "key": "showSparks",
+      "label": "Sparks",
+      "type": "boolean",
+      "default": true,
+      "group": "Style"
+    }
+  ],
+  "background": {
+    "param": "bgColor"
+  },
+  "layers": [
+    {
+      "id": "mark",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "wordmark",
+          "type": "text",
+          "visibleIf": {
+            "param": "logoUrl",
+            "not": true
+          },
+          "text": "{{brand|upper}}",
+          "font": {
+            "family": "Montserrat Variable",
+            "weight": 900,
+            "size": 11,
+            "lineHeight": 1,
+            "letterSpacing": 0.02
+          },
+          "color": {
+            "param": "lightColor"
+          },
+          "align": "center",
+          "maxWidth": 88,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 6
+          },
+          "y": -3,
+          "start": 0.85,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.7
+          },
+          "exit": {
+            "preset": "scale-in",
+            "duration": 0.4,
+            "delay": 0.12,
+            "ease": "outCubic"
+          }
+        }
+      ]
+    },
+    {
+      "id": "glow",
+      "type": "ellipse",
+      "x": "50%w",
+      "y": "50%h",
+      "width": 120,
+      "height": 120,
+      "fill": {
+        "radial": {
+          "cx": "50%w",
+          "cy": "50%h",
+          "r": 50,
+          "stops": [
+            [
+              0,
+              {
+                "param": "accentColor",
+                "alpha": 0.2
+              }
+            ],
+            [
+              0.45,
+              {
+                "param": "accentColor",
+                "alpha": 0.05
+              }
+            ],
+            [
+              1,
+              {
+                "param": "accentColor",
+                "alpha": 0
+              }
+            ]
+          ]
+        }
+      },
+      "start": 0.6,
+      "enter": {
+        "preset": "fade",
+        "duration": 0.8
+      },
+      "exit": {
+        "preset": "fade",
+        "duration": 0.5
+      },
+      "ambient": [
+        {
+          "prop": "scale",
+          "amplitude": 0.04,
+          "period": 2.5
+        }
+      ]
+    },
+    {
+      "id": "fx",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "ringA",
+          "type": "ellipse",
+          "width": 40,
+          "height": 40,
+          "end": 0.85,
+          "stroke": {
+            "color": {
+              "param": "accentColor"
+            },
+            "width": 0.4
+          },
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0,
+                "v": 3
+              },
+              {
+                "t": 0.85,
+                "v": 0.15,
+                "ease": "inCubic"
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.25,
+                "v": 1
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "ringB",
+          "type": "ellipse",
+          "width": 52,
+          "height": 52,
+          "end": 0.85,
+          "stroke": {
+            "color": {
+              "param": "lightColor",
+              "alpha": 0.55
+            },
+            "width": 0.25,
+            "dash": [
+              0.8,
+              1.2
+            ]
+          },
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0.08,
+                "v": 3.4
+              },
+              {
+                "t": 0.85,
+                "v": 0.15,
+                "ease": "inCubic"
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.08,
+                "v": 0
+              },
+              {
+                "t": 0.33,
+                "v": 1
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "ringC",
+          "type": "ellipse",
+          "width": 28,
+          "height": 28,
+          "end": 0.85,
+          "stroke": {
+            "color": {
+              "param": "accent2"
+            },
+            "width": 0.3
+          },
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0.16,
+                "v": 2.6
+              },
+              {
+                "t": 0.85,
+                "v": 0.15,
+                "ease": "inCubic"
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.16,
+                "v": 0
+              },
+              {
+                "t": 0.41000000000000003,
+                "v": 1
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "shard1",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2.2,
+          "end": 0.85,
+          "fill": {
+            "param": "lightColor"
+          },
+          "keyframes": {
+            "x": [
+              {
+                "t": 0,
+                "v": -70
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "y": [
+              {
+                "t": 0,
+                "v": -42
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 270
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.2,
+                "v": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "shard2",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2.2,
+          "end": 0.85,
+          "fill": {
+            "param": "accentColor"
+          },
+          "keyframes": {
+            "x": [
+              {
+                "t": 0.05,
+                "v": 70
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "y": [
+              {
+                "t": 0.05,
+                "v": -42
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 270
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.05,
+                "v": 0
+              },
+              {
+                "t": 0.25,
+                "v": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "shard3",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2.2,
+          "end": 0.85,
+          "fill": {
+            "param": "lightColor"
+          },
+          "keyframes": {
+            "x": [
+              {
+                "t": 0.1,
+                "v": 70
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "y": [
+              {
+                "t": 0.1,
+                "v": 42
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 270
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.1,
+                "v": 0
+              },
+              {
+                "t": 0.30000000000000004,
+                "v": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "shard4",
+          "type": "polygon",
+          "sides": 4,
+          "radius": 2.2,
+          "end": 0.85,
+          "fill": {
+            "param": "accentColor"
+          },
+          "keyframes": {
+            "x": [
+              {
+                "t": 0.15000000000000002,
+                "v": -70
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "y": [
+              {
+                "t": 0.15000000000000002,
+                "v": 42
+              },
+              {
+                "t": 0.85,
+                "v": 0,
+                "ease": "inCubic"
+              }
+            ],
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.85,
+                "v": 270
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.15000000000000002,
+                "v": 0
+              },
+              {
+                "t": 0.35000000000000003,
+                "v": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "core",
+          "type": "ellipse",
+          "width": 6,
+          "height": 6,
+          "fill": {
+            "param": "accentColor"
+          },
+          "start": 0.55,
+          "end": 0.97,
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 0.3,
+                "v": 1,
+                "ease": "outCubic"
+              },
+              {
+                "t": 0.42,
+                "v": 3.5,
+                "ease": "inQuad"
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.3,
+                "v": 1
+              },
+              {
+                "t": 0.42,
+                "v": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "shockwave",
+          "type": "ellipse",
+          "width": 30,
+          "height": 30,
+          "stroke": {
+            "color": {
+              "param": "accentColor"
+            },
+            "width": 0.5
+          },
+          "start": 0.85,
+          "end": 1.6,
+          "keyframes": {
+            "scale": [
+              {
+                "t": 0,
+                "v": 0.4
+              },
+              {
+                "t": 0.75,
+                "v": 2.6,
+                "ease": "outCubic"
+              }
+            ],
+            "opacity": [
+              {
+                "t": 0.1,
+                "v": 1
+              },
+              {
+                "t": 0.75,
+                "v": 0
+              }
+            ]
+          }
+        },
+        {
+          "id": "sparks",
+          "type": "group",
+          "visibleIf": {
+            "param": "showSparks"
+          },
+          "layers": [
+            {
+              "id": "spark1",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": -90,
+              "fill": {
+                "param": "lightColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 0
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": -14
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -30,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark2",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": -54,
+              "fill": {
+                "param": "accentColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 8.23
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 17.63,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": -11.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -24.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark3",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": -18,
+              "fill": {
+                "param": "lightColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 13.31
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 28.53,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": -4.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -9.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark4",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 18,
+              "fill": {
+                "param": "accentColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 13.31
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 28.53,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": 4.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 9.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark5",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 54,
+              "fill": {
+                "param": "lightColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 8.23
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 17.63,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": 11.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 24.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark6",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 90,
+              "fill": {
+                "param": "accentColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": 0
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": 14
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 30,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark7",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 126,
+              "fill": {
+                "param": "lightColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": -8.23
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -17.63,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": 11.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 24.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark8",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 162,
+              "fill": {
+                "param": "accentColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": -13.31
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -28.53,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": 4.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 9.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark9",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 198,
+              "fill": {
+                "param": "lightColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": -13.31
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -28.53,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": -4.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -9.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "spark10",
+              "type": "rect",
+              "width": 3.2,
+              "height": 0.45,
+              "radius": 0.22,
+              "rotation": 234,
+              "fill": {
+                "param": "accentColor"
+              },
+              "start": 0.85,
+              "end": 1.45,
+              "keyframes": {
+                "x": [
+                  {
+                    "t": 0,
+                    "v": -8.23
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -17.63,
+                    "ease": "outCubic"
+                  }
+                ],
+                "y": [
+                  {
+                    "t": 0,
+                    "v": -11.33
+                  },
+                  {
+                    "t": 0.55,
+                    "v": -24.27,
+                    "ease": "outCubic"
+                  }
+                ],
+                "opacity": [
+                  {
+                    "t": 0.2,
+                    "v": 1
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0
+                  }
+                ],
+                "scaleX": [
+                  {
+                    "t": 0,
+                    "v": 1.6
+                  },
+                  {
+                    "t": 0.55,
+                    "v": 0.3,
+                    "ease": "outCubic"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "haloRing",
+          "type": "ellipse",
+          "width": 70,
+          "height": 70,
+          "stroke": {
+            "color": {
+              "param": "lightColor",
+              "alpha": 0.1
+            },
+            "width": 0.2
+          },
+          "start": 0.85,
+          "enter": {
+            "preset": "scale-in",
+            "duration": 1,
+            "ease": "outExpo"
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.4
+          }
+        },
+        {
+          "id": "haloDash",
+          "type": "ellipse",
+          "width": 80,
+          "height": 80,
+          "stroke": {
+            "color": {
+              "param": "accentColor",
+              "alpha": 0.35
+            },
+            "width": 0.2,
+            "dash": [
+              0.4,
+              1.6
+            ]
+          },
+          "start": 0.95,
+          "enter": {
+            "preset": "scale-in",
+            "duration": 1.1,
+            "ease": "outExpo"
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.4
+          },
+          "keyframes": {
+            "rotation": [
+              {
+                "t": 0,
+                "v": 0
+              },
+              {
+                "t": 3.2,
+                "v": 30
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "brandGroup",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "logo",
+          "type": "image",
+          "src": {
+            "param": "logoUrl"
+          },
+          "y": -3,
+          "width": 64,
+          "height": 20,
+          "fit": "contain",
+          "start": 0.85,
+          "enter": {
+            "preset": "pop",
+            "duration": 0.7
+          },
+          "exit": {
+            "preset": "scale-in",
+            "duration": 0.4,
+            "delay": 0.12,
+            "ease": "outCubic"
+          }
+        },
+        {
+          "id": "line",
+          "type": "rect",
+          "y": 8.5,
+          "width": 12,
+          "height": 0.5,
+          "radius": 0.25,
+          "fill": {
+            "param": "accentColor"
+          },
+          "start": 1.2,
+          "enter": {
+            "preset": "wipe-right",
+            "duration": 0.5,
+            "ease": "outExpo"
+          },
+          "exit": {
+            "preset": "wipe-left",
+            "duration": 0.3,
+            "delay": 0.1
+          }
+        },
+        {
+          "id": "tagline",
+          "type": "text",
+          "text": "{{tagline|upper}}",
+          "font": {
+            "family": "Inter Variable",
+            "weight": 600,
+            "size": 2.8,
+            "lineHeight": 1.2,
+            "letterSpacing": 0.28
+          },
+          "color": {
+            "param": "lightColor",
+            "alpha": 0.78
+          },
+          "align": "center",
+          "maxWidth": 90,
+          "maxLines": 1,
+          "autoFit": {
+            "minSize": 2
+          },
+          "y": 13.5,
+          "anchor": [
+            0.5,
+            0
+          ],
+          "start": 1.35,
+          "enter": {
+            "preset": "typewriter",
+            "duration": 0.8
+          },
+          "exit": {
+            "preset": "fade",
+            "duration": 0.3,
+            "delay": 0.05
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "format": "mg-scene@1",
+  "id": "testimonial_v1",
+  "name": "Testimonial",
+  "description": "Editorial customer quote with a circular avatar (or initials), a five-star rating, and the reviewer's name and company.",
+  "category": "social",
+  "defaultSettings": { "width": 1080, "height": 1350, "fps": 30, "durationFrames": 180, "transparent": false },
+  "fonts": ["Inter Variable", "Montserrat Variable", "Anton"],
+  "params": [
+    { "key": "quote", "label": "Quote", "type": "text", "default": "We cut our editing time in half. The team ships twice as many videos and they finally look like one brand.", "maxLength": 160, "multiline": true, "group": "Text" },
+    { "key": "name", "label": "Name", "type": "text", "default": "Priya Raman", "maxLength": 32, "group": "Text" },
+    { "key": "company", "label": "Role / company", "type": "text", "default": "Head of Content, Northwind", "maxLength": 40, "group": "Text" },
+    { "key": "initials", "label": "Initials (no photo)", "type": "text", "default": "PR", "maxLength": 3, "group": "Text" },
+    { "key": "avatarUrl", "label": "Avatar photo", "type": "image", "default": null, "group": "Media" },
+    { "key": "bgColor", "label": "Background", "type": "color", "default": "#F4EEE4", "group": "Colors" },
+    { "key": "inkColor", "label": "Text", "type": "color", "default": "#1F1A17", "group": "Colors" },
+    { "key": "accentColor", "label": "Accent", "type": "color", "default": "#D2603A", "group": "Colors" },
+    { "key": "starColor", "label": "Stars", "type": "color", "default": "#E3A23B", "group": "Colors" },
+    { "key": "showStars", "label": "Star rating", "type": "boolean", "default": true, "group": "Style" },
+    { "key": "showQuoteMark", "label": "Large quote mark", "type": "boolean", "default": true, "group": "Style" }
+  ],
+  "background": {
+    "radial": {
+      "cx": "50%w",
+      "cy": "38%h",
+      "r": 90,
+      "stops": [
+        [0, { "mix": [{ "param": "bgColor" }, "#FFFFFF"], "t": 0.45 }],
+        [1, { "param": "bgColor" }]
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "blob",
+      "type": "ellipse",
+      "x": "100%w",
+      "y": "0%h",
+      "width": 74,
+      "height": 74,
+      "fill": { "param": "accentColor", "alpha": 0.09 },
+      "enter": { "preset": "scale-in", "duration": 1.4, "ease": "outExpo" },
+      "exit": { "preset": "fade", "duration": 0.5 },
+      "ambient": [{ "prop": "scale", "amplitude": 0.04, "period": 6 }]
+    },
+    {
+      "id": "ringCorner",
+      "type": "ellipse",
+      "x": "0%w",
+      "y": "100%h",
+      "width": 56,
+      "height": 56,
+      "stroke": { "color": { "param": "accentColor", "alpha": 0.22 }, "width": 0.3 },
+      "enter": { "preset": "scale-in", "duration": 1.4, "delay": 0.15, "ease": "outExpo" },
+      "exit": { "preset": "fade", "duration": 0.5 }
+    },
+    {
+      "id": "stack",
+      "type": "group",
+      "x": "50%w",
+      "y": "50%h",
+      "layers": [
+        {
+          "id": "quoteMark",
+          "type": "text",
+          "visibleIf": { "param": "showQuoteMark" },
+          "text": "“",
+          "font": { "family": "Anton", "weight": 400, "size": 26, "lineHeight": 1 },
+          "color": { "param": "accentColor", "alpha": 0.16 },
+          "align": "left",
+          "x": -43,
+          "y": -7,
+          "anchor": [0, 0.5],
+          "start": 0.5,
+          "enter": { "preset": "scale-in", "duration": 0.9, "ease": "outExpo" },
+          "exit": { "preset": "fade", "duration": 0.4, "delay": 0.3 }
+        },
+        {
+          "id": "avatar",
+          "type": "group",
+          "y": -30,
+          "start": 0.1,
+          "enter": { "preset": "pop", "duration": 0.8 },
+          "exit": { "preset": "scale-in", "duration": 0.45, "delay": 0.4, "ease": "outCubic" },
+          "layers": [
+            {
+              "id": "orbitRing",
+              "type": "ellipse",
+              "width": 25,
+              "height": 25,
+              "stroke": { "color": { "param": "accentColor", "alpha": 0.45 }, "width": 0.22, "dash": [0.6, 1.1] },
+              "ambient": [{ "prop": "rotation", "amplitude": 30, "period": 9 }]
+            },
+            {
+              "id": "ring",
+              "type": "ellipse",
+              "width": 21,
+              "height": 21,
+              "stroke": { "color": { "param": "accentColor" }, "width": 0.55 }
+            },
+            {
+              "id": "initialsDisc",
+              "type": "ellipse",
+              "visibleIf": { "param": "avatarUrl", "not": true },
+              "width": 18,
+              "height": 18,
+              "fill": {
+                "linear": {
+                  "angle": 135,
+                  "stops": [
+                    [0, { "mix": [{ "param": "accentColor" }, "#FFFFFF"], "t": 0.15 }],
+                    [1, { "mix": [{ "param": "accentColor" }, { "param": "inkColor" }], "t": 0.25 }]
+                  ]
+                }
+              }
+            },
+            {
+              "id": "initialsText",
+              "type": "text",
+              "visibleIf": { "param": "avatarUrl", "not": true },
+              "text": "{{initials|upper}}",
+              "font": { "family": "Montserrat Variable", "weight": 800, "size": 6, "lineHeight": 1, "letterSpacing": 0.02 },
+              "color": { "param": "bgColor" },
+              "align": "center",
+              "maxWidth": 14,
+              "maxLines": 1,
+              "autoFit": { "minSize": 3.5 },
+              "y": 0.2
+            },
+            {
+              "id": "photo",
+              "type": "image",
+              "src": { "param": "avatarUrl" },
+              "width": 18,
+              "height": 18,
+              "fit": "cover",
+              "radius": 9
+            }
+          ]
+        },
+        {
+          "id": "stars",
+          "type": "group",
+          "visibleIf": { "param": "showStars" },
+          "y": -15,
+          "exit": { "preset": "fade", "duration": 0.35, "delay": 0.3 },
+          "layers": [
+            { "id": "star1", "type": "polygon", "sides": 5, "radius": 1.9, "innerRadius": 0.82, "fill": { "param": "starColor" }, "x": -10, "start": 0.55, "enter": { "preset": "pop", "duration": 0.5 } },
+            { "id": "star2", "type": "polygon", "sides": 5, "radius": 1.9, "innerRadius": 0.82, "fill": { "param": "starColor" }, "x": -5, "start": 0.63, "enter": { "preset": "pop", "duration": 0.5 } },
+            { "id": "star3", "type": "polygon", "sides": 5, "radius": 1.9, "innerRadius": 0.82, "fill": { "param": "starColor" }, "x": 0, "start": 0.71, "enter": { "preset": "pop", "duration": 0.5 } },
+            { "id": "star4", "type": "polygon", "sides": 5, "radius": 1.9, "innerRadius": 0.82, "fill": { "param": "starColor" }, "x": 5, "start": 0.79, "enter": { "preset": "pop", "duration": 0.5 } },
+            { "id": "star5", "type": "polygon", "sides": 5, "radius": 1.9, "innerRadius": 0.82, "fill": { "param": "starColor" }, "x": 10, "start": 0.87, "enter": { "preset": "pop", "duration": 0.5 } }
+          ]
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "{{quote}}",
+          "font": { "family": "Inter Variable", "weight": 600, "size": 4.3, "lineHeight": 1.32, "letterSpacing": -0.015 },
+          "color": { "param": "inkColor" },
+          "align": "center",
+          "maxWidth": 80,
+          "maxLines": 4,
+          "autoFit": { "minSize": 3 },
+          "y": 2,
+          "start": 0.8,
+          "enter": { "preset": "rise", "duration": 0.6, "distance": 1.6, "stagger": { "by": "word", "each": 0.03 } },
+          "exit": { "preset": "fade", "duration": 0.4, "delay": 0.2 }
+        },
+        {
+          "id": "divider",
+          "type": "rect",
+          "y": 18.5,
+          "width": 7,
+          "height": 0.45,
+          "radius": 0.22,
+          "fill": { "param": "accentColor" },
+          "start": 1.3,
+          "enter": { "preset": "wipe-right", "duration": 0.5, "ease": "outExpo" },
+          "exit": { "preset": "wipe-left", "duration": 0.35, "delay": 0.12 }
+        },
+        {
+          "id": "name",
+          "type": "text",
+          "text": "{{name}}",
+          "font": { "family": "Montserrat Variable", "weight": 800, "size": 3.6, "lineHeight": 1.15, "letterSpacing": -0.01 },
+          "color": { "param": "inkColor" },
+          "align": "center",
+          "maxWidth": 80,
+          "maxLines": 1,
+          "autoFit": { "minSize": 2.6 },
+          "y": 23.5,
+          "start": 1.4,
+          "enter": { "preset": "mask-up", "duration": 0.6, "ease": "outCubic" },
+          "exit": { "preset": "fade", "duration": 0.3, "delay": 0.05 }
+        },
+        {
+          "id": "company",
+          "type": "text",
+          "text": "{{company|upper}}",
+          "font": { "family": "Inter Variable", "weight": 600, "size": 2.3, "lineHeight": 1.2, "letterSpacing": 0.14 },
+          "color": { "mix": [{ "param": "inkColor" }, { "param": "bgColor" }], "t": 0.32 },
+          "align": "center",
+          "maxWidth": 80,
+          "maxLines": 1,
+          "autoFit": { "minSize": 1.6 },
+          "y": 28.3,
+          "start": 1.55,
+          "enter": { "preset": "fade", "duration": 0.6 },
+          "exit": { "preset": "fade", "duration": 0.3 }
+        }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,7 @@ export const promoCard: TemplateDefinition = {
   id: 'promo_card_v1',
   name: 'Promo Card',
   description: 'Social promo card with layered shapes, a discount badge and a call-to-action pill.',
+  category: 'promo',
   defaultSettings: { width: 1080, height: 1080, fps: 30, durationFrames: 150, transparent: false },
   fonts: [HEAD, BODY],
   params: [

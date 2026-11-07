@@ -5,6 +5,7 @@
 import { resolveAssetUrls, AssetError } from './assets';
 import type { ChildToParent, ParentToChild } from './ipc';
 import { renderVideo, shutdown } from './index';
+import { registerScene, unregisterTemplate } from '@mg/engine';
 import type { RenderJobPayload } from '@mg/engine';
 
 const controllers = new Map<string, AbortController>();
@@ -16,9 +17,13 @@ function send(msg: ChildToParent): void {
 async function run(m: Extract<ParentToChild, { type: 'run' }>): Promise<void> {
   const ac = new AbortController();
   controllers.set(m.jobId, ac);
+  let sceneId: string | undefined;
   try {
+    // Generated templates exist only at runtime: register before the asset/payload checks.
+    if (m.scene !== undefined && m.scene !== null) sceneId = registerScene(m.scene).id;
     const payload = await resolveAssetUrls(m.payload as RenderJobPayload, m.assetsDir);
     const result = await renderVideo(payload, {
+      scene: m.scene,
       format: m.format,
       outPath: m.outPath,
       signal: ac.signal,
@@ -30,11 +35,12 @@ async function run(m: Extract<ParentToChild, { type: 'run' }>): Promise<void> {
     if (ac.signal.aborted || (e instanceof Error && e.name === 'AbortError')) {
       send({ type: 'error', jobId: m.jobId, message: 'Render cancelled', retryable: false, cancelled: true });
     } else {
-      const permanent = e instanceof AssetError || /^Invalid (payload|frame range)/.test(message);
+      const permanent = e instanceof AssetError || /^Invalid (payload|frame range|scene)/.test(message);
       send({ type: 'error', jobId: m.jobId, message, retryable: !permanent });
     }
   } finally {
     controllers.delete(m.jobId);
+    if (sceneId) unregisterTemplate(sceneId);
   }
 }
 

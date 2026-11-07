@@ -5,6 +5,7 @@ import type { ParamDef, RenderJobPayload, TemplateDefinition } from '@mg/engine'
 import type { Action } from '../state/store';
 import { NumField } from './NumField';
 import { ParamControl } from './ParamControl';
+import { ReferencePalette } from './ReferencePalette';
 import { Switch } from './Switch';
 
 interface Props {
@@ -31,6 +32,7 @@ export function Inspector({ template, payload, dispatch }: Props) {
   const groups = groupParams(template.params);
   return (
     <div className="inspector">
+      <ReferencePalette payload={payload} dispatch={dispatch} />
       {groups.map(([name, params]) => (
         <details className="section" key={name} open>
           <summary>{name}</summary>

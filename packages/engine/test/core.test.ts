@@ -14,9 +14,10 @@ const spec = {
 };
 
 describe('registry', () => {
-  it('registers the three templates with unique ids and valid defaults', () => {
+  it('registers the code templates, then the bundled scenes, with unique ids and valid defaults', () => {
     const ids = listTemplates().map((t) => t.id);
-    expect(ids).toEqual(['kinetic_text_v1', 'promo_card_v1', 'banner_v1']);
+    expect(ids.slice(0, 5)).toEqual(['kinetic_text_v1', 'promo_card_v1', 'banner_v1', 'lower_third_v1', 'stat_counter_v1']);
+    expect(new Set(ids).size).toBe(ids.length);
     for (const t of listTemplates()) {
       expect(t.fonts.length).toBeGreaterThan(0);
       expect(t.fonts).not.toContain('sans-serif');

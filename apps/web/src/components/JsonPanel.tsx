@@ -31,7 +31,6 @@ export function JsonPanel({ payload, dispatch, onTemplateChange }: Props) {
   const [draft, setDraft] = useState('');
   const [copied, setCopied] = useState<'ok' | 'fail' | null>(null);
   const result = useMemo(() => (editing ? check(draft) : null), [editing, draft]);
-  const hasBlob = Object.values(payload.assets).some((v) => typeof v === 'string' && v.startsWith('blob:'));
 
   const copy = async () => {
     try {
@@ -103,11 +102,6 @@ export function JsonPanel({ payload, dispatch, onTemplateChange }: Props) {
         </ul>
       ) : null}
       {result?.ok ? <p className="ok">Valid payload. Missing assets are filled with defaults.</p> : null}
-      {hasBlob ? (
-        <p className="hint">
-          Uploaded images use blob: URLs, which only exist in this browser tab and will not work in a server render. Use a hosted image URL for export.
-        </p>
-      ) : null}
     </div>
   );
 }

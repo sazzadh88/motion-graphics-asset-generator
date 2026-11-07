@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["src", "vitest.config.ts", "render-page", "test", "scripts", "vite.render.config.ts"]
 }

@@ -1,0 +1,21 @@
+{
+  "templateId": "banner_v1",
+  "settings": {
+    "width": 1500,
+    "height": 500,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {
+    "headline": "Big Savings Start Today",
+    "tagline": "Up to 60% off selected styles. Limited time.",
+    "ctaText": "Shop now",
+    "primaryColor": "#FF5A36",
+    "secondaryColor": "#0E1324",
+    "accentColor": "#FFD166",
+    "logoUrl": null,
+    "panelStyle": "diagonal",
+    "showPattern": true
+  }
+}

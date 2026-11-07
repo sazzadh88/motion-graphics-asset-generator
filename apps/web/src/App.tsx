@@ -1,15 +1,21 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { getTemplate, listTemplates } from '@mg/engine';
 import type { RenderJobPayload } from '@mg/engine';
+import type { JobStatus, RenderJob, VideoFormat } from '@mg/contract';
+import { ExportDialog } from './components/ExportDialog';
 import { Inspector } from './components/Inspector';
 import { JsonPanel } from './components/JsonPanel';
+import { RendersPanel } from './components/RendersPanel';
 import { Stage } from './components/Stage';
 import { TemplateList } from './components/TemplateList';
 import { Timeline } from './components/Timeline';
+import { Toast } from './components/Toast';
 import { TopBar } from './components/TopBar';
 import { useAssets } from './hooks/useAssets';
 import { usePlayback } from './hooks/usePlayback';
 import { useShortcuts } from './hooks/useShortcuts';
+import { useStudioTestHook } from './hooks/useStudioTestHook';
+import { useRenders } from './state/renders';
 import { initState, reducer } from './state/store';
 import { loadLastTemplateId, loadPayload, savePayload } from './state/storage';
 
@@ -28,18 +34,65 @@ export default function App() {
   return <Studio start={start} />;
 }
 
-type Tab = 'inspector' | 'json';
+type Tab = 'inspector' | 'json' | 'renders';
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'inspector', label: 'Inspector' },
+  { id: 'json', label: 'JSON' },
+  { id: 'renders', label: 'Renders' },
+];
+
+function jobName(job: RenderJob): string {
+  return getTemplate(job.templateId)?.name ?? job.templateId;
+}
 
 function Studio({ start }: { start: RenderJobPayload }) {
   const templates = listTemplates();
   const [state, dispatch] = useReducer(reducer, start, initState);
   const [tab, setTab] = useState<Tab>('inspector');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const exportRef = useRef<HTMLButtonElement | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [announcement, setAnnouncement] = useState('');
+  const [toast, setToast] = useState<RenderJob | null>(null);
+
+  const onStatusChange = useCallback((job: RenderJob, prev: JobStatus) => {
+    const name = jobName(job);
+    if (job.status === 'completed') {
+      setAnnouncement(`Render of ${name} completed.`);
+      setToast(job);
+    } else if (job.status === 'failed') {
+      setAnnouncement(`Render of ${name} failed.`);
+    } else if (job.status === 'cancelled') {
+      setAnnouncement(`Render of ${name} cancelled.`);
+    } else if (job.status === 'active' && prev === 'queued') {
+      setAnnouncement(`Render of ${name} started.`);
+    }
+  }, []);
+  const renders = useRenders(onStatusChange);
+  const { refresh } = renders;
+
+  // Load the job list whenever the Renders tab opens.
+  useEffect(() => {
+    if (tab === 'renders') void refresh();
+  }, [tab, refresh]);
+
+  const startRender = useCallback(
+    async (format: VideoFormat) => {
+      const job = await renders.start(state.payload, format);
+      setAnnouncement(`Render of ${jobName(job)} queued.`);
+      setExporting(false);
+      setTab('renders');
+    },
+    [renders, state.payload],
+  );
+  const dismissToast = useCallback(() => setToast(null), []);
   const { payload, frame, playing, loop } = state;
   const { fps, durationFrames } = payload.settings;
   const template = getTemplate(payload.templateId) ?? templates[0];
 
   const assets = useAssets(payload);
+  useStudioTestHook(payload, frame, assets, dispatch);
   usePlayback(frame, playing, loop, fps, durationFrames, dispatch);
   useShortcuts(frame, durationFrames, dispatch);
 
@@ -77,7 +130,15 @@ function Studio({ start }: { start: RenderJobPayload }) {
 
   return (
     <div className="app">
-      <TopBar templateName={template.name} onDownloadPng={downloadPng} />
+      <TopBar
+        templateName={template.name}
+        onDownloadPng={downloadPng}
+        onExport={() => setExporting(true)}
+        exportRef={exportRef}
+        current={renders.current}
+        activeCount={renders.activeCount}
+        onOpenRenders={() => setTab('renders')}
+      />
       <aside className="rail">
         <TemplateList templates={templates} activeId={payload.templateId} onSelect={selectTemplate} />
       </aside>
@@ -94,40 +155,57 @@ function Studio({ start }: { start: RenderJobPayload }) {
       </main>
       <aside className="panel">
         <div className="tabs" role="tablist" aria-label="Right panel">
-          <button
-            type="button"
-            role="tab"
-            id="tab-inspector"
-            aria-selected={tab === 'inspector'}
-            aria-controls="panel-inspector"
-            onClick={() => setTab('inspector')}
-          >
-            Inspector
-          </button>
-          <button
-            type="button"
-            role="tab"
-            id="tab-json"
-            aria-selected={tab === 'json'}
-            aria-controls="panel-json"
-            onClick={() => setTab('json')}
-          >
-            JSON
-          </button>
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              id={`tab-${t.id}`}
+              aria-selected={tab === t.id}
+              aria-controls={`panel-${t.id}`}
+              onClick={() => setTab(t.id)}
+            >
+              {t.label}
+            </button>
+          ))}
         </div>
         <div
           className="tabpanel"
           role="tabpanel"
-          id={tab === 'inspector' ? 'panel-inspector' : 'panel-json'}
-          aria-labelledby={tab === 'inspector' ? 'tab-inspector' : 'tab-json'}
+          id={`panel-${tab}`}
+          aria-labelledby={`tab-${tab}`}
         >
           {tab === 'inspector' ? (
             <Inspector key={payload.templateId} template={template} payload={payload} dispatch={dispatch} />
-          ) : (
+          ) : tab === 'json' ? (
             <JsonPanel payload={payload} dispatch={dispatch} onTemplateChange={selectPayload} />
+          ) : (
+            <RendersPanel renders={renders} />
           )}
         </div>
       </aside>
+      <div className="sr-only" role="status" aria-live="polite">
+        {announcement}
+      </div>
+      {toast ? (
+        <Toast
+          message={`Render complete: ${jobName(toast)}`}
+          actionLabel="Download video"
+          onAction={() => {
+            void renders.download(toast.id);
+            setToast(null);
+          }}
+          onDismiss={dismissToast}
+        />
+      ) : null}
+      {exporting ? (
+        <ExportDialog
+          payload={payload}
+          templateName={template.name}
+          onSubmit={startRender}
+          onClose={() => setExporting(false)}
+        />
+      ) : null}
     </div>
   );
 }

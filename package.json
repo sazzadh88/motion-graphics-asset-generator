@@ -7,12 +7,15 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @mg/web",
+    "dev": "concurrently -k -n api,web -c cyan,magenta \"cd apps/api && exec tsx watch src/index.ts < /dev/null\" \"cd apps/web && exec vite\"",
+    "dev:api": "npm run dev -w @mg/api",
+    "dev:web": "npm run dev -w @mg/web",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
+    "concurrently": "^10.0.6",
     "prettier": "^3.9.10",
     "typescript": "^7.0.2"
   }

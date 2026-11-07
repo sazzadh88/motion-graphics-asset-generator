@@ -3,6 +3,7 @@ import type { ParamDef, ParamValue } from '@mg/engine';
 import { NumField } from './NumField';
 import { Switch } from './Switch';
 import { TrashIcon } from './Icons';
+import { ApiRequestError, describeError, uploadAsset } from '../api/client';
 
 interface Props {
   def: ParamDef;
@@ -157,16 +158,41 @@ function ColorControl({ id, value, onChange }: { id: string; value: string; onCh
   );
 }
 
-const URL_OK = /^(https?:\/\/|data:image\/|blob:)/i;
+const URL_OK = /^(https?:\/\/|data:image\/)/i;
+const ASSET_URL = /^\/api\/assets\/[A-Za-z0-9_-]{8,64}$/;
+const MAX_UPLOAD = 10 * 1024 * 1024;
+
+function uploadMessage(e: unknown): string {
+  if (e instanceof ApiRequestError) {
+    if (e.status === 415) return 'Unsupported file type. Use a PNG, JPEG, WebP or GIF image.';
+    if (e.status === 413) return 'That image is too large. The limit is 10 MB.';
+  }
+  return describeError(e);
+}
 
 function ImageControl({ id, value, onChange }: { id: string; value: string | null; onChange: (v: string | null) => void }) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [urlDraft, setUrlDraft] = useState('');
   const [urlError, setUrlError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const uploaded = value !== null && ASSET_URL.test(value);
 
-  const set = (next: string | null) => {
-    if (value && value.startsWith('blob:') && value !== next) URL.revokeObjectURL(value);
-    onChange(next);
+  const upload = async (file: File) => {
+    setUploadError(null);
+    if (file.size > MAX_UPLOAD) {
+      setUploadError('That image is too large. The limit is 10 MB.');
+      return;
+    }
+    setUploading(true);
+    try {
+      const asset = await uploadAsset(file);
+      onChange(asset.url);
+    } catch (e) {
+      setUploadError(uploadMessage(e));
+    } finally {
+      setUploading(false);
+    }
   };
 
   const applyUrl = () => {
@@ -178,7 +204,8 @@ function ImageControl({ id, value, onChange }: { id: string; value: string | nul
     }
     setUrlError(false);
     setUrlDraft('');
-    set(v);
+    setUploadError(null);
+    onChange(v);
   };
 
   return (
@@ -186,8 +213,20 @@ function ImageControl({ id, value, onChange }: { id: string; value: string | nul
       {value ? (
         <div className="thumb-row">
           <img className="thumb" src={value} alt="" />
-          <span className="thumb-name">{value.startsWith('data:') ? 'Embedded image' : value.startsWith('blob:') ? 'Uploaded file' : value}</span>
-          <button type="button" className="btn icon" aria-label="Remove image" title="Remove image" onClick={() => set(null)}>
+          <span className="thumb-name">
+            {uploaded ? 'Uploaded image' : value.startsWith('data:') ? 'Embedded image' : value}
+          </span>
+          <button
+            type="button"
+            className="btn icon"
+            aria-label="Remove image"
+            title="Remove image"
+            disabled={uploading}
+            onClick={() => {
+              setUploadError(null);
+              onChange(null);
+            }}
+          >
             <TrashIcon />
           </button>
         </div>
@@ -197,18 +236,28 @@ function ImageControl({ id, value, onChange }: { id: string; value: string | nul
         id={id}
         className="visually-hidden-file"
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg,image/webp,image/gif"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          if (file) set(URL.createObjectURL(file));
           e.target.value = '';
+          if (file) void upload(file);
         }}
       />
       <div className="row">
-        <button type="button" className="btn" onClick={() => fileRef.current?.click()}>
-          {value ? 'Replace image' : 'Upload image'}
+        <button type="button" className="btn" disabled={uploading} onClick={() => fileRef.current?.click()}>
+          {uploading ? 'Uploading…' : value ? 'Replace image' : 'Upload image'}
         </button>
       </div>
+      {uploading ? (
+        <p className="hint" role="status">
+          Uploading image…
+        </p>
+      ) : null}
+      {uploadError ? (
+        <p className="error" role="alert">
+          {uploadError}
+        </p>
+      ) : null}
       <div className="row">
         <input
           className="input"
@@ -227,7 +276,10 @@ function ImageControl({ id, value, onChange }: { id: string; value: string | nul
           onBlur={applyUrl}
         />
       </div>
-      {urlError ? <p className="error">Enter an http(s), data: or blob: image URL.</p> : null}
+      {urlError ? <p className="error">Enter an http(s) or data: image URL.</p> : null}
+      {value && !uploaded ? (
+        <p className="hint">Pasted URLs work for preview only. Upload the image to include it in a video export.</p>
+      ) : null}
     </div>
   );
 }

@@ -4,8 +4,8 @@ import type { RenderJobPayload } from '@mg/engine';
 const PAYLOAD_PREFIX = 'mg.studio.payload.';
 const LAST_TEMPLATE = 'mg.studio.template';
 
-/** blob: URLs die with the page, so they are never persisted. */
-function stripBlobs(payload: RenderJobPayload): RenderJobPayload {
+/** Older builds stored blob: URLs, which cannot outlive their tab: reset those params. */
+function dropDeadBlobs(payload: RenderJobPayload): RenderJobPayload {
   const t = getTemplate(payload.templateId);
   if (!t) return payload;
   const assets = { ...payload.assets };
@@ -18,7 +18,7 @@ function stripBlobs(payload: RenderJobPayload): RenderJobPayload {
 
 export function savePayload(payload: RenderJobPayload): void {
   try {
-    localStorage.setItem(PAYLOAD_PREFIX + payload.templateId, JSON.stringify(stripBlobs(payload)));
+    localStorage.setItem(PAYLOAD_PREFIX + payload.templateId, JSON.stringify(payload));
     localStorage.setItem(LAST_TEMPLATE, payload.templateId);
   } catch {
     /* storage unavailable or full: persistence is best-effort */
@@ -30,7 +30,7 @@ export function loadPayload(templateId: string): RenderJobPayload {
     const raw = localStorage.getItem(PAYLOAD_PREFIX + templateId);
     if (raw) {
       const result = validatePayload(JSON.parse(raw) as unknown);
-      if (result.ok && result.payload.templateId === templateId) return result.payload;
+      if (result.ok && result.payload.templateId === templateId) return dropDeadBlobs(result.payload);
     }
   } catch {
     /* fall through to defaults */

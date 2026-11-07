@@ -1,86 +1,200 @@
 # File map
 
-package.json — root workspaces + scripts (dev, typecheck, test, build)
-.npmrc — script-shell = Git bin/bash.exe (path contains `&`; do not change)
-tsconfig.base.json — shared compiler options extended by every workspace
-.prettierrc / .editorconfig — formatting
-.gitignore — ignores node_modules, dist, output/, storage/, *.sqlite, .env
-.env.example — every env var with defaults; copy to .env (gitignored, loaded by the API at startup)
-.claude/launch.json — preview server configs for agents (studio, api; api-mock on :3002 with MG_GENERATOR=mock + STORAGE_DIR=storage/mock, studio-mock on :5174 proxying to it via MG_API_TARGET)
-docs/SPEC.md — original spec + implementation notes
-docs/SCENE_FORMAT.md — mg-scene@1 scene format spec + engine implementation notes
+Where everything lives, and when to touch it. Paths are relative to the repo root.
 
-packages/engine/ — deterministic canvas renderer shared by studio and worker
-packages/engine/src/index.ts — public exports
-packages/engine/src/types.ts — engine contract (templates, payload, params) + determinism rules
-packages/engine/src/core.ts — renderFrame (single draw entry), asset preloading, payload helpers
-packages/engine/src/math.ts — clamp, easing, interpolation, colors, seeded RNG (createRng)
-packages/engine/src/draw.ts — canvas drawing primitives (rounded rects etc.)
-packages/engine/src/text.ts — text measuring / layout
-packages/engine/src/fonts.ts — side-effect import registering bundled @font-face (`@mg/engine/fonts`)
-packages/engine/src/templates/index.ts — bundled template list (code templates + bundled scenes); register new templates here
-packages/engine/src/registry.ts — listTemplates/getTemplate over bundled + runtime templates; registerScene/unregisterTemplate for generated `gen_…` scenes (GENERATED_ID_PATTERN)
-packages/engine/src/templates/kinetic_text.ts — kinetic_text_v1
-packages/engine/src/templates/promo_card.ts — promo_card_v1
-packages/engine/src/templates/banner.ts — banner_v1
-packages/engine/src/templates/shared.ts — helpers shared between templates
-packages/engine/src/limits.ts — LIMITS (sizes, fps, max duration); re-exported by core
-packages/engine/src/fontFamilies.ts — FONT_FAMILIES + per-family weight ranges (no side effects)
-packages/engine/src/scene/types.ts — mg-scene@1 types (Scene, Layer, Motion, Keyframe, Length, Color, Fill), SCENE_CATEGORIES
-packages/engine/src/scene/validate.ts — validateScene: strict validator with JSON-pointer paths + actionable messages
-packages/engine/src/scene/interpret.ts — scene interpreter (lengths, bindings, keyframes, presets, layers) + templateFromScene
-packages/engine/src/scene/registry.ts — loadSceneTemplates: validates bundled scenes, throws on errors / duplicate ids
-packages/engine/src/scene/index.ts — scene module exports (incl. helpers used by tests)
-packages/engine/src/scenes/ — bundled scene JSON (14 scenes); index.ts + batchA.ts/batchB.ts list them — add new scenes there
-packages/engine/src/palette/ — palette module (pure, deterministic): extract.ts (extractPalette: OKLab k-means over image pixels), roles.ts (colorRole: background/foreground/accent heuristics), apply.ts (applyPalette: palette → template color params with contrast/pair constraints + variants; paletteSignature), color.ts (internal OKLab/OKLCH/gamut/WCAG math), types.ts
-packages/engine/scripts/contact-sheet.ts — `npx tsx scripts/contact-sheet.ts <id|--scenes|--all>` → output/<id>.png (4 aspects × 6 frames, real fonts); `--palette "#hex,#hex:0.5"` + `--variant n` apply applyPalette first
-packages/engine/output/ — contact sheets (gitignored)
-packages/engine/test/ — vitest: core, determinism (@napi-rs/canvas), math, registry (runtime scenes), scene.validate, scene.interpret, scene.features, palette (extraction, roles, mapping over all templates × palettes × variants)
+- [Repo root](#repo-root)
+- [Docs](#docs)
+- [Engine — `packages/engine`](#engine--packagesengine)
+- [Contract — `packages/contract`](#contract--packagescontract)
+- [Render worker — `apps/worker`](#render-worker--appsworker)
+- [API — `apps/api`](#api--appsapi)
+- [Studio — `apps/web`](#studio--appsweb)
+- [Promo reel — `promo`](#promo-reel--promo)
 
-packages/contract/src/index.ts — HTTP + Socket.io types and ASSET_URL_PATTERN; change first when the API shape changes
+## Repo root
 
-apps/worker/ — headless render: Puppeteer + FFmpeg
-apps/worker/render-page/ — index.html + main.ts loaded in Chromium, driven via window.__mg
-apps/worker/vite.render.config.ts — builds render-page into dist/render-page (auto-rebuilt when stale)
-apps/worker/src/index.ts — package exports used by the API
-apps/worker/src/render.ts — render orchestration: page frames → encoder; `opts.scene` registers a generated scene in Node and in the render page
-apps/worker/src/browser.ts — Chromium launch / page lifecycle
-apps/worker/src/server.ts — local static server for the render page bundle
-apps/worker/src/encoder.ts — FFmpeg process wrapper (mp4 / webm, alpha)
-apps/worker/src/assets.ts — resolves /api/assets/<id> image params to data: URLs
-apps/worker/src/security.ts — validation of image params / URL safety
-apps/worker/src/child.ts — long-lived render child process forked by the API pool (registers the job's generated scene, unregisters after)
-apps/worker/src/ipc.ts — parent ↔ child message protocol ('run' carries `scene` for gen_ templates)
-apps/worker/src/cli.ts — `npm run render -w @mg/worker` entry (payload JSON may carry a top-level `scene`)
-apps/worker/samples/ — example payload JSONs for the CLI
-apps/worker/test/ — vitest: encoder, render, generated (gen_ scene via opts.scene), browser (recycling/leaks), determinism (byte-identical frames across jobs/browsers) (+ helpers.ts)
-apps/worker/test/parity.test.ts, parity/ — studio ≡ render page (exact pixels), lossless pipeline round-trip, MP4/WebM PSNR floor
-apps/worker/scripts/soak.ts — perf/soak harness (throughput, long render, recycle, concurrency, crash); results in docs/perf.md
-docs/perf.md — measured throughput, memory, recycling and crash-recovery results
+| Path | What it is |
+|---|---|
+| `package.json` | Workspaces and root scripts (`dev`, `typecheck`, `test`, `build`) |
+| `.npmrc` | `script-shell` = Git `bin/bash.exe`, because the path contains `&`. Do not change |
+| `tsconfig.base.json` | Shared compiler options, extended by every workspace |
+| `.prettierrc`, `.editorconfig` | Formatting |
+| `.gitignore` | `node_modules`, `dist`, `output/`, `storage/`, `*.sqlite`, `.env`, regenerable promo media |
+| `.env.example` | Every env var with its default. Copy to `.env` (gitignored, loaded by the API at startup) |
+| `.claude/launch.json` | Preview servers for agents: `studio`, `api`, plus `api-mock` (:3002, `MG_GENERATOR=mock`, `STORAGE_DIR=storage/mock`) and `studio-mock` (:5174, proxies to it via `MG_API_TARGET`) |
 
-apps/api/ — Express 5 + Socket.io server on :3001
-apps/api/src/index.ts — process entry: config, storage, queue, pool, listen
-apps/api/src/env.ts — loads repo-root .env into process.env (imported first by index.ts; real env vars win)
-apps/api/src/app.ts — Express routes (templates, asset upload, jobs, downloads, generate (NDJSON stream, max 2 concurrent), scenes keep/list/delete), sweeper (outputs, assets, 24 h drafts)
-apps/api/src/scenes.ts — SceneStore: generated templates as storage/scenes/<id>.json (atomic writes), loaded + registered at startup (invalid files skipped), newSceneId
-apps/api/src/generate/ — scene generator (prompt → validated mg-scene@1): index.ts (createGenerator from env, public types), claude.ts (ClaudeGenerator: streamed Messages call, submit_scene tool, validate → repair ≤ 2, error mapping, injectable client), prompt.ts (cached system prompt: spec + allowed values + design guidance + 3 example scenes; user/repair turns), scene.ts (force id/format/settings, validate, palette → color defaults, names), mock.ts (MockGenerator, MG_GENERATOR=mock), resources.ts (reads docs/SCENE_FORMAT.md + bundled scene JSON), types.ts
-apps/api/src/config.ts — config values (ports, paths, secrets, limits)
-apps/api/src/sockets.ts — Socket.io job progress events
-apps/api/src/pool.ts — pool of worker child processes consuming the queue (attaches the scene of gen_ templates to the 'run' message)
-apps/api/src/jobView.ts — job → API view mapping, retention/expiry checks
-apps/api/src/queue/types.ts — JobQueue interface (swap point for BullMQ)
-apps/api/src/queue/sqlite.ts — node:sqlite JobQueue implementation
-apps/api/src/storage/types.ts — blob storage interface (S3 would plug in here)
-apps/api/src/storage/local.ts — local-disk storage under storage/
-apps/api/src/storage/signing.ts — HMAC-SHA256 signed download URLs
-apps/api/test/ — vitest: api.test.ts, queue.test.ts, scenes.test.ts (generate endpoint with a fake generator, scenes CRUD/409, sweeper, startup reload, gen_ render); generate.generator.test.ts (generator unit tests with a fake Anthropic client: repair loop, palette, refine, abort, error mapping, mock)
+## Docs
 
-apps/web/ — React 19 studio (Vite, :5173)
-apps/web/vite.config.ts — Vite config + proxy to the API on :3001 (override with MG_API_TARGET)
-apps/web/src/main.tsx, App.tsx — entry and app shell
-apps/web/src/styles.css — all studio styles
-apps/web/src/components/ — UI: Stage (canvas preview), Timeline, Inspector/ParamControl/NumField/Switch, TemplateList (Generate template button, search, "Your templates" group for generated ones with Draft tag + delete button, category groups, roving-focus keyboard nav, Delete key deletes a generated one) + TemplateThumb (lazy 72×72 preview, recolored by the reference palette), ReferencePalette (Inspector's first section: reference image → palette, Shuffle/Replace/Remove, apply-to-every-template switch), TopBar, JsonPanel, ExportDialog, GenerateDialog (prompt + reference image/palette + format/length → NDJSON step list → result: Keep/Refine/Try again/Discard; error + disabled/offline states), DeleteTemplateDialog (confirm + DELETE, 409 message), RendersPanel, Toast, Icons
-apps/web/src/thumbnails.ts — template thumbnail scheduler: default payload at 60% duration, sequential + lazy, downscaled per DPR, cached per session per template + DPR + reference-palette key
-apps/web/src/hooks/ — useAssets (preload images/fonts), usePlayback (playhead clock), useShortcuts (keyboard), useStudioTestHook (window.__studio for parity tests, only with ?mgtest=1)
-apps/web/src/state/ — generated (registers kept generated templates from /api/scenes at startup, session drafts, version subscription for the library), store (payload + playhead; setAssets patches many params at once), referencePalette (subscribe store for the reference palette: localStorage `mg.referencePalette`, local image decode → extractPalette, apply on template switch, originals for Remove), renders (job list), storage (localStorage persistence), time (timecode)
-apps/web/src/api/ — client.ts (HTTP; generate status/stream (fetch + NDJSON reader), scenes list/keep/delete), socket.ts (Socket.io job updates)
+| Path | What it is |
+|---|---|
+| `docs/SPEC.md` | Original product spec and implementation notes |
+| `docs/SCENE_FORMAT.md` | The `mg-scene@1` scene format and engine implementation notes |
+| `docs/perf.md` | Measured throughput, memory, recycling and crash-recovery results |
+
+## Engine — `packages/engine`
+
+Deterministic canvas renderer shared by the studio and the worker.
+
+### Core
+
+| Path | What it is |
+|---|---|
+| `src/index.ts` | Public exports |
+| `src/types.ts` | Engine contract (templates, payload, params) and determinism rules |
+| `src/core.ts` | `renderFrame` (the single draw entry), asset preloading, payload helpers |
+| `src/registry.ts` | `listTemplates` / `getTemplate` over bundled and runtime templates; `registerScene` / `unregisterTemplate` for generated `gen_…` scenes |
+| `src/limits.ts` | `LIMITS` (sizes, fps, max duration); re-exported by core |
+| `src/math.ts` | Clamp, easing, interpolation, colors, seeded RNG (`createRng`) |
+| `src/draw.ts` | Canvas drawing primitives |
+| `src/text.ts` | Text measuring and layout |
+| `src/fonts.ts` | Side-effect import that registers the bundled `@font-face` rules (`@mg/engine/fonts`) |
+| `src/fontFamilies.ts` | `FONT_FAMILIES` and per-family weight ranges (no side effects) |
+
+### Templates and scenes
+
+| Path | What it is |
+|---|---|
+| `src/templates/index.ts` | Bundled template list (code templates + bundled scenes). Register new templates here |
+| `src/templates/kinetic_text.ts`, `promo_card.ts`, `banner.ts` | The three code templates |
+| `src/templates/shared.ts` | Helpers shared between code templates |
+| `src/scenes/` | Bundled scene JSON (14 scenes), listed in `index.ts`, `batchA.ts`, `batchB.ts`. Add new scenes there |
+| `src/scene/types.ts` | `mg-scene@1` types and `SCENE_CATEGORIES` |
+| `src/scene/validate.ts` | `validateScene`: strict validator with JSON-pointer paths and actionable messages |
+| `src/scene/interpret.ts` | Scene interpreter (lengths, bindings, keyframes, presets, layers) and `templateFromScene` |
+| `src/scene/registry.ts` | `loadSceneTemplates`: validates bundled scenes, throws on errors or duplicate ids |
+| `src/scene/index.ts` | Scene module exports |
+
+### Palette — `src/palette/`
+
+Pure, deterministic palette extraction and mapping.
+
+| File | What it is |
+|---|---|
+| `extract.ts` | `extractPalette`: OKLab k-means over image pixels |
+| `roles.ts` | `colorRole`: background / foreground / accent heuristics |
+| `apply.ts` | `applyPalette`: palette → template color params with contrast constraints and variants; `paletteSignature` |
+| `color.ts` | Internal OKLab / OKLCH / gamut / WCAG math |
+| `types.ts` | Palette types |
+
+### Scripts and tests
+
+| Path | What it is |
+|---|---|
+| `scripts/contact-sheet.ts` | `npx tsx scripts/contact-sheet.ts <id\|--scenes\|--all>` → `output/<id>.png` (4 aspects × 6 frames). `--palette "#hex,#hex:0.5"` and `--variant n` apply a palette first |
+| `output/` | Contact sheets (gitignored) |
+| `test/` | Vitest: core, determinism, math, registry, scene.validate, scene.interpret, scene.features, palette |
+
+## Contract — `packages/contract`
+
+| Path | What it is |
+|---|---|
+| `src/index.ts` | HTTP and Socket.io types, `ASSET_URL_PATTERN`, generated-template types. Change this first when the API shape changes |
+
+## Render worker — `apps/worker`
+
+Headless rendering with Puppeteer and FFmpeg.
+
+| Path | What it is |
+|---|---|
+| `render-page/` | `index.html` + `main.ts` loaded in Chromium, driven via `window.__mg` |
+| `vite.render.config.ts` | Builds the render page into `dist/render-page` (auto-rebuilt when stale) |
+| `src/index.ts` | Package exports used by the API |
+| `src/render.ts` | Render orchestration: page frames → encoder. `opts.scene` registers a generated scene |
+| `src/browser.ts` | Chromium launch and page lifecycle |
+| `src/server.ts` | Local static server for the render page bundle |
+| `src/encoder.ts` | FFmpeg process wrapper (MP4, WebM with alpha) |
+| `src/assets.ts` | Resolves `/api/assets/<id>` image params to `data:` URLs |
+| `src/security.ts` | Image param and URL safety checks |
+| `src/child.ts` | Long-lived render child process forked by the API pool |
+| `src/ipc.ts` | Parent ↔ child message protocol (`run` carries `scene` for `gen_` templates) |
+| `src/cli.ts` | `npm run render -w @mg/worker` entry (payload JSON may carry a top-level `scene`) |
+| `samples/` | Example payload JSONs for the CLI |
+| `scripts/soak.ts` | Perf and soak harness; results in `docs/perf.md` |
+| `test/` | Vitest: encoder, render, generated scenes, browser recycling, determinism |
+| `test/parity.test.ts`, `test/parity/` | Studio ≡ render page (exact pixels), lossless round trip, MP4/WebM PSNR floor |
+
+## API — `apps/api`
+
+Express 5 + Socket.io server on :3001.
+
+| Path | What it is |
+|---|---|
+| `src/index.ts` | Process entry: config, storage, queue, pool, generator, listen |
+| `src/env.ts` | Loads the repo-root `.env` (imported first; real env vars win) |
+| `src/app.ts` | Routes (templates, assets, renders, downloads, generate, scenes) and the sweeper (outputs, assets, 24 h drafts) |
+| `src/scenes.ts` | `SceneStore`: generated templates in `storage/scenes/<id>.json`, loaded and registered at startup |
+| `src/config.ts` | Config values (ports, paths, secrets, limits) |
+| `src/sockets.ts` | Socket.io job progress events |
+| `src/pool.ts` | Pool of worker child processes consuming the queue |
+| `src/jobView.ts` | Job → API view mapping, retention and expiry checks |
+| `src/queue/types.ts` | `JobQueue` interface (swap point for BullMQ) |
+| `src/queue/sqlite.ts` | `node:sqlite` job queue |
+| `src/storage/types.ts` | Blob storage interface (swap point for S3) |
+| `src/storage/local.ts` | Local-disk storage under `storage/` |
+| `src/storage/signing.ts` | HMAC-SHA256 signed download URLs |
+| `test/` | Vitest: `api`, `queue`, `scenes` (endpoints with a fake generator), `generate.generator` (generator with a fake Anthropic client) |
+
+### Scene generator — `src/generate/`
+
+Prompt → validated `mg-scene@1` scene.
+
+| File | What it is |
+|---|---|
+| `index.ts` | `createGenerator` (from env) and public types |
+| `claude.ts` | `ClaudeGenerator`: streamed Messages call, `submit_scene` tool, validate → repair (max 2), error mapping |
+| `prompt.ts` | Cached system prompt (spec, allowed values, design guidance, 3 example scenes) and user / repair turns |
+| `scene.ts` | Forces id / format / settings, validates, applies palette to color defaults, picks names |
+| `mock.ts` | `MockGenerator` for `MG_GENERATOR=mock` |
+| `resources.ts` | Reads `docs/SCENE_FORMAT.md` and the bundled scene JSON |
+| `types.ts` | Interfaces, `GenerateError`, abort helpers |
+
+## Studio — `apps/web`
+
+React 19 studio (Vite, :5173).
+
+| Path | What it is |
+|---|---|
+| `vite.config.ts` | Vite config and API proxy to :3001 (override with `MG_API_TARGET`) |
+| `src/main.tsx`, `src/App.tsx` | Entry and app shell |
+| `src/styles.css` | All studio styles |
+| `src/thumbnails.ts` | Library thumbnail scheduler: sequential, lazy, cached per template + DPR + palette |
+| `src/api/client.ts` | HTTP client, including the generate NDJSON stream and scenes calls |
+| `src/api/socket.ts` | Socket.io job updates |
+
+### Components — `src/components/`
+
+| File | What it is |
+|---|---|
+| `TemplateList.tsx` | Library rail: Generate button, search, "Your templates" group (Draft tag, delete), categories, keyboard nav |
+| `TemplateThumb.tsx` | Lazy 72×72 template preview, recolored by the reference palette |
+| `GenerateDialog.tsx` | Generate flow: compose → live steps → Keep / Refine / Try again / Discard; error, disabled and offline states |
+| `DeleteTemplateDialog.tsx` | Confirm and delete a generated template (409 message while rendering) |
+| `ReferencePalette.tsx` | Inspector's first section: reference image → palette, Shuffle / Replace / Remove |
+| `Stage.tsx`, `Timeline.tsx` | Canvas preview and playhead |
+| `Inspector.tsx`, `ParamControl.tsx`, `NumField.tsx`, `Switch.tsx` | Param editing |
+| `ExportDialog.tsx`, `RendersPanel.tsx`, `Toast.tsx` | Export flow and render list |
+| `TopBar.tsx`, `JsonPanel.tsx`, `Icons.tsx` | App chrome, payload JSON editor, icons |
+
+### State and hooks
+
+| Path | What it is |
+|---|---|
+| `src/state/store.ts` | Payload and playhead reducer (`setAssets` patches many params at once) |
+| `src/state/generated.ts` | Registers kept generated templates from `/api/scenes`, tracks session drafts |
+| `src/state/referencePalette.ts` | Reference palette store (localStorage `mg.referencePalette`), local image decode, apply on template switch |
+| `src/state/renders.ts` | Render job list |
+| `src/state/storage.ts` | localStorage persistence |
+| `src/state/time.ts` | Timecode helpers |
+| `src/hooks/` | `useAssets`, `usePlayback`, `useShortcuts`, `useStudioTestHook` (`window.__studio`, only with `?mgtest=1`) |
+
+## Promo reel — `promo`
+
+The 28 s Instagram Reel for Motion Studio. Rendered media is gitignored and rebuilt by the scripts.
+
+| Path | What it is |
+|---|---|
+| `DESIGN.md`, `STORYBOARD.md`, `STORYBOARD-v3.md` | Design notes and storyboards |
+| `payloads/` | Render payloads for the template clips |
+| `scripts/` | Payload generation, clip rendering through the worker CLI (`render-all.cjs`), UI capture sequences |
+| `audio-src/` | Code-generated soundtrack: render, master and verify steps (`.build*/` intermediates are gitignored) |
+| `reel/` | Remotion project (`src/`), captured UI frames in `public/`; clips and audio in `public/` are gitignored, output in `out/` |

@@ -1,0 +1,16 @@
+{
+  "templateId": "product_reveal_v1",
+  "settings": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {
+    "bgColor": "#0B0B1A",
+    "stageColor": "#3D7BFF",
+    "badgeColor": "#FFC93C",
+    "textColor": "#FF3D9A"
+  }
+}

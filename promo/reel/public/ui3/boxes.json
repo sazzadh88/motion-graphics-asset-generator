@@ -1,0 +1,342 @@
+{
+  "viewport": {
+    "cssWidth": 1440,
+    "cssHeight": 900,
+    "deviceScaleFactor": 3,
+    "imageWidth": 4320,
+    "imageHeight": 2700
+  },
+  "boxes": {
+    "preview canvas (1:1 state)": {
+      "css": {
+        "x": 311.5,
+        "y": 80.203125,
+        "width": 737,
+        "height": 737
+      },
+      "image": {
+        "x": 934.5,
+        "y": 240.609375,
+        "width": 2211,
+        "height": 2211
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "generate dialog panel": {
+      "css": {
+        "x": 440,
+        "y": 282.625,
+        "width": 560,
+        "height": 334.734375
+      },
+      "image": {
+        "x": 1320,
+        "y": 847.875,
+        "width": 1680,
+        "height": 1004.203125
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "textarea": {
+      "css": {
+        "x": 457,
+        "y": 357.421875,
+        "width": 526,
+        "height": 90.75
+      },
+      "image": {
+        "x": 1371,
+        "y": 1072.265625,
+        "width": 1578,
+        "height": 272.25
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "Generate button": {
+      "css": {
+        "x": 879.40625,
+        "y": 568.359375,
+        "width": 103.59375,
+        "height": 32
+      },
+      "image": {
+        "x": 2638.21875,
+        "y": 1705.078125,
+        "width": 310.78125,
+        "height": 96
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "generate dialog panel (result state)": {
+      "css": {
+        "x": 440,
+        "y": 354.5,
+        "width": 560,
+        "height": 191
+      },
+      "image": {
+        "x": 1320,
+        "y": 1063.5,
+        "width": 1680,
+        "height": 573
+      },
+      "sequences": [
+        "B"
+      ]
+    },
+    "gen-result block": {
+      "css": {
+        "x": 457,
+        "y": 408.5,
+        "width": 526,
+        "height": 72
+      },
+      "image": {
+        "x": 1371,
+        "y": 1225.5,
+        "width": 1578,
+        "height": 216
+      },
+      "sequences": [
+        "B"
+      ]
+    },
+    "preview canvas (9:16 generated)": {
+      "css": {
+        "x": 473,
+        "y": 80.203125,
+        "width": 414,
+        "height": 737
+      },
+      "image": {
+        "x": 1419,
+        "y": 240.609375,
+        "width": 1242,
+        "height": 2211
+      },
+      "sequences": [
+        "B"
+      ]
+    },
+    "palette drop zone": {
+      "css": {
+        "x": 1137,
+        "y": 128.390625,
+        "width": 287,
+        "height": 64
+      },
+      "image": {
+        "x": 3411,
+        "y": 385.171875,
+        "width": 861,
+        "height": 192
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "palette swatch strip": {
+      "css": {
+        "x": 1185,
+        "y": 136.390625,
+        "width": 239,
+        "height": 24
+      },
+      "image": {
+        "x": 3555,
+        "y": 409.171875,
+        "width": 717,
+        "height": 72
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "palette thumbnail": {
+      "css": {
+        "x": 1137,
+        "y": 128.390625,
+        "width": 40,
+        "height": 40
+      },
+      "image": {
+        "x": 3411,
+        "y": 385.171875,
+        "width": 120,
+        "height": 120
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "palette row (thumb+strip)": {
+      "css": {
+        "x": 1137,
+        "y": 128.390625,
+        "width": 287,
+        "height": 40
+      },
+      "image": {
+        "x": 3411,
+        "y": 385.171875,
+        "width": 861,
+        "height": 120
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "export dialog panel (Product Reveal)": {
+      "css": {
+        "x": 520,
+        "y": 331.40625,
+        "width": 400,
+        "height": 237.1875
+      },
+      "image": {
+        "x": 1560,
+        "y": 994.21875,
+        "width": 1200,
+        "height": 711.5625
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "Render video button": {
+      "css": {
+        "x": 799.125,
+        "y": 519.59375,
+        "width": 103.875,
+        "height": 32
+      },
+      "image": {
+        "x": 2397.375,
+        "y": 1558.78125,
+        "width": 311.625,
+        "height": 96
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render progress bar": {
+      "css": {
+        "x": 1137,
+        "y": 154.578125,
+        "width": 287,
+        "height": 8
+      },
+      "image": {
+        "x": 3411,
+        "y": 463.734375,
+        "width": 861,
+        "height": 24
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render job row": {
+      "css": {
+        "x": 1121,
+        "y": 89,
+        "width": 319,
+        "height": 153.96875
+      },
+      "image": {
+        "x": 3363,
+        "y": 267,
+        "width": 957,
+        "height": 461.90625
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "progress text line": {
+      "css": {
+        "x": 1137,
+        "y": 131.1875,
+        "width": 287,
+        "height": 15.390625
+      },
+      "image": {
+        "x": 3411,
+        "y": 393.5625,
+        "width": 861,
+        "height": 46.171875
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "top-bar chip": {
+      "css": {
+        "x": 1057.5,
+        "y": 7.5,
+        "width": 147.75,
+        "height": 32
+      },
+      "image": {
+        "x": 3172.5,
+        "y": 22.5,
+        "width": 443.25,
+        "height": 96
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "Download video button": {
+      "css": {
+        "x": 1137,
+        "y": 177.96875,
+        "width": 146.203125,
+        "height": 32
+      },
+      "image": {
+        "x": 3411,
+        "y": 533.90625,
+        "width": 438.609375,
+        "height": 96
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render job row (done)": {
+      "css": {
+        "x": 1121,
+        "y": 89,
+        "width": 319,
+        "height": 137.96875
+      },
+      "image": {
+        "x": 3363,
+        "y": 267,
+        "width": 957,
+        "height": 413.90625
+      },
+      "sequences": [
+        "D"
+      ]
+    }
+  },
+  "notes": [
+    "gen ended after 1312ms, shots 12 {\"result\":true,\"failure\":false,\"open\":true}",
+    "result frame 90",
+    "palette before frame 60",
+    "palette after frame 60",
+    "export dialog text: Export video | Breaking News | Format | MP4 | WebM | MP4 drops transparency: the background will render opaque. Choose WebM to keep it. | 1920×1080 · 30 fps · 8s · 240 frames | Cancel | Render video",
+    "export ended Completed after 4455ms, shots 60"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "templateId": "promo_card_v1",
+  "settings": {
+    "width": 540,
+    "height": 960,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {
+    "headline": "Weekend Flash Sale",
+    "subheading": "Fresh styles. Limited time only.",
+    "badgeText": "50%",
+    "badgeLabel": "OFF",
+    "ctaText": "Shop now",
+    "primaryColor": "#FF3D71",
+    "secondaryColor": "#14142B",
+    "accentColor": "#FFC93C",
+    "logoUrl": null,
+    "cornerRoundness": 60,
+    "showDecor": true
+  }
+}

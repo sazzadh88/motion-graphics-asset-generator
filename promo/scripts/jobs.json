@@ -1,0 +1,94 @@
+[
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\product_reveal_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\product_reveal_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\sale_burst_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\sale_burst_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\stat_counter_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\stat_counter_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\testimonial_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\testimonial_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\countdown_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\countdown_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\logo_sting_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\logo_sting_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\quote_card_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\quote_card_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\title_sequence_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\title_sequence_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\new_post_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\new_post_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\event_announcement_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\event_announcement_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\bar_chart_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\bar_chart_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\milestone_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\milestone_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\breaking_news_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\breaking_news_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\lower_third_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\lower_third_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\kinetic_text_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\kinetic_text_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\promo_card_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\promo_card_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\banner_v1.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\banner_v1.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\formats_916.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\formats\\916.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\formats_11.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\formats\\11.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\formats_169.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\formats\\169.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\palette_before.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\palette\\before.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\palette_after.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\palette\\after.mp4"
+ },
+ {
+  "payload": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\payloads\\generated.json",
+  "out": "C:\\Users\\RAKESH\\Projects\\Motion Graphics & Asset Generator\\promo\\reel\\public\\clips\\generated.mp4"
+ }
+]

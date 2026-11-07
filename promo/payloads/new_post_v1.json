@@ -1,0 +1,11 @@
+{
+  "templateId": "new_post_v1",
+  "settings": {
+    "width": 540,
+    "height": 960,
+    "fps": 30,
+    "durationFrames": 150,
+    "transparent": false
+  },
+  "assets": {}
+}

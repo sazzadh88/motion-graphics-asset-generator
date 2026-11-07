@@ -1,0 +1,11 @@
+{
+  "templateId": "product_reveal_v1",
+  "settings": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {}
+}

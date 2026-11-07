@@ -1,0 +1,410 @@
+{
+  "viewport": {
+    "cssWidth": 1440,
+    "cssHeight": 900,
+    "deviceScaleFactor": 2,
+    "imageWidth": 2880,
+    "imageHeight": 1800
+  },
+  "boxes": {
+    "template sidebar": {
+      "css": {
+        "x": 0,
+        "y": 48,
+        "width": 240,
+        "height": 852
+      },
+      "image": {
+        "x": 0,
+        "y": 96,
+        "width": 480,
+        "height": 1704
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "preview canvas": {
+      "css": {
+        "x": 311.5,
+        "y": 80.203125,
+        "width": 737,
+        "height": 737
+      },
+      "image": {
+        "x": 623,
+        "y": 160.40625,
+        "width": 1474,
+        "height": 1474
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "inspector panel": {
+      "css": {
+        "x": 1120,
+        "y": 48,
+        "width": 320,
+        "height": 852
+      },
+      "image": {
+        "x": 2240,
+        "y": 96,
+        "width": 640,
+        "height": 1704
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "timeline/playhead bar": {
+      "css": {
+        "x": 240,
+        "y": 849.40625,
+        "width": 880,
+        "height": 50.59375
+      },
+      "image": {
+        "x": 480,
+        "y": 1698.8125,
+        "width": 1760,
+        "height": 101.1875
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "timeline scrubber": {
+      "css": {
+        "x": 484,
+        "y": 859.203125,
+        "width": 492,
+        "height": 32
+      },
+      "image": {
+        "x": 968,
+        "y": 1718.40625,
+        "width": 984,
+        "height": 64
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "Export button": {
+      "css": {
+        "x": 1359.265625,
+        "y": 7.5,
+        "width": 64.734375,
+        "height": 32
+      },
+      "image": {
+        "x": 2718.53125,
+        "y": 15,
+        "width": 129.46875,
+        "height": 64
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "generate dialog panel": {
+      "css": {
+        "x": 440,
+        "y": 282.625,
+        "width": 560,
+        "height": 334.734375
+      },
+      "image": {
+        "x": 880,
+        "y": 565.25,
+        "width": 1120,
+        "height": 669.46875
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "textarea": {
+      "css": {
+        "x": 457,
+        "y": 357.421875,
+        "width": 526,
+        "height": 90.75
+      },
+      "image": {
+        "x": 914,
+        "y": 714.84375,
+        "width": 1052,
+        "height": 181.5
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "Generate button": {
+      "css": {
+        "x": 879.40625,
+        "y": 568.359375,
+        "width": 103.59375,
+        "height": 32
+      },
+      "image": {
+        "x": 1758.8125,
+        "y": 1136.71875,
+        "width": 207.1875,
+        "height": 64
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "Cancel button": {
+      "css": {
+        "x": 807.421875,
+        "y": 568.359375,
+        "width": 63.984375,
+        "height": 32
+      },
+      "image": {
+        "x": 1614.84375,
+        "y": 1136.71875,
+        "width": 127.96875,
+        "height": 64
+      },
+      "sequences": [
+        "A"
+      ]
+    },
+    "generate dialog panel (result state)": {
+      "css": {
+        "x": 440,
+        "y": 354.5,
+        "width": 560,
+        "height": 191
+      },
+      "image": {
+        "x": 880,
+        "y": 709,
+        "width": 1120,
+        "height": 382
+      },
+      "sequences": [
+        "B"
+      ]
+    },
+    "preview canvas (generated)": {
+      "css": {
+        "x": 473,
+        "y": 80.203125,
+        "width": 414,
+        "height": 737
+      },
+      "image": {
+        "x": 946,
+        "y": 160.40625,
+        "width": 828,
+        "height": 1474
+      },
+      "sequences": [
+        "B"
+      ]
+    },
+    "palette drop zone": {
+      "css": {
+        "x": 1137,
+        "y": 128.390625,
+        "width": 287,
+        "height": 64
+      },
+      "image": {
+        "x": 2274,
+        "y": 256.78125,
+        "width": 574,
+        "height": 128
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "palette swatch strip": {
+      "css": {
+        "x": 1185,
+        "y": 136.390625,
+        "width": 239,
+        "height": 24
+      },
+      "image": {
+        "x": 2370,
+        "y": 272.78125,
+        "width": 478,
+        "height": 48
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "palette row (thumb+strip)": {
+      "css": {
+        "x": 1137,
+        "y": 128.390625,
+        "width": 287,
+        "height": 40
+      },
+      "image": {
+        "x": 2274,
+        "y": 256.78125,
+        "width": 574,
+        "height": 80
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "Shuffle button": {
+      "css": {
+        "x": 1137,
+        "y": 184.390625,
+        "width": 89.71875,
+        "height": 32
+      },
+      "image": {
+        "x": 2274,
+        "y": 368.78125,
+        "width": 179.4375,
+        "height": 64
+      },
+      "sequences": [
+        "C"
+      ]
+    },
+    "export dialog panel": {
+      "css": {
+        "x": 520,
+        "y": 331.40625,
+        "width": 400,
+        "height": 237.1875
+      },
+      "image": {
+        "x": 1040,
+        "y": 662.8125,
+        "width": 800,
+        "height": 474.375
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "Render video button": {
+      "css": {
+        "x": 799.125,
+        "y": 519.59375,
+        "width": 103.875,
+        "height": 32
+      },
+      "image": {
+        "x": 1598.25,
+        "y": 1039.1875,
+        "width": 207.75,
+        "height": 64
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render panel (renders tab)": {
+      "css": {
+        "x": 1120,
+        "y": 48,
+        "width": 320,
+        "height": 852
+      },
+      "image": {
+        "x": 2240,
+        "y": 96,
+        "width": 640,
+        "height": 1704
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render progress bar": {
+      "css": {
+        "x": 1137,
+        "y": 154.578125,
+        "width": 287,
+        "height": 8
+      },
+      "image": {
+        "x": 2274,
+        "y": 309.15625,
+        "width": 574,
+        "height": 16
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "render job row": {
+      "css": {
+        "x": 1121,
+        "y": 89,
+        "width": 319,
+        "height": 153.96875
+      },
+      "image": {
+        "x": 2242,
+        "y": 178,
+        "width": 638,
+        "height": 307.9375
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "topbar progress chip": {
+      "css": {
+        "x": 1051.03125,
+        "y": 7.5,
+        "width": 154.21875,
+        "height": 32
+      },
+      "image": {
+        "x": 2102.0625,
+        "y": 15,
+        "width": 308.4375,
+        "height": 64
+      },
+      "sequences": [
+        "D"
+      ]
+    },
+    "template list scroll area": {
+      "css": {
+        "x": 0,
+        "y": 133,
+        "width": 239,
+        "height": 767
+      },
+      "image": {
+        "x": 0,
+        "y": 266,
+        "width": 478,
+        "height": 1534
+      },
+      "sequences": [
+        "E"
+      ]
+    }
+  },
+  "notes": [
+    "select options: [[[\"0\",\"Story 9:16 (1080×1920)\"],[\"1\",\"Square 1:1 (1080×1080)\"],[\"2\",\"Portrait 4:5 (1080×1350)\"],[\"3\",\"Landscape 16:9 (1920×1080)\"],[\"4\",\"Banner 3:1 (1500×500)\"]],[[\"3\",\"3 s\"],[\"4\",\"4 s\"],[\"5\",\"5 s\"],[\"6\",\"6 s\"],[\"8\",\"8 s\"],[\"10\",\"10 s\"],[\"12\",\"12 s\"],[\"15\",\"15 s\"]]]",
+    "format chose Story 9:16 (1080×1920)",
+    "gen ended after 1436ms, shots 6 state {\"result\":true,\"failure\":false,\"open\":true}",
+    "export dialog text: Export video | Product Reveal | Format | MP4 | WebM | 1080×1080 · 30 fps · 5s · 150 frames | Cancel | Render video",
+    "export ended Completed after 3322ms, shots 8",
+    "library scroll 2001,767,617"
+  ]
+}

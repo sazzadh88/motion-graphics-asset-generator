@@ -1,0 +1,22 @@
+{
+  "templateId": "sale_burst_v1",
+  "settings": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {
+    "headline": "AIR NEON",
+    "discount": "-30%",
+    "offWord": "Off",
+    "subline": "Drops Friday",
+    "cta": "Get yours",
+    "bgColor": "#0B0B1A",
+    "burstColor": "#FF3D9A",
+    "inkColor": "#39FF14",
+    "burstTextColor": "#FFFFFF",
+    "showConfetti": true
+  }
+}

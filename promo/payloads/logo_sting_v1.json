@@ -1,0 +1,11 @@
+{
+  "templateId": "logo_sting_v1",
+  "settings": {
+    "width": 540,
+    "height": 960,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {}
+}

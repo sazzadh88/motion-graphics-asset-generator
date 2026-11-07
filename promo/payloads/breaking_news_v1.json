@@ -1,0 +1,11 @@
+{
+  "templateId": "breaking_news_v1",
+  "settings": {
+    "width": 540,
+    "height": 960,
+    "fps": 30,
+    "durationFrames": 180,
+    "transparent": false
+  },
+  "assets": {}
+}

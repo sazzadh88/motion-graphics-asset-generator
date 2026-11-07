@@ -1,0 +1,21 @@
+{
+  "templateId": "kinetic_text_v1",
+  "settings": {
+    "width": 540,
+    "height": 960,
+    "fps": 30,
+    "durationFrames": 120,
+    "transparent": false
+  },
+  "assets": {
+    "headline": "SUMMER SALE",
+    "subheading": "Up to 50% off everything",
+    "primaryColor": "#FF2A5F",
+    "secondaryColor": "#0F172A",
+    "logoUrl": null,
+    "animationStyle": "rise",
+    "headlineFont": "anton",
+    "textScale": 1,
+    "showAccent": true
+  }
+}

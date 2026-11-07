@@ -5,3 +5,8 @@ dist
 output/
 storage/
 *.sqlite
+
+# Promo reel: regenerable media (scripts in promo/scripts and promo/audio-src rebuild them)
+promo/audio-src/.build*/
+promo/reel/public/clips/
+promo/reel/public/audio/
